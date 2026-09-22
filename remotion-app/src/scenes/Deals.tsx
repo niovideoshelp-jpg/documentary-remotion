@@ -53,7 +53,7 @@ const PACKAGE = [
   { key: "weapons", at: 154.24, word: "Weapons", x: 1450, y: 250 },
   { key: "training", at: 154.98, word: "Training", x: 330, y: 800 },
   { key: "support", at: 155.68, word: "Support", x: 1590, y: 790 },
-  { key: "logistics", at: 156.4, word: "Logistics", x: 960, y: 930 },
+  { key: "logistics", at: 156.4, word: "Logistics", x: 960, y: 860 },
 ];
 
 export const S14Package: React.FC = () => {

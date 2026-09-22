@@ -42,7 +42,7 @@ export const S04Rafale: React.FC = () => {
       <PaperGround>
         <Camera s={camS} x={camX}>
           {/* drafting sheet: the three-view drawing (Patrick Rogel, CC BY-SA) traced in */}
-          <Layer depth={0.85}>
+          <Layer depth={0.85} style={{ mixBlendMode: "multiply" }}>
             <div
               style={{
                 position: "absolute",
@@ -88,16 +88,16 @@ export const S04Rafale: React.FC = () => {
                 />
                 <PrintTexture opacity={0.3} />
                 <At x={W / 2} y={H / 2 + 230}>
-                  <Rise p={ramp(t, 25.6, 26.2)} q={back}>
-                    <Label size={36} color={C.offWhite} weight={600} style={{ letterSpacing: "0.5em", marginBottom: 8 }}>
-                      Dassault
-                    </Label>
-                  </Rise>
-                  <br />
                   <Rise p={name} q={back}>
                     <Display size={360} color={C.offWhite} tracking={0.04}>
                       Rafale
                     </Display>
+                  </Rise>
+                  <br />
+                  <Rise p={ramp(t, 25.6, 26.2)} q={back}>
+                    <Label size={36} color={C.offWhite} weight={600} style={{ letterSpacing: "0.5em", marginTop: 4 }}>
+                      Dassault
+                    </Label>
                   </Rise>
                 </At>
                 <Cutout

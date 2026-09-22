@@ -51,16 +51,16 @@ export const S01Typhoon: React.FC = () => {
         {/* name behind the aircraft */}
         <Layer depth={0.7}>
           <At x={W / 2 - fly * 80} y={790}>
-            <Rise p={ramp(t, 1.05, 1.6)}>
-              <Label size={34} color={C.offWhite} weight={600} style={{ letterSpacing: "0.5em", marginBottom: 6 }}>
-                Eurofighter
-              </Label>
-            </Rise>
-            <br />
             <Rise p={name}>
               <Display size={300} color={C.offWhite} tracking={0.03} style={{ opacity: 0.95 }}>
                 Typhoon
               </Display>
+            </Rise>
+            <br />
+            <Rise p={ramp(t, 1.05, 1.6)}>
+              <Label size={34} color={C.offWhite} weight={600} style={{ letterSpacing: "0.5em", marginTop: 4 }}>
+                Eurofighter
+              </Label>
             </Rise>
           </At>
         </Layer>

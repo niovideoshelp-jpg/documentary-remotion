@@ -33,10 +33,10 @@ const TabRow: React.FC<{ tabs: string[]; x: number; y: number; p: number; cursor
             transform: `translateY(${(1 - e) * 30 - on * 10 - picked * 14}px)`,
             background: picked > 0.5 ? C.red : on > 0.5 ? C.ink : "#e3dccd",
             color: picked > 0.5 || on > 0.5 ? C.offWhite : C.ink,
-            padding: "10px 22px 8px",
+            padding: "12px 28px 8px",
             fontFamily: F.label,
             fontWeight: 600,
-            fontSize: 40,
+            fontSize: 54,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
             borderRadius: "6px 6px 0 0",
@@ -74,8 +74,8 @@ export const S09Fair: React.FC = () => {
           <Layer depth={1.05}>
             <Cutout name="typhoon-side" x={lerp(700, 760, ruler)} y={380 + drift(t, "f1", 3)} w={lerp(700, 760, ruler)} rot={0} opacity={ramp(t, 80.3, 80.9)} />
             <Cutout name="rafale-landing" x={lerp(1250, 1160, ruler)} y={700 + drift(t, "f2", 3)} w={lerp(640, 760, ruler)} rot={0} opacity={ramp(t, 80.6, 81.2)} />
-            <TabRow tabs={TYPHOON_TABS} x={300} y={120} p={tabs} cursor={cursorT} pick={[1, 2]} pickP={pickP} />
-            <TabRow tabs={RAFALE_TABS} x={900} y={880} p={ramp(t, 84.5, 85.5, ease.linear)} cursor={cursorR} pick={[3]} pickP={pickP} />
+            <TabRow tabs={TYPHOON_TABS} x={180} y={110} p={tabs} cursor={cursorT} pick={[1, 2]} pickP={pickP} />
+            <TabRow tabs={RAFALE_TABS} x={880} y={870} p={ramp(t, 84.5, 85.5, ease.linear)} cursor={cursorR} pick={[3]} pickP={pickP} />
           </Layer>
         </Camera>
       </PaperGround>

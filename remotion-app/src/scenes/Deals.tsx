@@ -157,7 +157,7 @@ export const S15Deal: React.FC = () => {
   const buyer = ramp(t, 165.5, 166.5, ease.out);
   const deal = ramp(t, 166.6, 167.4);
   const allowed = ramp(t, 168.0, 168.8, ease.soft);
-  const camS = keys(t, [[160.6, 1.06], [169.8, 1.0]], ease.soft);
+  const camS = keys(t, [[160.6, 1.3], [169.8, 1.18]], ease.soft);
   const L = { x: lerp(560, 780, offer), y: 540 };
   const R = { x: lerp(1360, 1140, buyer), y: 540 };
   const r = 330;

@@ -22,3 +22,37 @@ Primary reference links for the video description:
 
 Closing excerpt: atlantic-trident.mp4, source 82.5–85.7 seconds, 50% playback speed, original audio removed.
 
+
+## Rebuild additions (Wikimedia Commons)
+
+| File | Source title | Author | Licence |
+|---|---|---|---|
+| src-photos/typhoon-pair.jpg | Royal Air Force Typhoon Aircraft from 6 Squadron MOD 45155465.jpg | SAC Ash Reynolds | OGL v1.0 |
+| src-photos/typhoon-front.jpg | RAF Typhoon inflight.jpg | Sqn Ldr Dylan Eklund | OGL 2 |
+| src-photos/typhoon-side.jpg | ZK375 Eurofighter Typhoon FGR4 RAF Northolt 5.10.23 (53249846737).jpg | Colin Cooke Photo | CC BY-SA 2.0 |
+| src-photos/typhoon-drop.jpg | RAF Typhoon Dropping Paveway Bomb MOD 45155467.jpg | SAC Ash Reynolds | OGL v1.0 |
+| src-photos/typhoon-paveway.jpg | Enhanced Paveway II Bomb Fitted to RAF Typhoon MOD 45153867.jpg | SAC Graham Taylor | OGL v1.0 |
+| src-photos/typhoon-bear.jpg | RAF QRA Typhoon Intercepting Russian Bear Aircraft MOD 45158137.jpg | Sgt Fenwick | OGL v1.0 |
+| src-photos/typhoon-leuchars.jpg | Typhoon FGR4 at RAF Leuchars MOD 45154867.jpg | Cpl Dave Blackburn RAF | OGL v1.0 |
+| src-photos/carrier-wide.jpg | Rafale Theodore Roosevelt04.jpg | Nathan Laird | Public domain |
+| src-photos/rafale-m-flight.jpg | Rafale M of Flottile 12F in flight 2014.JPG | U.S. Navy photo by Mass Communication Specialist 3rd Class Karl Anderson | Public domain |
+| src-photos/rafale-m-armed.jpg | Rafale M-16-EybnCWLWgAAi3I9.jpeg | SSgt Alexander Cook | Public domain |
+| src-photos/rafale-deck.jpg | French Navy Rafale performs a touch and go on the USS Dwight D. Eisenhower.jpg | U.S. Navy photo by Petty Officer 3rd Class Nathan T. Beard | Public domain |
+| src-photos/rafale-croatia.jpg | Dassault Rafale arrives for the first time in Croatia.jpg | MORH/ T. Brandt | CC BY 4.0 |
+| src-photos/rafale-vapor.jpg | Dassault Rafale (16425191208).jpg | Bikash Das from bangalore, india | CC BY 2.0 |
+| src-photos/rafale-india.jpg | Indian Air Force Rafale.jpg | Dylan Agbagni (CC0) | CC0 |
+| src-photos/rafale-india-takeoff.jpg | RB005 - Dassault Rafale take off - Indian Air Force.jpg | Dylan Agbagni (CC0) | CC0 |
+| src-photos/captor.jpg | ILA Berlin 2012 PD 193-Detail.jpg | Bin im Garten (derivative: MagentaGreen) | CC BY-SA 3.0 |
+| src-photos/rafale-egypt.jpg | 9265 Rafale DM Egyptian Air Force El Alamein 5.9.24 (54025821284).jpg | Colin Cooke Photo | CC BY-SA 2.0 |
+| src-photos/rbe2.jpg | Thales RBE2 AESA.jpg | Tiraden | CC BY-SA 4.0 |
+| src-photos/exocet.jpg | Exocet AM39 P1220892.jpg | David Monniaux | CC BY-SA 3.0 |
+| src-photos/meteor.jpg | MBDA Meteor et Thales Talios.jpg | Tiraden | CC BY-SA 4.0 |
+| src-photos/rafale-3view.jpg | Dassault Rafale 3-view line drawing.jpg | Patrick Rogel | CC BY-SA 3.0 |
+| src-photos/rafale-weapons.jpg | Dassault Rafale weaponry DSC04186.JPG | David Monniaux | CC BY-SA 3.0 |
+| src-photos/logistics.jpg | Transporter Moves Enhanced Paveway III Bombs During Operation Ellamy MOD 45152770.jpg | SAC Sally Raimondo | OGL v1.0 |
+
+CC BY / CC BY-SA images require credit in the video description. OGL images: Contains public sector information licensed under the Open Government Licence. Cutouts (background removal, paper border) are derivative presentations; photographic content is not altered.
+
+- gen/doc/nao-typhoon-*.jpg: National Audit Office, *Management of the Typhoon Project* (HC 755, 2011), OGL.
+- gen/relief-*.jpg: Natural Earth GRAY_HR_SR shaded relief, public domain, reprojected in CI.
+- Fonts: Anton, Bebas Neue, Special Gothic Condensed One, Fira Sans Condensed, Kaushan Script, Oswald — SIL Open Font License (Google Fonts).

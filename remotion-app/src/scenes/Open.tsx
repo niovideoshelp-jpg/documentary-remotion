@@ -27,6 +27,13 @@ export const S01Typhoon: React.FC = () => {
   const camX = keys(t, [[0, 0], [4.2, 20], [7.4, 150]], ease.soft);
   const camY = keys(t, [[0, 0], [7.4, -20]], ease.soft);
   const fly = ramp(t, 4.4, 7.4, ease.in); // aircraft pushes forward on "air combat"
+  // after lifting, the aircraft settles smaller and higher so the name can sit under its wing
+  const settle = ramp(t, 1.15, 2.3, ease.inOut);
+  const k = lerp(1, 0.5, settle);
+  const ax = lerp(lift.x, 1010, settle) + fly * 420 + drift(t, "ty", 4);
+  const ay = lerp(lift.y, 400, settle) - fly * 60 + drift(t, "ty2", 3);
+  // twin nozzles, relative to the cutout centre (measured on the source photo)
+  const nz = { x: ax - lift.w * 0.41 * k * (1 + fly * 0.18), y: ay - lift.w * 0.026 * k };
   const name = ramp(t, 1.82, 2.5);
   const eng = ramp(t, 3.0, 3.75, ease.soft);
   const note = ramp(t, 3.3, 3.9);
@@ -43,7 +50,7 @@ export const S01Typhoon: React.FC = () => {
         </Layer>
         {/* name behind the aircraft */}
         <Layer depth={0.7}>
-          <At x={W / 2 - 40 - fly * 80} y={H / 2 + 20}>
+          <At x={W / 2 - fly * 80} y={790}>
             <Rise p={ramp(t, 1.05, 1.6)}>
               <Label size={34} color={C.offWhite} weight={600} style={{ letterSpacing: "0.5em", marginBottom: 6 }}>
                 Eurofighter
@@ -51,7 +58,7 @@ export const S01Typhoon: React.FC = () => {
             </Rise>
             <br />
             <Rise p={name}>
-              <Display size={340} color={C.offWhite} tracking={0.03} style={{ opacity: 0.94 }}>
+              <Display size={300} color={C.offWhite} tracking={0.03} style={{ opacity: 0.95 }}>
                 Typhoon
               </Display>
             </Rise>
@@ -61,10 +68,10 @@ export const S01Typhoon: React.FC = () => {
         <Layer depth={1.05}>
           <Cutout
             name="typhoon-flight"
-            x={lift.x + fly * 420 + drift(t, "ty", 4)}
-            y={lift.y - fly * 60 + drift(t, "ty2", 3)}
+            x={ax}
+            y={ay}
             w={lift.w}
-            scale={1 + up * 0.06 + fly * 0.18}
+            scale={k * (1 + up * 0.06 + fly * 0.18)}
             rot={-fly * 3}
             opacity={up > 0 ? 1 : 0}
             shadow={up * 1.4}
@@ -73,11 +80,11 @@ export const S01Typhoon: React.FC = () => {
           />
           {/* twin-engine: pencil ring around the two nozzles */}
           <Stage>
-            <g transform={`translate(${fly * 420}, ${-fly * 60})`} opacity={1 - ramp(t, 4.6, 5.2)}>
-              <DrawPath d={scribbleEllipse(lift.x - lift.w * 0.33, lift.y + lift.w * 0.035, 105, 80, "eng")} p={eng} color={C.red} width={5} />
+            <g opacity={1 - ramp(t, 4.6, 5.2)}>
+              <DrawPath d={scribbleEllipse(nz.x, nz.y, 70, 62, "eng")} p={eng} color={C.red} width={5} />
             </g>
           </Stage>
-          <At x={lift.x - lift.w * 0.33 + fly * 420} y={lift.y + lift.w * 0.035 + 135} rot={-4}>
+          <At x={nz.x - 40} y={nz.y + 105} rot={-4}>
             <div style={{ opacity: note * (1 - ramp(t, 4.6, 5.2)) }}>
               <Hand size={52} color={C.offWhite}>
                 twin-engine
@@ -231,8 +238,8 @@ export const S02Mission: React.FC = () => {
               name="typhoon-pair"
               x={pt.x}
               y={pt.y - 30}
-              w={330 + speed * 30}
-              rot={pt.a - 180}
+              w={430 + speed * 30}
+              rot={Math.max(-40, Math.min(40, ((pt.a - 180 + 540) % 360) - 180))}
               opacity={ramp(t, 7.5, 7.9)}
             />
             <Stage>
@@ -281,7 +288,6 @@ export const S03Ground: React.FC = () => {
   const arrive = ramp(t, 14.75, 15.75, ease.inOut);
   const y0 = lerp(1080, 0, arrive);
   const air = ramp(t, 15.3, 16.2);
-  const just = ramp(t, 18.25, 18.9);
   const ground = ramp(t, 20.4, 21.3);
   const targets = ramp(t, 21.9, 22.8);
   const camS = keys(t, [[15.5, 1.0], [20.3, 1.03], [24.2, 1.22]], ease.soft);
@@ -314,12 +320,6 @@ export const S03Ground: React.FC = () => {
                 <Tape p={1}>Air combat</Tape>
               </Rise>
             </At>
-            {/* "just": the specialist label gets a hand-drawn plus */}
-            <At x={lerp(1240, 900, ground)} y={lerp(470, 760, ground)} rot={-8}>
-              <div style={{ opacity: just }}>
-                <Hand size={110}>+</Hand>
-              </div>
-            </At>
           </Layer>
           <Layer depth={1.1}>
             {/* ground attack: RAF Typhoon releasing a Paveway */}
@@ -338,10 +338,10 @@ export const S03Ground: React.FC = () => {
             />
             <Stage>
               {/* the bomb's fall line to a ground target */}
-              <DrawPath d="M1215,580 C1230,720 1270,860 1320,960" p={targets} color={C.red} width={4} dash={10} />
-              <DrawPath d={scribbleEllipse(1325, 985, 70, 26, "tgt", 1.05)} p={ramp(t, 22.5, 23.1)} color={C.red} width={4.5} />
+              <DrawPath d="M1215,580 C1230,680 1260,780 1300,830" p={targets} color={C.red} width={4} dash={10} />
+              <DrawPath d={scribbleEllipse(1305, 845, 70, 26, "tgt", 1.05)} p={ramp(t, 22.5, 23.1)} color={C.red} width={4.5} />
             </Stage>
-            <At x={1325} y={1030}>
+            <At x={1305} y={915}>
               <Rise p={ramp(t, 22.8, 23.3)}>
                 <Tape p={1} dark rot={1.5}>
                   Ground attack

@@ -34,8 +34,8 @@ export const S04Rafale: React.FC = () => {
   const camS = keys(t, [[24.2, 1.08], [27.9, 1.0], [29.6, 1.0], [35.5, 1.07]], ease.soft);
   const camX = keys(t, [[24.2, 0], [29.6, 0], [35.5, -60]], ease.soft);
   // the photo print shrinks to a corner of the desk
-  const px = lerp(W / 2, 1360, back);
-  const py = lerp(H / 2, 610, back);
+  const px = lerp(W / 2, 1420, back);
+  const py = lerp(H / 2, 760, back);
   const ps = lerp(1, 0.36, back);
   return (
     <AbsoluteFill style={{ transform: `translateX(${(1 - inP) * W}px)`, filter: whipBlur > 0.5 ? `blur(${whipBlur}px)` : undefined }}>
@@ -52,9 +52,10 @@ export const S04Rafale: React.FC = () => {
                 height: 645,
                 opacity: back,
                 clipPath: `inset(0 ${(1 - draw) * 100}% 0 0)`,
+                mixBlendMode: "multiply",
               }}
             >
-              <Img src={staticFile("src-photos/rafale-3view.jpg")} style={{ width: "100%", height: "100%", mixBlendMode: "multiply", filter: "contrast(1.25) grayscale(1)" }} />
+              <Img src={staticFile("src-photos/rafale-3view.jpg")} style={{ width: "100%", height: "100%", objectFit: "contain", filter: "contrast(1.3) grayscale(1)" }} />
             </div>
             <Stage>
               {/* pencil lead following the trace edge */}
@@ -86,7 +87,7 @@ export const S04Rafale: React.FC = () => {
                   }}
                 />
                 <PrintTexture opacity={0.3} />
-                <At x={W / 2} y={H / 2 - 40}>
+                <At x={W / 2} y={H / 2 + 230}>
                   <Rise p={ramp(t, 25.6, 26.2)} q={back}>
                     <Label size={36} color={C.offWhite} weight={600} style={{ letterSpacing: "0.5em", marginBottom: 8 }}>
                       Dassault
@@ -115,8 +116,8 @@ export const S04Rafale: React.FC = () => {
           </Layer>
           {/* "do-it-all": a single airframe, many jobs */}
           <Layer depth={1.1}>
-            <Cutout name="rafale-vapor" x={lerp(1500, 1380, versatile)} y={330} w={620} rot={-4} opacity={versatile} scale={0.9 + versatile * 0.1} />
-            <At x={1330} y={505} rot={-5}>
+            <Cutout name="rafale-vapor" x={lerp(1560, 1430, versatile)} y={300} w={620} rot={-4} opacity={versatile} scale={0.9 + versatile * 0.1} />
+            <At x={1400} y={470} rot={-5}>
               <div style={{ opacity: ramp(t, 33.7, 34.3) }}>
                 <Hand size={58}>do-it-all</Hand>
               </div>
@@ -143,7 +144,7 @@ export const S05Missions: React.FC = () => {
   const ship = ramp(t, 38.72, 39.4);
   const camX = keys(t, [[35.3, -40], [36.4, 30], [37.8, 60], [39.3, 40], [40.4, 120]], ease.soft);
   const camY = keys(t, [[35.3, 0], [36.4, -40], [37.8, 0], [39.3, 60], [41.0, 180]], ease.soft);
-  const camS = keys(t, [[35.3, 1.0], [39.4, 1.04], [41.2, 1.5]], ease.soft);
+  const camS = keys(t, [[35.3, 1.14], [39.4, 1.18], [41.2, 1.6]], ease.soft);
   const origin = { x: 700, y: 560 };
   const tgt = { a: { x: 1330, y: 250 }, s: { x: 1440, y: 575 }, x: { x: 1250, y: 880 } };
   return (

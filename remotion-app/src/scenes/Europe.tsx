@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, staticFile } from "remotion";
+import { AbsoluteFill } from "remotion";
 import { Camera, Layer } from "../components/Camera";
 import { PaperGround, PrintTexture } from "../components/Paper";
 import { Cutout, roughRect } from "../components/Photo";
@@ -70,15 +70,15 @@ export const S06Rivals: React.FC = () => {
           <Layer depth={1.1}>
             <Cutout
               name="typhoon-side"
-              x={lerp(2300, 1250, ty) - deal * 60 - split * 700}
-              y={lerp(330, 300, ty) - split * 150 + drift(t, "t6", 5)}
+              x={lerp(2300, 1460, ty) - deal * 40 + split * 700}
+              y={lerp(330, 250, ty) - split * 150 + drift(t, "t6", 5)}
               w={760}
               rot={-2 - split * 6}
               opacity={ty}
             />
             <Cutout
               name="rafale-landing"
-              x={lerp(2400, 700, rf) + deal * 60 + split * 700}
+              x={lerp(2400, 470, rf) + deal * 40 - split * 700}
               y={820 + split * 150 + drift(t, "r6", 5)}
               w={760}
               rot={1 + split * 5}
@@ -180,9 +180,7 @@ export const S07Map: React.FC = () => {
   const parisXY = P("paris");
   // screen position of a canvas point for HTML overlays
   const toScreen = ([x, y]: [number, number]) => [(x - view.cx) * view.z + W / 2, (y - view.cy) * view.z + H / 2];
-  const [mx, my] = toScreen(munich);
   const [fx, fy] = toScreen(parisXY);
-  const expo = ramp(t, 70.0, 70.8);
   return (
     <AbsoluteFill>
       <WorldMap
@@ -236,9 +234,6 @@ export const S07Map: React.FC = () => {
           </g>
         )}
       </WorldMap>
-      {/* who ships where: each aircraft at its point of origin */}
-      <Cutout name="typhoon-pair" x={mx + 90} y={my - 70} w={240} rot={-3} opacity={expo * (1 - ramp(t, 74.3, 74.9))} />
-      <Cutout name="rafale-landing" x={fx - 150} y={fy + 60} w={250} rot={2} opacity={expo * (1 - ramp(t, 74.3, 74.9))} />
       <At x={W / 2} y={H - 130}>
         <Rise p={ramp(t, 71.6, 72.3)} q={ramp(t, 73.6, 74.1)}>
           <Display size={120} color={C.offWhite}>
@@ -262,39 +257,22 @@ export const S07Map: React.FC = () => {
  * upgrading, and selling a modern combat aircraft."
  * Typographic spread: three verbs, each filled with a real photograph of that stage.
  */
-const Verb: React.FC<{ word: string; img: string; p: number; y: number; pos?: string }> = ({ word, img, p, y, pos = "50% 50%" }) => (
+const Verb: React.FC<{ word: string; color: string; p: number; y: number }> = ({ word, color, p, y }) => (
   <At x={W / 2} y={y}>
     <Rise p={p}>
-      <div style={{ position: "relative" }}>
-        <Display size={205} color="transparent" tracking={0.02} style={{ WebkitTextStroke: `2px ${C.ink}`, position: "absolute", left: 5, top: 5, opacity: 0.25 }}>
-          {word}
-        </Display>
-        <Display
-          size={205}
-          tracking={0.02}
-          color="transparent"
-          style={{
-            backgroundImage: `url(${staticFile(img)})`,
-            backgroundSize: "cover",
-            backgroundPosition: pos,
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            filter: "contrast(1.2) brightness(0.8)",
-          }}
-        >
-          {word}
-        </Display>
-      </div>
+      <Display size={205} color={color} tracking={0.02}>
+        {word}
+      </Display>
     </Rise>
   </At>
 );
 
 export const S08Approaches: React.FC = () => {
   const t = useT();
-  const split = ramp(t, 74.3, 75.3, ease.inOut);
+  const split = ramp(t, 74.1, 75.1, ease.inOut);
   const camS = keys(t, [[73.6, 1.0], [80.4, 1.08]], ease.soft);
   return (
-    <BlotReveal t={t} start={73.55} dur={1.0} cx={W / 2} cy={H / 2} seed="s08">
+    <BlotReveal t={t} start={73.8} dur={0.9} cx={W / 2} cy={H / 2} seed="s08">
       <PaperGround>
         <Camera s={camS}>
           <Layer depth={0.9}>
@@ -305,9 +283,9 @@ export const S08Approaches: React.FC = () => {
             <Cutout name="rafale-landing" x={lerp(2200, 1600, split)} y={850} w={560} rot={2} opacity={split} />
           </Layer>
           <Layer depth={1.05}>
-            <Verb word="Develop" img="src-photos/rafale-3view.jpg" p={ramp(t, 76.2, 76.8)} y={330} />
-            <Verb word="Upgrade" img="src-photos/captor.jpg" p={ramp(t, 77.15, 77.75)} y={540} pos="40% 50%" />
-            <Verb word="Sell" img="src-photos/rafale-india.jpg" p={ramp(t, 77.9, 78.5)} y={750} pos="50% 45%" />
+            <Verb word="Develop" color={C.ink} p={ramp(t, 76.2, 76.8)} y={330} />
+            <Verb word="Upgrade" color={C.ink} p={ramp(t, 77.15, 77.75)} y={540} />
+            <Verb word="Sell" color={C.red} p={ramp(t, 77.9, 78.5)} y={750} />
           </Layer>
         </Camera>
       </PaperGround>

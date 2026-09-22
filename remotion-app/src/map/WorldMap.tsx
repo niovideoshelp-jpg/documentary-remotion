@@ -131,7 +131,7 @@ const MapLabel: React.FC<NonNullable<Highlight["label"]> & { p: number; dim: num
   const e = ease.out(p);
   const id = "lbl-" + text.replace(/\W/g, "");
   return (
-    <g transform={`translate(${x},${y}) rotate(${rot})`} opacity={1 - dim * 0.6}>
+    <g transform={`translate(${x},${y}) rotate(${rot})`} opacity={1 - dim}>
       <defs>
         <clipPath id={id}>
           <rect x={-size * 6} y={-size * 1.9} width={size * 12} height={size * 2.05} />

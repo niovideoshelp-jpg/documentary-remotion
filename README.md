@@ -1,38 +1,21 @@
 # Typhoon × Rafale — documentary introduction
 
-English narration supplied by the owner, edited as a 3:07 introduction in Remotion. 1920×1080, 30 fps, 5,605 frames. The original voice track is retained.
+Narrated 3:07 introduction edited in Remotion: documentary collage of real archive photographs,
+paper cutouts, programmatic maps and editorial typography. 1920×1080, 30 fps, 5,605 frames.
 
-## Run
+- `STORYBOARD.md` — narration → idea → composition → motion → transition, scene by scene.
+- `ASSETS.md` — every photograph, document and font with its licence and credit.
+- `remotion-app/src` — `Documentary.tsx` (scene windows), `scenes/`, `components/` (Camera, Photo/Cutout, Paper, Type, Draw, Transitions, Radar), `map/` (WorldMap, projection).
+- `scripts/preprocess.py` — CI-only asset work: background removal + paper border, shaded relief in the map projection, textures, document pages.
+- `scripts/build-geo.cjs` — projects Natural Earth boundaries into `src/data/geo.json`.
 
-```sh
-cd remotion-app
-npm ci
-npm run dev -- --no-open
-```
+## Rendering (GitHub Actions, never on the edit machine)
 
-Composition: `TyphoonVsRafaleIntro`. `MapReview` isolates the geographic reveal for inspection.
+Push to the `rebuild` branch with a tag in the commit message:
 
-```sh
-npx remotion render TyphoonVsRafaleIntro out/intro.mp4 --codec=h264
-```
+- `[stills]` → review frames and contact sheets force-pushed to branch `review`.
+- `[render]` → full video force-pushed to branch `render-output` (`typhoon-rafale-intro.mp4`).
 
-## Project
+Changes to `scripts/preprocess.py` or `public/src-photos/` rebuild generated assets on branch `gen-assets`.
 
-- `STORYBOARD.md`: narrative plan, composition and transitions for 20 scenes.
-- `TRANSCRIPT.md` and `transcript.json`: transcript and original word-level ASR times.
-- `ASSETS.md`: documentary image provenance and licensing.
-- `remotion-app/src/scenes`: aircraft, configuration and editorial sequences.
-- `remotion-app/src/components`: paper, photography, texture, radar and geography.
-- `remotion-app/public`: original narration, bundled fonts, photographs and archive video.
-
-All animation is driven by the Remotion frame clock. The country reveal uses actual projected boundaries with an SVG territorial clip and a progressive liquid fill. The photographs are archive illustrations; they do not certify the exact configuration of the reference aircraft. Radar drawings illustrate scanning principles, not measured ranges or classified specifications.
-
-The narration chooses the comparison scope. Newer variants are shown separately, not substituted into the chosen FGR4/CAPTOR-M and Rafale C F3R/RBE2 AESA baseline.
-
-No license is granted for the owner's narration. Third-party assets retain the terms documented in `ASSETS.md`.
-
-## Download or render on GitHub
-
-Open **Actions → Render documentary intro → Run workflow** on the `main` branch. After the job succeeds, download the `typhoon-rafale-intro-1080p` artifact and extract `intro.mp4`. Artifacts are kept for 14 days; the source and assets remain in this repository and can be rendered again.
-
-The workflow runs only when manually requested. It checks TypeScript and exports H.264 video with AAC narration at 1920×1080, 30 fps.
+Local preview: `cd remotion-app && npm ci && npm run dev`.

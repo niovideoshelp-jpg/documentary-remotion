@@ -227,6 +227,8 @@ def cutouts():
         print("rembg missing", file=sys.stderr)
         return
     session = new_session("isnet-general-use")
+    meta_path = os.path.join(GEN, "cuts.json")
+    meta = json.load(open(meta_path)) if os.path.exists(meta_path) else {}
     paper = Image.open(os.path.join(GEN, "paper.jpg")).convert("RGB")
     for i, (key, (rel, crop)) in enumerate(CUTS.items()):
         out_c = os.path.join(GEN, "cut", key + ".webp")
@@ -261,6 +263,13 @@ def cutouts():
         W, H = cut.size
         bbox = (max(0, bbox[0] - pad), max(0, bbox[1] - pad), min(W, bbox[2] + pad), min(H, bbox[3] + pad))
         cut = cut.crop(bbox)
+        # region of the (cropped) source photo covered by the final image, as fractions,
+        # so the edit can lift a cutout exactly off its own photograph
+        meta[key] = {
+            "crop": list(crop) if crop else [0, 0, 1, 1],
+            "region": [(bbox[0] - 40) / W, (bbox[1] - 40) / H, (bbox[2] + 40) / W, (bbox[3] + 40) / H],
+        }
+        json.dump(meta, open(meta_path, "w"), indent=1)
         # add transparent margin for the paper border
         m = 40
         canvas = Image.new("RGBA", (cut.width + 2 * m, cut.height + 2 * m), (0, 0, 0, 0))
@@ -284,7 +293,6 @@ def cutouts():
 
 DOCS = {
     # real, public primary documents used as physical props in the collage
-    "dassault-f3r": "https://www.dassault-aviation.com/wp-content/blogs.dir/2/files/2018/11/PR-Dassault_F3-R.pdf",
     "nao-typhoon": "https://www.nao.org.uk/wp-content/uploads/2011/03/1011755.pdf",
 }
 

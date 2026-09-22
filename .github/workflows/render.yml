@@ -44,8 +44,14 @@ jobs:
       - name: Full render
         if: contains(github.event.head_commit.message, '[render]') || inputs.mode == 'render'
         run: |
-          npx remotion render TyphoonVsRafaleIntro out/intro.mp4 --codec=h264 --crf=19 --concurrency=4 --audio-bitrate=320k
-          mkdir -p out/pub && cp out/intro.mp4 out/pub/typhoon-rafale-intro.mp4
+          set -o pipefail
+          mkdir -p out/pub
+          npx remotion render TyphoonVsRafaleIntro out/intro.mp4 --codec=h264 --crf=19 --concurrency=4 --audio-bitrate=320k 2>&1 | tee out/pub/render.log | grep -v "Rendered|Encoded" || { cd out/pub; tail -200 render.log > tail.log; rm render.log; git init -q -b render-output && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render FAILED ${GITHUB_SHA::7}" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" render-output; exit 1; }
+          rm out/pub/render.log
+          ls -la out/intro.mp4
+          # git refuses files over 100 MB: ship 90 MB parts, joined locally with cat
+          split -b 90m -d out/intro.mp4 out/pub/typhoon-rafale-intro.mp4.part
+          (cd out && sha256sum intro.mp4 > pub/SHA256)
           cd out/pub
           git init -q -b render-output && git add -A
           git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render ${GITHUB_SHA::7}"

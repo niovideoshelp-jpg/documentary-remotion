@@ -78,6 +78,8 @@ def relief():
     ppd = W / 360.0
     print("relief source", W, H, flush=True)
 
+    ref = {}
+
     def build(lon_a, lon_b, lat_a, lat_b, k_div, path):
         k = K / k_div
         x0, y0 = to_xy(lon_a, lat_b)
@@ -92,7 +94,8 @@ def relief():
         rows = np.clip(((90 - lats) * ppd).astype(np.int64), 0, H - 1)
         img = src[rows[:, None], cols[None, :]].astype(np.float32)
         # normalise: flat terrain -> ~0.82, ridges darker/lighter, gentle contrast
-        m = np.median(img)
+        # one reference level for every crop so the rasters match where they overlap
+        m = ref.setdefault("m", float(np.median(img)))
         img = 0.82 + (img - m) / 255.0 * 1.35
         img = np.clip(img, 0.35, 1.0)
         Image.fromarray((img * 255).astype(np.uint8)).filter(ImageFilter.UnsharpMask(2, 60, 2)).save(
@@ -103,8 +106,8 @@ def relief():
         return meta
 
     meta = {
-        "europe": build(-14, 42, 33, 62, 1, out_e),
         "wide": build(-25, 110, -12, 66, 3, out_w),
+        "europe": build(-14, 42, 33, 62, 1, out_e),
     }
     with open(os.path.join(GEN, "relief.json"), "w") as f:
         json.dump(meta, f)

@@ -1,12 +1,25 @@
-name: Render documentary intro
+name: Render
+# Push to `rebuild` with "[stills]" in the commit message -> review frames on branch `review`.
+# Push with "[render]" -> full 1080p video on branch `render-output`.
+# Manual runs are also available from the Actions tab.
 on:
+  push:
+    branches: [rebuild]
   workflow_dispatch:
+    inputs:
+      mode:
+        description: stills or render
+        default: render
 permissions:
-  contents: read
+  contents: write
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   render:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[stills]') || contains(github.event.head_commit.message, '[render]')
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     defaults:
       run:
         working-directory: remotion-app
@@ -15,11 +28,34 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install --no-audit --no-fund
+          cache: npm
+          cache-dependency-path: remotion-app/package-lock.json
+      - run: npm ci --no-audit --no-fund
       - run: npx tsc --noEmit
-      - run: npx remotion render TyphoonVsRafaleIntro out/intro.mp4 --codec=h264 --crf=20 --concurrency=2
+      - run: sudo apt-get install -y -qq ffmpeg > /dev/null
+      - name: Stills
+        if: contains(github.event.head_commit.message, '[stills]') || inputs.mode == 'stills'
+        run: |
+          node scripts/stills.mjs
+          cd out/review
+          git init -q -b review && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Review frames for ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" review
+      - name: Full render
+        if: contains(github.event.head_commit.message, '[render]') || inputs.mode == 'render'
+        run: |
+          npx remotion render TyphoonVsRafaleIntro out/intro.mp4 --codec=h264 --crf=19 --concurrency=4 --audio-bitrate=320k
+          mkdir -p out/pub && cp out/intro.mp4 out/pub/typhoon-rafale-intro.mp4
+          cd out/pub
+          git init -q -b render-output && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" render-output
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: typhoon-rafale-intro-1080p
-          path: remotion-app/out/intro.mp4
-          retention-days: 14
+          name: output
+          path: |
+            remotion-app/out/intro.mp4
+            remotion-app/out/review
+          retention-days: 7
+          if-no-files-found: ignore

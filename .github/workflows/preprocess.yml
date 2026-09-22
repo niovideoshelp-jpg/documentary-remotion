@@ -1,0 +1,45 @@
+name: Preprocess assets
+# Heavy asset work (background removal, relief reprojection, textures) runs here,
+# never on the edit machine. Results are force-pushed to the `gen-assets` branch.
+on:
+  push:
+    branches: [rebuild]
+    paths:
+      - scripts/preprocess.py
+      - .github/workflows/preprocess.yml
+      - remotion-app/public/src-photos/**
+permissions:
+  contents: write
+concurrency:
+  group: preprocess
+  cancel-in-progress: true
+jobs:
+  preprocess:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install --quiet numpy pillow scipy pymupdf "rembg[cpu]"
+      - name: Restore previous outputs
+        run: |
+          if git fetch --depth 1 origin gen-assets; then
+            git checkout FETCH_HEAD -- remotion-app/public/gen || true
+            git reset -q
+          fi
+          # outputs whose source changed must be rebuilt
+          rm -rf remotion-app/public/gen/cut remotion-app/public/gen/sticker
+      - uses: actions/cache@v4
+        with:
+          path: .cache
+          key: ne-gray-hr-sr-v1
+      - run: python scripts/preprocess.py
+      - name: Publish to gen-assets
+        run: |
+          mkdir /tmp/out && cp -r remotion-app/public/gen /tmp/out/
+          cd /tmp/out && mkdir -p remotion-app/public && mv gen remotion-app/public/
+          git init -q -b gen-assets && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Generated assets for ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" gen-assets

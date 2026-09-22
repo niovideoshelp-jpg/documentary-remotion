@@ -100,7 +100,7 @@ export const S01Typhoon: React.FC = () => {
           </Stage>
         </Layer>
       </Camera>
-      <At x={W / 2} y={H - 120}>
+      <At x={W / 2} y={110}>
         <Rise p={ramp(t, 5.75, 6.3)} q={ramp(t, 7.0, 7.4)}>
           <Tape p={1} dark>
             Air combat
@@ -197,7 +197,7 @@ export const S02Mission: React.FC = () => {
           </Layer>
           {/* the drawing itself flies the profile */}
           <Layer depth={1.1}>
-            <Blueprint view="typhoonSide" x={planeX} y={planeY} width={planeW} rot={rot * (1 - plate)} p={plot} color={C.ink} lineWidth={lerp(1.5, 1.8, plate)} fill={C.paper} fillP={1} />
+            <Blueprint view="typhoonSide" x={planeX} y={planeY} width={planeW} rot={rot * (1 - plate)} p={plot} color={C.ink} lineWidth={lerp(1.5, 1.8, plate)} fill={C.paper} fillP={1 - plate} />
             <Stage>
               {[0, 1, 2].map((i) => (
                 <line key={i} x1={pt.x + 210 + i * 26} y1={pt.y - 50 + i * 22} x2={pt.x + 210 + i * 26 + 170 * speed * (1 - fight * 0.8)} y2={pt.y - 50 + i * 22} stroke={C.ink} strokeWidth={3} strokeLinecap="round" opacity={speed * (1 - fight) * 0.65 * (1 - plate)} />
@@ -205,7 +205,7 @@ export const S02Mission: React.FC = () => {
             </Stage>
           </Layer>
           <Layer>
-            <At x={1100} y={520} rot={6}>
+            <At x={1010} y={700} rot={6}>
               <Rise p={climb} q={ramp(t, 12.4, 12.9)}>
                 <Tape p={1} rot={4}>
                   Climb

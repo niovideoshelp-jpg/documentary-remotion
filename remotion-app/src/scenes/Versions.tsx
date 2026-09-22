@@ -281,7 +281,7 @@ export const S11RafaleC: React.FC = () => {
           <Layer depth={1.12}>
             <At x={600} y={250} anchor="right">
               <Rise p={ramp(t, 102.9, 103.4)}>
-                <Label size={28} color={C.inkSoft} weight={600} style={{ letterSpacing: "0.35em" }}>
+                <Label size={22} color={C.inkSoft} weight={600} style={{ letterSpacing: "0.22em" }}>
                   French Air and Space Force
                 </Label>
               </Rise>

@@ -7,6 +7,7 @@ import { At, Display, Hand, Label, Rise, Tape } from "../components/Type";
 import { ArrowHead, DrawPath, Stage, handLine, scribbleEllipse } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
+import { Blueprint } from "../components/Blueprint";
 import { C, W, H } from "../lib/theme";
 import { FPS, drift, ease, keys, lerp, ramp, useT } from "../lib/time";
 
@@ -193,6 +194,11 @@ export const S15Deal: React.FC = () => {
               </defs>
               <DrawPath d={`M${cutX},120 L${cutX},960`} p={allowed} color="#f7c9b8" width={4} dash={14} />
             </Stage>
+          </Layer>
+          <Layer depth={1.04}>
+            {/* what the manufacturers put on the table: the airframes themselves */}
+            <Blueprint view="typhoonTop" x={L.x - 150} y={L.y - 150} width={250} p={ramp(t, 163.2, 164.4, ease.linear)} color="#e7dfcf" lineWidth={1.1} opacity={0.8} />
+            <Blueprint view="rafaleTop" x={L.x - 150} y={L.y + 160} width={230} p={ramp(t, 163.5, 164.7, ease.linear)} color="#e7dfcf" lineWidth={1.1} opacity={0.8} />
           </Layer>
           <Layer depth={1.08}>
             <At x={L.x - 120} y={L.y}>

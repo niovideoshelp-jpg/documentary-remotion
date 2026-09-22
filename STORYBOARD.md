@@ -1,4 +1,4 @@
-# Storyboard — Typhoon × Rafale / Introduction (rebuild)
+# Storyboard — Typhoon × Rafale / Introduction (v2)
 
 Narration: `intro.mp3`, 186.83 s, 1920×1080 @ 30 fps (5605 frames). Word timings in `transcript.json`.
 Scenes run on narration time and overlap; the incoming scene owns the transition.
@@ -10,15 +10,15 @@ Anton for names, Fira Sans Condensed for labels, Kaushan Script only for a few m
 
 | Time | Narration | Idea → composition | Motion / transition in |
 |---|---|---|---|
-| 0.0–7.6 | This is the Eurofighter Typhoon… twin-engine… air combat | Full-bleed German Typhoon photo; on the name the aircraft lifts off its own print as a paper cutout, TYPHOON sits between photo and aircraft | Slow push; lift + background blur; pencil ring on the twin nozzles; speed streaks on "air combat" |
-| 7.0–15.8 | Original mission: intercept, climb, speed, other fighters | Flight-profile sketch on graph paper; RAF Typhoon rides the line; QRA Bear intercept photo as evidence | Tear wipe; path + axis drawn on each verb; turning-fight track on "other fighters" |
-| 14.8–24.8 | Evolved… targets on the ground | Camera tilts down the same sheet: air-combat print, then Paveway release photo overtakes it; fall line to a ringed target | Vertical camera move (continuous with S02); whip out left |
-| 24.2–35.8 | Dassault Rafale… idea different… do-it-all | Croatian Rafale nose-on; RAFALE behind the lifted aircraft; print pulled back onto a desk where the three-view drawing is traced | Whip in from right; pull-back reveal; trace wipe |
+| 0.0–7.6 | This is the Eurofighter Typhoon… twin-engine… air combat | Full-bleed German Typhoon photo; on the name the aircraft lifts off as a paper cutout and the photo gives way to a dark drafting sheet where the plan view is plotted; TYPHOON under the wing | Slow push; two red thrust lines from the nozzles on "twin-engine"; speed streaks on "air combat" |
+| 7.0–15.8 | Original mission: intercept, climb, speed, other fighters | Typhoon side elevation plotted with real dimensions and a title block; the drawing then flies the mission profile; QRA Bear intercept photo pinned | Tear wipe; path + axis drawn on each verb; turning-fight track on "other fighters" |
+| 14.8–24.8 | Evolved… targets on the ground | Underside plan plotted clean; air-combat print; on "ground" the red stores draw on, the Paveway release photo arrives, the fall line reaches the ground and only then the target marker appears | Vertical camera move (continuous with S02); whip out left |
+| 24.2–35.8 | Dassault Rafale… idea different… do-it-all | Croatian Rafale nose-on; RAFALE behind the lifted aircraft; print pulled back onto a drafting table; three-view plate plotted with real dimensions, title block, "14 hardpoints" | Whip in from right; pull-back reveal; trace wipe |
 | 35.3–45.6 | Air-to-air, precision strike, anti-ship… carrier | One airframe, three vectors drawn to Meteor, armed Rafale M, Exocet; the anti-ship vector opens the sea onto a Rafale over a carrier deck | Organic blot reveal from the vector's end |
 | 44.9–59.4 | Two of the most important… same contracts… different ideas | Both aircraft over a dark Europe; they converge on one tender sheet that tears in two | Tear wipe; sheet split opens the map |
-| 57.9–75.0 | Four-country program… France… go its own way… multi-billion contracts | Map: UK/DE/IT/ES traced → halo → liquid fill → names, linked to Eurofighter near Munich; consortium dims; France traced/filled, Paris, own-way arrow, 1985; pull out to export customers with routes | Continuous map camera (push to France, pull out wide) |
-| 73.5–80.5 | Developing, upgrading, selling | Three verbs filled with photographs; aircraft either side of a split line | Blot reveal |
-| 79.9–87.4 | Fair… which versions | Both aircraft on one ruler, same scale; version tabs flicked, T2/T3 and F3R picked | Tear upward; push into the Typhoon |
+| 57.9–75.0 | Four-country program… France… go its own way… multi-billion contracts | Map: UK/DE/IT/ES traced → halo → liquid fill → names, linked to Eurofighter near Munich; consortium dims; France traced/filled, Paris; a Paris–Eurofighter link forms and snaps on "its own way", 1985; pull out to export customers with routes | Continuous map camera (push to France, pull out wide) |
+| 73.8–80.9 | Developing, upgrading, selling | Both plan views plotted (develop), re-inked in red (upgrade), stamped EXPORT (sell) | Blot reveal |
+| 79.9–87.4 | Fair… which versions | Both side views plotted at true scale on one metre ruler (15.96 m vs 15.27 m); version tabs flicked, T2/T3 and F3R picked | Tear upward; push in |
 | 86.9–103.0 | Typhoon FGR4, Tranche 2/3, Centurion, CAPTOR-M | RAF FGR4 print, name, tranche tapes, Meteor + Project Centurion; push into the nose → CAPTOR hardware + mechanical-scan drawing | Blot reveals |
 | 102.4–113.3 | Rafale C, single-seat, land-based, F3R, RBE2 AESA | Mirror of S10 on light paper; canopy ringed; RBE2 hardware + electronic-scan drawing | Whip from right; push into nose |
 | 112.7–121.9 | Mature, well-known, documented | Real NAO report pages + both prints; three ink stamps on the words | Tear wipe |
@@ -29,3 +29,5 @@ Anton for names, Fira Sans Condensed for labels, Kaushan Script only for a few m
 | 169.6–186.8 | Sources… slip through… original sources | Real documents pass under camera; underline and query mark; archive formation footage, fade | Blot reveal; tear to footage |
 
 Radar drawings show scanning principles only (no ranges or angles claimed). Generic tender sheet is an illustrative prop, not a real document.
+
+Sound: narration + two generated music cues ducked under speech + ~150 SFX cues each tied to a visible action (src/Sound.tsx); mastered to -14 LUFS in CI.

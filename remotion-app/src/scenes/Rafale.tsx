@@ -39,8 +39,9 @@ export const S04Rafale: React.FC = () => {
   const camS = keys(t, [[24.2, 1.08], [27.9, 1.0], [29.5, 1.06], [32.0, 1.0], [35.9, 1.05]], ease.soft);
   const camX = keys(t, [[24.2, 0], [29.5, -120], [32.0, 0], [35.9, 60]], ease.soft);
   const camY = keys(t, [[24.2, 0], [29.5, -130], [32.0, 40], [35.9, 60]], ease.soft);
-  const px = lerp(W / 2, 1640, back);
-  const py = lerp(H / 2, 640, back);
+  const px = lerp(W / 2, 1560, back);
+  const py = lerp(H / 2, 610, back);
+  const printOut = ramp(t, 32.3, 32.8, ease.inOut);
   const ps = lerp(1, 0.27, back);
   return (
     <AbsoluteFill style={{ transform: `translateX(${(1 - inP) * W}px)`, filter: whipBlur > 0.5 ? `blur(${whipBlur}px)` : undefined }}>
@@ -74,7 +75,7 @@ export const S04Rafale: React.FC = () => {
           </Layer>
           {/* the photograph, later a print on the table */}
           <Layer depth={1.02}>
-            <AbsoluteFill style={{ transform: `translate(${px - W / 2}px, ${py - H / 2}px) scale(${ps}) rotate(${back * 4}deg)`, transformOrigin: "50% 50%" }}>
+            <AbsoluteFill style={{ transform: `translate(${px - W / 2}px, ${py - H / 2}px) scale(${ps}) rotate(${back * 4}deg)`, transformOrigin: "50% 50%", opacity: 1 - printOut }}>
               <div style={{ position: "absolute", inset: 0, overflow: "hidden", clipPath: back > 0 ? `inset(${back * 14}% ${back * 6}% ${back * 14}% ${back * 6}%)` : undefined, boxShadow: "0 30px 50px rgba(0,0,0,0.45)" }}>
                 <AbsoluteFill style={{ background: C.night }} />
                 <Img src={staticFile("src-photos/rafale-croatia.jpg")} style={{ position: "absolute", left: rect.x, top: rect.y, width: rect.w, height: rect.h, filter: `brightness(${1 - up * 0.35 * (1 - back)}) blur(${up * 3 * (1 - back)}px)` }} />

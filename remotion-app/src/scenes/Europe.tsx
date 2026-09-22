@@ -3,6 +3,7 @@ import { AbsoluteFill } from "remotion";
 import { Camera, Layer } from "../components/Camera";
 import { PaperGround, PrintTexture } from "../components/Paper";
 import { Cutout, roughRect } from "../components/Photo";
+import { Blueprint } from "../components/Blueprint";
 import { At, Display, Label, Rise } from "../components/Type";
 import { DrawPath, Stage } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
@@ -172,9 +173,10 @@ export const S07Map: React.FC = () => {
   const view = europeView(t);
   const inDim = 1 - ramp(t, 57.9, 58.9, ease.inOut);
   const links = ramp(t, 62.2, 63.0);
+  // the Eurofighter node stays visible while Paris is linked to it and breaks away
+  const nodeP = Math.max(links * (1 - ramp(t, 63.3, 64.0)), ramp(t, 66.9, 67.3) * (1 - ramp(t, 69.3, 69.9)));
   const linksOut = ramp(t, 63.3, 64.0);
   const paris = ramp(t, 66.95, 67.4);
-  const own = ramp(t, 67.85, 68.7, ease.soft);
   const routes = (i: number, t0: number) => ramp(t, t0 + i * 0.16, t0 + i * 0.16 + 0.9, ease.soft);
   const munich = P("munich");
   const parisXY = P("paris");
@@ -195,8 +197,8 @@ export const S07Map: React.FC = () => {
             {(["london", "madrid", "rome"] as const).map((k, i) => (
               <DrawPath key={k} d={arc(P(k), munich, 0.12)} p={links * ramp(t, 62.2 + i * 0.1, 62.9 + i * 0.1)} q={linksOut} color="#f7f1e6" width={2.6 / z} dash={9 / z} />
             ))}
-            {links > 0 && linksOut < 1 && (
-              <g opacity={links * (1 - linksOut)}>
+            {nodeP > 0 && (
+              <g opacity={nodeP}>
                 <circle cx={munich[0]} cy={munich[1]} r={7 / z} fill="#f7f1e6" stroke={C.ink} strokeWidth={2 / z} />
                 <text x={munich[0] + 14 / z} y={munich[1] - 14 / z} fontFamily={F.label} fontWeight={600} fontSize={20 / z} letterSpacing={3 / z} fill="#f7f1e6">
                   EUROFIGHTER
@@ -212,13 +214,31 @@ export const S07Map: React.FC = () => {
                 </text>
               </g>
             )}
-            <DrawPath
-              d={`M${parisXY[0] - 8},${parisXY[1] + 6} C${parisXY[0] - 90},${parisXY[1] + 20} ${parisXY[0] - 180},${parisXY[1] - 30} ${parisXY[0] - 230},${parisXY[1] - 120}`}
-              p={own}
-              q={ramp(t, 69.3, 69.9)}
-              color="#f7f1e6"
-              width={3.2 / z}
-            />
+            {/* Paris ↔ the joint company: the link forms, then snaps on "go its own way" */}
+            {(() => {
+              const form = ramp(t, 67.0, 67.7, ease.soft);
+              const snap = ramp(t, 67.95, 68.6, ease.out);
+              const mid = [(parisXY[0] + munich[0]) / 2, (parisXY[1] + munich[1]) / 2];
+              const reach = form * (1 - snap * 0.85);
+              const fade = 1 - ramp(t, 69.3, 69.9);
+              if (form <= 0 || fade <= 0) return null;
+              const end = (from: [number, number]) => [from[0] + (mid[0] - from[0]) * reach, from[1] + (mid[1] - from[1]) * reach];
+              const [ax, ay] = end(parisXY);
+              const [bx, by] = end(munich);
+              const flash = snap > 0 ? Math.sin(Math.min(1, snap * 1.6) * Math.PI) : 0;
+              return (
+                <g opacity={fade}>
+                  <line x1={parisXY[0]} y1={parisXY[1]} x2={ax} y2={ay} stroke="#f7f1e6" strokeWidth={3 / z} strokeDasharray={`${10 / z} ${7 / z}`} />
+                  <line x1={munich[0]} y1={munich[1]} x2={bx} y2={by} stroke="#f7f1e6" strokeWidth={3 / z} strokeDasharray={`${10 / z} ${7 / z}`} />
+                  {flash > 0 && (
+                    <g transform={`translate(${mid[0]},${mid[1]}) scale(${1 / z})`} opacity={flash}>
+                      <line x1={-16} y1={-16} x2={16} y2={16} stroke={C.red} strokeWidth={6} strokeLinecap="round" />
+                      <line x1={16} y1={-16} x2={-16} y2={16} stroke={C.red} strokeWidth={6} strokeLinecap="round" />
+                    </g>
+                  )}
+                </g>
+              );
+            })()}
             {/* export routes: Typhoon from the consortium, Rafale from France */}
             {TYPHOON_TO.map((k, i) => (
               <DrawPath key={"ty" + k} d={arc(munich, P(k), 0.18)} p={routes(i, 70.4)} q={ramp(t, 74.3, 75.0)} color="#f7f1e6" width={2.4 / z} dash={10 / z} />
@@ -257,38 +277,85 @@ export const S07Map: React.FC = () => {
  * upgrading, and selling a modern combat aircraft."
  * Typographic spread: three verbs, each filled with a real photograph of that stage.
  */
-const Verb: React.FC<{ word: string; color: string; p: number; y: number }> = ({ word, color, p, y }) => (
-  <At x={W / 2} y={y}>
-    <Rise p={p}>
-      <Display size={205} color={color} tracking={0.02}>
-        {word}
-      </Display>
-    </Rise>
-  </At>
-);
+/** Heavy ink stamp that lands on a drawing. */
+const ExportStamp: React.FC<{ p: number; x: number; y: number; rot: number }> = ({ p, x, y, rot }) => {
+  if (p <= 0) return null;
+  const s = lerp(1.7, 1, ease.out(Math.min(1, p * 1.5)));
+  return (
+    <At x={x} y={y} rot={rot}>
+      <div style={{ transform: `scale(${s})`, opacity: Math.min(1, p * 3) * 0.9, border: `6px solid ${C.red}`, padding: "6px 22px 2px", fontFamily: F.display, fontSize: 70, color: C.red, letterSpacing: "0.06em", mixBlendMode: "multiply" }}>
+        EXPORT
+      </div>
+    </At>
+  );
+};
 
+/* ------------------------------------------------------------------ S08
+ * 73.8–80.9 "and they represent two very different approaches to developing, upgrading,
+ * and selling a modern combat aircraft."
+ * Both plan views plotted side by side; each verb acts on the drawings: plotted
+ * (develop), outlined in red (upgrade), stamped for export (sell).
+ */
 export const S08Approaches: React.FC = () => {
   const t = useT();
-  const split = ramp(t, 74.1, 75.1, ease.inOut);
-  const camS = keys(t, [[73.6, 1.0], [80.4, 1.08]], ease.soft);
+  const camS = keys(t, [[73.8, 1.12], [76.0, 1.02], [80.9, 1.08]], ease.soft);
+  const camY = keys(t, [[73.8, -30], [80.9, 20]], ease.soft);
+  const develop = ramp(t, 74.3, 76.6, ease.linear);
+  const upgrade = ramp(t, 77.2, 77.9);
+  const sell = ramp(t, 78.0, 78.4);
+  const verb = (w: string, at: number, x: number, color: string) => (
+    <At x={x} y={930}>
+      <Rise p={ramp(t, at, at + 0.5)}>
+        <Display size={110} color={color}>
+          {w}
+        </Display>
+      </Rise>
+    </At>
+  );
   return (
     <BlotReveal t={t} start={73.8} dur={0.9} cx={W / 2} cy={H / 2} seed="s08">
       <PaperGround>
-        <Camera s={camS}>
-          <Layer depth={0.9}>
-            <Stage>
-              <DrawPath d="M960,60 L960,1020" p={split} color={C.pencil} width={2} dash={10} opacity={0.5} />
-            </Stage>
-            <Cutout name="typhoon-side" x={lerp(-300, 330, split)} y={250} w={560} rot={-3} opacity={split} />
-            <Cutout name="rafale-landing" x={lerp(2200, 1600, split)} y={850} w={560} rot={2} opacity={split} />
+        <Camera s={camS} y={camY}>
+          <Layer depth={0.95}>
+            <GraphPaperLite />
           </Layer>
-          <Layer depth={1.05}>
-            <Verb word="Develop" color={C.ink} p={ramp(t, 76.2, 76.8)} y={330} />
-            <Verb word="Upgrade" color={C.ink} p={ramp(t, 77.15, 77.75)} y={540} />
-            <Verb word="Sell" color={C.red} p={ramp(t, 77.9, 78.5)} y={750} />
+          <Layer>
+            {/* upgrade: the same airframes, re-inked in red over the originals */}
+            <Blueprint view="typhoonTop" x={500} y={430} width={780} p={develop} lineWidth={1.4} />
+            <Blueprint view="rafaleTop" x={1420} y={430} width={700} p={ramp(t, 74.5, 76.8, ease.linear)} lineWidth={1.4} />
+            <Blueprint view="typhoonTop" x={500} y={430} width={780} p={upgrade} color={C.red} lineWidth={1.1} opacity={0.75} />
+            <Blueprint view="rafaleTop" x={1420} y={430} width={700} p={upgrade} color={C.red} lineWidth={1.1} opacity={0.75} />
+            <At x={500} y={720}>
+              <Label size={26} color={C.inkSoft} weight={600} style={{ opacity: ramp(t, 75.4, 75.9) }}>
+                Eurofighter Typhoon
+              </Label>
+            </At>
+            <At x={1420} y={720}>
+              <Label size={26} color={C.inkSoft} weight={600} style={{ opacity: ramp(t, 75.6, 76.1) }}>
+                Dassault Rafale
+              </Label>
+            </At>
+            <ExportStamp p={sell} x={560} y={470} rot={-8} />
+            <ExportStamp p={ramp(t, 78.25, 78.65)} x={1450} y={470} rot={6} />
+          </Layer>
+          <Layer depth={1.06}>
+            {verb("Develop", 76.2, 520, C.ink)}
+            {verb("Upgrade", 77.15, 960, C.ink)}
+            {verb("Sell", 77.9, 1360, C.red)}
           </Layer>
         </Camera>
       </PaperGround>
     </BlotReveal>
   );
 };
+
+const GraphPaperLite: React.FC = () => (
+  <Stage>
+    {Array.from({ length: 44 }, (_, i) => (
+      <line key={"v" + i} x1={i * 48 - 100} y1={-200} x2={i * 48 - 100} y2={1300} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.22 : 0.09} />
+    ))}
+    {Array.from({ length: 30 }, (_, i) => (
+      <line key={"h" + i} x1={-200} y1={i * 48 - 150} x2={2200} y2={i * 48 - 150} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.22 : 0.09} />
+    ))}
+  </Stage>
+);

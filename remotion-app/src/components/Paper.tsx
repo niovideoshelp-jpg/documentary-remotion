@@ -71,3 +71,45 @@ export const Grain: React.FC<{ opacity?: number }> = ({ opacity = 0.16 }) => {
     />
   );
 };
+
+/**
+ * Finishing layer over the whole edit: print texture, grain, specks of dust and the odd
+ * hair (a few frames each), a faint exposure flicker and a warm print tone. Kept subtle.
+ */
+export const FilmLook: React.FC = () => {
+  const f = useCurrentFrame();
+  const flicker = (random(`fl${f}`) - 0.5) * 0.035;
+  const specks = Array.from({ length: 7 }, (_, i) => {
+    const life = Math.floor(f / 3) * 7 + i; // each speck lives ~3 frames
+    if (random(`sp${life}`) > 0.42) return null;
+    const x = random(`sx${life}`) * 1920;
+    const y = random(`sy${life}`) * 1080;
+    const r = 0.8 + random(`sr${life}`) * 2.4;
+    const dark = random(`sd${life}`) > 0.35;
+    return <circle key={i} cx={x} cy={y} r={r} fill={dark ? "#15120e" : "#fbf7ee"} opacity={0.35 + random(`so${life}`) * 0.35} />;
+  });
+  const hairLife = Math.floor(f / 5);
+  const hair =
+    random(`hair${hairLife}`) > 0.88 ? (
+      <path
+        d={`M${random(`hx${hairLife}`) * 1920},${random(`hy${hairLife}`) * 1080} q${(random(`h1${hairLife}`) - 0.5) * 80},${40 + random(`h2${hairLife}`) * 60} ${(random(`h3${hairLife}`) - 0.5) * 60},${90 + random(`h4${hairLife}`) * 80}`}
+        stroke="#1a1612"
+        strokeWidth={1.1}
+        fill="none"
+        opacity={0.35}
+      />
+    ) : null;
+  return (
+    <>
+      <AbsoluteFill style={{ backgroundImage: `url(${paper})`, backgroundSize: "900px 900px", mixBlendMode: "multiply", opacity: 0.14, pointerEvents: "none" }} />
+      <AbsoluteFill style={{ background: "#f3d9b0", mixBlendMode: "soft-light", opacity: 0.16, pointerEvents: "none" }} />
+      <Grain opacity={0.16} />
+      <svg width={1920} height={1080} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+        {specks}
+        {hair}
+      </svg>
+      <AbsoluteFill style={{ background: flicker > 0 ? "#fff" : "#000", opacity: Math.abs(flicker), pointerEvents: "none" }} />
+      <Vignette strength={0.22} />
+    </>
+  );
+};

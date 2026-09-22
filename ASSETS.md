@@ -56,3 +56,14 @@ CC BY / CC BY-SA images require credit in the video description. OGL images: Con
 - gen/doc/nao-typhoon-*.jpg: National Audit Office, *Management of the Typhoon Project* (HC 755, 2011), OGL.
 - gen/relief-*.jpg: Natural Earth GRAY_HR_SR shaded relief, public domain, reprojected in CI.
 - Fonts: Anton, Bebas Neue, Special Gothic Condensed One, Fira Sans Condensed, Kaushan Script, Oswald — SIL Open Font License (Google Fonts).
+
+## v2 additions
+
+Technical drawings (animated stroke by stroke from the original vector geometry, `scripts/svg` → `src/data/drawings`):
+- Eurofighter Typhoon line drawing.svg — Inductiveload — Public domain.
+- Dassault Rafale 3-view line drawing.svg — Kaboldy — CC BY-SA 3.0 (depicts the two-seat Rafale B; used only where no seat configuration is claimed).
+- Dassault Rafale silhouette-top.svg — Sting — Public domain.
+
+Figures shown on the plates: Typhoon length 15.96 m, span 10.95 m, height 5.28 m, 2 × Eurojet EJ200; Rafale length 15.27 m, span 10.90 m, height 5.34 m, 14 hardpoints (manufacturer data).
+
+Audio: music (two cues, Google Lyria 3 Pro) and sound effects (ElevenLabs SFX) generated for this edit through the owner's Magnific account (`public/music`, `public/sfx`).

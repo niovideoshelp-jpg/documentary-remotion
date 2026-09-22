@@ -1,8 +1,9 @@
 import React from "react";
-import { AbsoluteFill, Audio, staticFile } from "remotion";
-import { Grain } from "./components/Paper";
+import { AbsoluteFill } from "remotion";
+import { FilmLook } from "./components/Paper";
+import { Soundtrack } from "./Sound";
 import { C } from "./lib/theme";
-import { useT } from "./lib/time";
+import { drift, useT } from "./lib/time";
 import { S01Typhoon, S02Mission, S03Ground } from "./scenes/Open";
 import { S04Rafale, S05Missions } from "./scenes/Rafale";
 import { S06Rivals, S07Map, S08Approaches } from "./scenes/Europe";
@@ -17,11 +18,11 @@ export const SCENES: { id: string; from: number; to: number; C: React.FC }[] = [
   { id: "01 Typhoon", from: 0, to: 7.95, C: S01Typhoon },
   { id: "02 Original mission", from: 7.0, to: 15.8, C: S02Mission },
   { id: "03 Ground role", from: 14.75, to: 24.85, C: S03Ground },
-  { id: "04 Rafale", from: 24.2, to: 36.0, C: S04Rafale },
+  { id: "04 Rafale", from: 24.2, to: 36.1, C: S04Rafale },
   { id: "05 Missions + carrier", from: 35.25, to: 45.9, C: S05Missions },
   { id: "06 European rivals", from: 44.95, to: 58.9, C: S06Rivals },
-  { id: "07 Europe map + exports", from: 57.9, to: 74.6, C: S07Map },
-  { id: "08 Approaches", from: 73.55, to: 80.9, C: S08Approaches },
+  { id: "07 Europe map + exports", from: 57.9, to: 74.8, C: S07Map },
+  { id: "08 Approaches", from: 73.8, to: 80.9, C: S08Approaches },
   { id: "09 Fair comparison", from: 79.95, to: 87.85, C: S09Fair },
   { id: "10 Typhoon FGR4", from: 86.9, to: 103.1, C: S10FGR4 },
   { id: "11 Rafale C", from: 102.45, to: 113.7, C: S11RafaleC },
@@ -35,15 +36,21 @@ export const SCENES: { id: string; from: number; to: number; C: React.FC }[] = [
 
 export const Documentary: React.FC = () => {
   const t = useT();
+  // operator's hand: a slow, tiny drift over everything so no frame is ever perfectly locked
+  const hx = drift(t, "hand-x", 3.2, 0.22);
+  const hy = drift(t, "hand-y", 2.4, 0.19);
+  const hr = drift(t, "hand-r", 0.12, 0.16);
   return (
     <AbsoluteFill style={{ background: C.night }}>
-      <Audio src={staticFile("audio/intro.mp3")} />
-      {SCENES.filter((s) => t >= s.from && t < s.to).map((s) => (
-        <AbsoluteFill key={s.id}>
-          <s.C />
-        </AbsoluteFill>
-      ))}
-      <Grain opacity={0.14} />
+      <Soundtrack />
+      <AbsoluteFill style={{ transform: `translate(${hx}px, ${hy}px) rotate(${hr}deg) scale(1.018)` }}>
+        {SCENES.filter((s) => t >= s.from && t < s.to).map((s) => (
+          <AbsoluteFill key={s.id}>
+            <s.C />
+          </AbsoluteFill>
+        ))}
+      </AbsoluteFill>
+      <FilmLook />
     </AbsoluteFill>
   );
 };

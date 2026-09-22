@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.0"
+   width="358.29001"
+   height="230.16658"
+   id="svg21362"
+   style="display:inline">
+  <defs
+     id="defs21364" />
+  <metadata
+     id="metadata21367">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+        <dc:date>09/2008</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Eric Gaba (user Sting) for Wikipedia</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:source>Image:Rafale_3-vues.jpg</dc:source>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-95.082607,-267.05964)"
+     id="layer6"
+     style="display:inline">
+    <path
+       d="m 95.106967,384.50042 16.874583,-0.11796 c 0.22161,0.68943 0.94794,1.86842 1.26308,1.86622 l 7.00876,-0.049 0.12014,17.18708 12.02174,1.79101 0.0356,5.08915 18.97961,0.84951 9.34576,80.97998 -4.67184,0.0326 c -0.90087,0.006 -2.94737,2.86555 -2.94166,3.68246 l 0.005,0.69446 c 0.002,0.27462 0.6598,0.72145 0.8258,0.72029 l 68.4046,-0.47816 c -0.0883,-0.41912 -0.22885,-0.79139 -0.41809,-1.10197 -1.31659,-2.16067 -3.94244,-3.95143 -5.0153,-3.94251 l -14.70999,0.10283 0.008,1.19953 -4.92437,0.0344 88.37049,-75.11831 c 1.13996,-1.00568 6.48549,-1.82671 9.58386,-1.8348 l -3.6697,16.94612 12.87912,-0.09 27.98963,-24.18736 2.65157,-0.0185 4.26304,-4.32305 c 0,0 16.29521,-5.05643 27.47479,-7.51584 11.17958,-2.4594 34.19579,-5.40055 47.17052,-7.90607 12.97473,-2.50551 39.33673,-8.60894 39.33603,-8.70893 -7e-4,-0.1 -26.44545,-5.83429 -39.45394,-8.15818 -13.00849,-2.32388 -36.06356,-4.94298 -47.27643,-7.24586 -11.21287,-2.30287 -27.57718,-7.131 -27.57718,-7.131 l -4.32306,-4.26304 -2.65157,0.0185 -28.32502,-23.79371 -12.87913,0.09 3.90625,16.89316 c -3.09818,0.0352 -8.45467,-0.71099 -9.60857,-1.70064 l -89.412,-73.87556 4.92437,-0.0344 0.008,1.19953 14.70999,-0.10282 c 1.07288,-0.006 3.67345,-1.83338 4.9597,-4.01224 0.18488,-0.31319 0.32022,-0.6874 0.40264,-1.1077 l -68.4046,0.47817 c -0.166,0.001 -0.81757,0.45714 -0.81565,0.73177 l 0.005,0.69446 c 0.006,0.81691 2.09199,3.64726 2.99286,3.64097 l 4.67183,-0.0327 -8.21275,81.10272 -18.96588,1.11475 0.0356,5.08916 -11.99553,1.95889 0.12015,17.18708 -7.00876,0.049 c -0.31515,0.002 -1.02492,1.19123 -1.23687,1.88369 l -16.874583,0.11796 0.02394,3.42477 z"
+       id="path21956"
+       style="fill:#000000;fill-rule:evenodd;stroke:none;display:inline" />
+  </g>
+</svg>

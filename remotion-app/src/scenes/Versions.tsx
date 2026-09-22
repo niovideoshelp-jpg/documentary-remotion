@@ -6,9 +6,11 @@ import { Cutout, Photo } from "../components/Photo";
 import { At, Display, Label, Rise, Tape } from "../components/Type";
 import { DrawPath, Stage, scribbleEllipse } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
+import { Blueprint, viewBox } from "../components/Blueprint";
+import { GraphPaper } from "./Open";
 import { ElectronicScan, MechanicalScan } from "../components/Radar";
 import { C, F, W, H } from "../lib/theme";
-import { drift, ease, keys, lerp, ramp, useT } from "../lib/time";
+import { ease, keys, lerp, ramp, useT } from "../lib/time";
 
 /* ------------------------------------------------------------------ S09
  * 79.9–87.4 "And to make this comparison as fair as possible, I had to decide exactly
@@ -20,7 +22,7 @@ const TYPHOON_TABS = ["Tranche 1", "Tranche 2", "Tranche 3", "Tranche 4"];
 const RAFALE_TABS = ["F1", "F2", "F3", "F3R", "F4"];
 
 const TabRow: React.FC<{ tabs: string[]; x: number; y: number; p: number; cursor: number; pick: number[]; pickP: number }> = ({ tabs, x, y, p, cursor, pick, pickP }) => (
-  <div style={{ position: "absolute", left: x, top: y, display: "flex", gap: 10 }}>
+  <div style={{ position: "absolute", left: x, top: y, display: "flex", flexDirection: "column", gap: 10 }}>
     {tabs.map((tab, i) => {
       const e = ramp(p, i * 0.1, i * 0.1 + 0.5);
       const on = Math.max(0, 1 - Math.abs(cursor - i) * 1.4);
@@ -30,17 +32,18 @@ const TabRow: React.FC<{ tabs: string[]; x: number; y: number; p: number; cursor
           key={tab}
           style={{
             opacity: e,
-            transform: `translateY(${(1 - e) * 30 - on * 10 - picked * 14}px)`,
+            transform: `translateX(${(1 - e) * 40 - on * 14 - picked * 22}px)`,
             background: picked > 0.5 ? C.red : on > 0.5 ? C.ink : "#e3dccd",
             color: picked > 0.5 || on > 0.5 ? C.offWhite : C.ink,
-            padding: "12px 28px 8px",
+            padding: "8px 22px 6px",
             fontFamily: F.label,
             fontWeight: 600,
-            fontSize: 54,
+            fontSize: 34,
             letterSpacing: "0.08em",
             textTransform: "uppercase",
-            borderRadius: "6px 6px 0 0",
+            borderRadius: "6px 0 0 6px",
             boxShadow: "0 4px 8px rgba(0,0,0,0.18)",
+            width: 250,
           }}
         >
           {tab}
@@ -50,32 +53,84 @@ const TabRow: React.FC<{ tabs: string[]; x: number; y: number; p: number; cursor
   </div>
 );
 
+// one scale for both aircraft: 70 px per metre, noses on the ruler zero
+const PX_M = 70;
+const X0 = 170;
+const sideWidth = (view: "typhoonSide" | "rafaleSide", metres: number) => {
+  const [x0, , x1] = viewBox(view);
+  const pad = (x1 - x0) * 0.02;
+  const k = (metres * PX_M) / (x1 - x0);
+  return { width: (x1 - x0 + 2 * pad) * k, left: X0 - pad * k };
+};
+
 export const S09Fair: React.FC = () => {
   const t = useT();
-  const ruler = ramp(t, 81.3, 82.4, ease.soft);
-  const tabs = ramp(t, 84.3, 85.3, ease.linear);
+  const ty = sideWidth("typhoonSide", 15.96);
+  const rf = sideWidth("rafaleSide", 15.27);
+  const ruler = ramp(t, 80.5, 81.6, ease.soft);
+  const tabsT = ramp(t, 84.3, 85.2, ease.linear);
+  const tabsR = ramp(t, 84.5, 85.4, ease.linear);
   const cursorT = keys(t, [[84.8, 0], [85.9, 3.6], [86.6, 1.5]], ease.inOut);
   const cursorR = keys(t, [[84.9, 0], [85.9, 4.4], [86.6, 3]], ease.inOut);
   const pickP = ramp(t, 86.5, 86.9);
   const exit = ramp(t, 86.7, 87.5, ease.in);
+  const lenT = ramp(t, 82.0, 82.6);
+  const lenR = ramp(t, 82.3, 82.9);
   return (
     <TearReveal t={t} start={79.95} dur={0.9} dir="btt" seed="s09">
       <PaperGround>
-        <Camera s={1 + exit * 0.9} x={exit * -120} y={exit * -260}>
+        <Camera s={keys(t, [[80, 1.05], [84, 1.0]], ease.soft) * (1 + exit * 0.9)} x={exit * -200} y={exit * -240}>
           <Layer depth={0.95}>
+            <GraphPaper />
+          </Layer>
+          <Layer>
+            <Blueprint view="typhoonSide" x={ty.left} y={300} width={ty.width} anchor="left" p={ramp(t, 80.2, 82.0, ease.linear)} lineWidth={1.5} />
+            <Blueprint view="rafaleSide" x={rf.left} y={780} width={rf.width} anchor="left" p={ramp(t, 80.5, 82.3, ease.linear)} lineWidth={1.5} />
             <Stage>
-              {/* shared ruler: one scale for both */}
-              <DrawPath d="M200,540 L1720,540" p={ruler} color={C.ink} width={3} />
-              {Array.from({ length: 39 }, (_, i) => (
-                <line key={i} x1={200 + i * 40} y1={540} x2={200 + i * 40} y2={i % 5 === 0 ? 562 : 552} stroke={C.ink} strokeWidth={2} opacity={ruler > i / 39 ? 1 : 0} />
+              {/* the shared metre ruler */}
+              <DrawPath d={`M${X0},560 L${X0 + 16 * PX_M},560`} p={ruler} color={C.ink} width={3} />
+              {Array.from({ length: 17 }, (_, m) => (
+                <g key={m} opacity={ruler > m / 16 ? 1 : 0}>
+                  <line x1={X0 + m * PX_M} y1={560} x2={X0 + m * PX_M} y2={m % 5 === 0 ? 590 : 575} stroke={C.ink} strokeWidth={2} />
+                  {m % 5 === 0 && (
+                    <text x={X0 + m * PX_M} y={620} textAnchor="middle" fontFamily={F.label} fontWeight={600} fontSize={24} fill={C.inkSoft}>
+                      {m} m
+                    </text>
+                  )}
+                </g>
               ))}
+              <line x1={X0} y1={120} x2={X0} y2={960} stroke={C.red} strokeWidth={2} strokeDasharray="8 8" opacity={ruler * 0.8} />
+              <line x1={X0 + 15.96 * PX_M} y1={170} x2={X0 + 15.96 * PX_M} y2={545} stroke={C.red} strokeWidth={2} strokeDasharray="8 8" opacity={lenT * 0.8} />
+              <line x1={X0 + 15.27 * PX_M} y1={575} x2={X0 + 15.27 * PX_M} y2={930} stroke={C.red} strokeWidth={2} strokeDasharray="8 8" opacity={lenR * 0.8} />
             </Stage>
+            <At x={X0 + 15.96 * PX_M + 14} y={150} anchor="left">
+              <Rise p={lenT}>
+                <Display size={58} color={C.red}>
+                  15.96 m
+                </Display>
+              </Rise>
+            </At>
+            <At x={X0 + 15.27 * PX_M + 14} y={950} anchor="left">
+              <Rise p={lenR}>
+                <Display size={58} color={C.red}>
+                  15.27 m
+                </Display>
+              </Rise>
+            </At>
+            <At x={X0} y={140} anchor="left">
+              <Label size={26} color={C.inkSoft} weight={600} style={{ opacity: ramp(t, 81.0, 81.5) }}>
+                Typhoon
+              </Label>
+            </At>
+            <At x={X0} y={980} anchor="left">
+              <Label size={26} color={C.inkSoft} weight={600} style={{ opacity: ramp(t, 81.2, 81.7) }}>
+                Rafale
+              </Label>
+            </At>
           </Layer>
           <Layer depth={1.05}>
-            <Cutout name="typhoon-side" x={lerp(700, 760, ruler)} y={380 + drift(t, "f1", 3)} w={lerp(700, 760, ruler)} rot={0} opacity={ramp(t, 80.3, 80.9)} />
-            <Cutout name="rafale-landing" x={lerp(1250, 1160, ruler)} y={700 + drift(t, "f2", 3)} w={lerp(640, 760, ruler)} rot={0} opacity={ramp(t, 80.6, 81.2)} />
-            <TabRow tabs={TYPHOON_TABS} x={180} y={110} p={tabs} cursor={cursorT} pick={[1, 2]} pickP={pickP} />
-            <TabRow tabs={RAFALE_TABS} x={880} y={870} p={ramp(t, 84.5, 85.5, ease.linear)} cursor={cursorR} pick={[3]} pickP={pickP} />
+            <TabRow tabs={TYPHOON_TABS} x={1640} y={110} p={tabsT} cursor={cursorT} pick={[1, 2]} pickP={pickP} />
+            <TabRow tabs={RAFALE_TABS} x={1640} y={600} p={tabsR} cursor={cursorR} pick={[3]} pickP={pickP} />
           </Layer>
         </Camera>
       </PaperGround>

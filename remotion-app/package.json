@@ -28,6 +28,7 @@
     "lint": "eslint src && tsc"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "./src/fonts.ts"
   ]
 }

@@ -19,3 +19,5 @@ Primary reference links for the video description:
 - https://www.raf.mod.uk/news/articles/the-end-of-an-era-raf-tornado-returns-from-operations-for-the-last-time/
 - https://www.dassault-aviation.com/wp-content/blogs.dir/2/files/2018/11/PR-Dassault_F3-R.pdf
 - https://www.dassault-aviation.com/en/defense/rafale/detect-and-pursue/
+
+Closing excerpt: atlantic-trident.mp4, source 80.0–83.2 seconds, 50% playback speed, original audio removed.

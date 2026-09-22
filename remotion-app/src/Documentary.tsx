@@ -1,15 +1,126 @@
-import React from 'react';
-import {AbsoluteFill,Audio,Sequence,OffthreadVideo,staticFile,useCurrentFrame,interpolate} from 'remotion';
-import {TyphoonOpening,MissionScene,RafaleOpening,CarrierScene,RivalScene} from './scenes/AircraftScenes';
-import {ConfigurationScene,ScopeScene,DossiersScene} from './scenes/ConfigurationScenes';
-import {ContractsScene,PackageScene,SourcesScene} from './scenes/EditorialScenes';
-import {DocumentaryMap} from './components/DocumentaryMap';
-import {Label,palette,progress,clamp} from './components/Visuals';
-const fps=30;
-const times=[0,7.12,14.72,24.20,35.50,41.64,44.98,58.68,69.48,79.94,86.94,102.54,112.82,121.40,134.26,143.72,153.40,160.64,169.64,180.72,186.82775];
-const frames=times.map(t=>Math.round(t*fps));frames[20]=5605;
-const scenes=[<TyphoonOpening/>,<MissionScene/>,<MissionScene ground/>,<RafaleOpening/>,<MissionScene rafale/>,<CarrierScene/>,<RivalScene/>,<DocumentaryMap highlights={[{country:'United Kingdom',at:8},{country:'Germany',at:12},{country:'Italy',at:16},{country:'Spain',at:20},{country:'France',at:147}]} label="EUROPE / TWO INDUSTRIAL PATHS"/>,<ContractsScene intro/>,<DossiersScene/>,<ConfigurationScene/>,<ConfigurationScene rafale/>,<ScopeScene/>,<ScopeScene future/>,<RivalScene baseline/>,<ContractsScene/>,<PackageScene/>,<ContractsScene offer/>,<SourcesScene/>,<AbsoluteFill><OffthreadVideo src={staticFile("video/atlantic-trident.mp4")} trimBefore={2340} muted style={{width:"100%",height:"100%",objectFit:"cover"}}/><Label light x={130} y={900}>TYPHOON × RAFALE / THE COMPARISON</Label></AbsoluteFill>];
-const Transition:React.FC<{children:React.ReactNode;type:number}>=({children,type})=>{const f=useCurrentFrame();const p=progress(f,0,20);const clip=type%3===0?`polygon(0 0,${p*110}% 0,${p*110-4}% 33%,${p*110}% 67%,${p*110-2}% 100%,0 100%)`:type%3===1?`inset(${(1-p)*100}% 0 0 0)`:'none';return <AbsoluteFill style={{clipPath:p>=1?'none':clip,opacity:type%3===2?p:1}}>{children}</AbsoluteFill>};
-export const Documentary:React.FC=()=>{const f=useCurrentFrame();return <AbsoluteFill style={{background:palette.ink}}><Audio src={staticFile('audio/intro.mp3')}/>{scenes.map((scene,i)=><Sequence key={i} from={frames[i]} durationInFrames={Math.min(5605,frames[i+1]+20)-frames[i]} name={`${String(i+1).padStart(2,'0')} · ${['Typhoon','Intercept','Expanded role','Rafale','Multirole','Naval variant','European rivals','European origins','Contracts','Reference scope','FGR4 configuration','F3R configuration','Mature standards','Later upgrades','Comparison baseline','Export packages','Package components','Offer and requirements','Sources','Closing'][i]}`}><Transition type={i}>{scene}</Transition></Sequence>)}<AbsoluteFill style={{background:'#151a1d',opacity:interpolate(f,[5558,5604],[0,1],clamp),pointerEvents:'none'}}/></AbsoluteFill>};
-
+import React from "react";
+import {
+  AbsoluteFill,
+  Audio,
+  Sequence,
+  OffthreadVideo,
+  staticFile,
+  useCurrentFrame,
+  interpolate,
+} from "remotion";
+import {
+  TyphoonOpening,
+  MissionScene,
+  RafaleOpening,
+  CarrierScene,
+  RivalScene,
+} from "./scenes/AircraftScenes";
+import {
+  ConfigurationScene,
+  ScopeScene,
+  DossiersScene,
+} from "./scenes/ConfigurationScenes";
+import {
+  ContractsScene,
+  PackageScene,
+  SourcesScene,
+} from "./scenes/EditorialScenes";
+import { DocumentaryMap } from "./components/DocumentaryMap";
+import { Label, palette, progress, clamp } from "./components/Visuals";
+const fps = 30;
+const times = [
+  0, 7.12, 14.72, 24.2, 35.5, 41.64, 44.98, 58.68, 69.48, 79.94, 86.94, 102.54,
+  112.82, 121.4, 134.26, 143.72, 153.4, 160.64, 169.64, 180.72, 186.82775,
+];
+const frames = times.map((t) => Math.round(t * fps));
+frames[20] = 5605;
+const scenes = [
+  <TyphoonOpening />,
+  <MissionScene />,
+  <MissionScene ground />,
+  <RafaleOpening />,
+  <MissionScene rafale />,
+  <CarrierScene />,
+  <RivalScene />,
+  <DocumentaryMap
+    highlights={[
+      { country: "United Kingdom", at: 8 },
+      { country: "Germany", at: 12 },
+      { country: "Italy", at: 16 },
+      { country: "Spain", at: 20 },
+      { country: "France", at: 147 },
+    ]}
+    label="EUROPE / TWO INDUSTRIAL PATHS"
+  />,
+  <ContractsScene intro />,
+  <DossiersScene />,
+  <ConfigurationScene />,
+  <ConfigurationScene rafale />,
+  <ScopeScene />,
+  <ScopeScene future />,
+  <RivalScene baseline />,
+  <ContractsScene />,
+  <PackageScene />,
+  <ContractsScene offer />,
+  <SourcesScene />,
+  <AbsoluteFill>
+    <OffthreadVideo
+      src={staticFile("video/closing-formation.mp4")}
+      
+      muted
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+    <Label light x={130} y={900}>
+      TYPHOON × RAFALE / THE COMPARISON
+    </Label>
+  </AbsoluteFill>,
+];
+const Transition: React.FC<{ children: React.ReactNode; type: number }> = ({
+  children,
+  type,
+}) => {
+  const f = useCurrentFrame();
+  const p = progress(f, 0, 20);
+  const clip =
+    type % 3 === 0
+      ? `polygon(0 0,${p * 110}% 0,${p * 110 - 4}% 33%,${p * 110}% 67%,${p * 110 - 2}% 100%,0 100%)`
+      : type % 3 === 1
+        ? `inset(${(1 - p) * 100}% 0 0 0)`
+        : "none";
+  return (
+    <AbsoluteFill
+      style={{
+        clipPath: p >= 1 ? "none" : clip,
+        opacity: type % 3 === 2 ? p : 1,
+      }}
+    >
+      {children}
+    </AbsoluteFill>
+  );
+};
+export const Documentary: React.FC = () => {
+  const f = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ background: palette.ink }}>
+      <Audio src={staticFile("audio/intro.mp3")} />
+      {scenes.map((scene, i) => (
+        <Sequence
+          key={i}
+          from={frames[i]}
+          durationInFrames={Math.min(5605, frames[i + 1] + 20) - frames[i]}
+          name={`${String(i + 1).padStart(2, "0")} · ${["Typhoon", "Intercept", "Expanded role", "Rafale", "Multirole", "Naval variant", "European rivals", "European origins", "Contracts", "Reference scope", "FGR4 configuration", "F3R configuration", "Mature standards", "Later upgrades", "Comparison baseline", "Export packages", "Package components", "Offer and requirements", "Sources", "Closing"][i]}`}
+        >
+          <Transition type={i}>{scene}</Transition>
+        </Sequence>
+      ))}
+      <AbsoluteFill
+        style={{
+          background: "#151a1d",
+          opacity: interpolate(f, [5558, 5604], [0, 1], clamp),
+          pointerEvents: "none",
+        }}
+      />
+    </AbsoluteFill>
+  );
+};
 

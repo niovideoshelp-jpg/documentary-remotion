@@ -1,0 +1,2844 @@
+{
+  "language": "en",
+  "duration": 186.82775,
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 6.36,
+      "text": " This is the Eurofighter Typhoon, a twin-engine fighter that was designed above all for air combat.",
+      "words": [
+        {
+          "start": 0.0,
+          "end": 0.44,
+          "text": " This"
+        },
+        {
+          "start": 0.44,
+          "end": 0.86,
+          "text": " is"
+        },
+        {
+          "start": 0.86,
+          "end": 1.02,
+          "text": " the"
+        },
+        {
+          "start": 1.02,
+          "end": 1.82,
+          "text": " Eurofighter"
+        },
+        {
+          "start": 1.82,
+          "end": 2.32,
+          "text": " Typhoon,"
+        },
+        {
+          "start": 2.8,
+          "end": 3.0,
+          "text": " a"
+        },
+        {
+          "start": 3.0,
+          "end": 3.26,
+          "text": " twin"
+        },
+        {
+          "start": 3.26,
+          "end": 3.52,
+          "text": "-engine"
+        },
+        {
+          "start": 3.52,
+          "end": 3.9,
+          "text": " fighter"
+        },
+        {
+          "start": 3.9,
+          "end": 4.12,
+          "text": " that"
+        },
+        {
+          "start": 4.12,
+          "end": 4.26,
+          "text": " was"
+        },
+        {
+          "start": 4.26,
+          "end": 4.72,
+          "text": " designed"
+        },
+        {
+          "start": 4.72,
+          "end": 5.12,
+          "text": " above"
+        },
+        {
+          "start": 5.12,
+          "end": 5.5,
+          "text": " all"
+        },
+        {
+          "start": 5.5,
+          "end": 5.78,
+          "text": " for"
+        },
+        {
+          "start": 5.78,
+          "end": 6.0,
+          "text": " air"
+        },
+        {
+          "start": 6.0,
+          "end": 6.36,
+          "text": " combat."
+        }
+      ]
+    },
+    {
+      "start": 7.12,
+      "end": 8.82,
+      "text": " Its original mission was pretty clear.",
+      "words": [
+        {
+          "start": 7.12,
+          "end": 7.32,
+          "text": " Its"
+        },
+        {
+          "start": 7.32,
+          "end": 7.68,
+          "text": " original"
+        },
+        {
+          "start": 7.68,
+          "end": 8.08,
+          "text": " mission"
+        },
+        {
+          "start": 8.08,
+          "end": 8.26,
+          "text": " was"
+        },
+        {
+          "start": 8.26,
+          "end": 8.48,
+          "text": " pretty"
+        },
+        {
+          "start": 8.48,
+          "end": 8.82,
+          "text": " clear."
+        }
+      ]
+    },
+    {
+      "start": 9.3,
+      "end": 14.04,
+      "text": " Intercept threats, climb fast, build speed, and take on other fighters in the air.",
+      "words": [
+        {
+          "start": 9.3,
+          "end": 9.74,
+          "text": " Intercept"
+        },
+        {
+          "start": 9.74,
+          "end": 10.02,
+          "text": " threats,"
+        },
+        {
+          "start": 10.44,
+          "end": 10.78,
+          "text": " climb"
+        },
+        {
+          "start": 10.78,
+          "end": 11.24,
+          "text": " fast,"
+        },
+        {
+          "start": 11.64,
+          "end": 11.86,
+          "text": " build"
+        },
+        {
+          "start": 11.86,
+          "end": 12.18,
+          "text": " speed,"
+        },
+        {
+          "start": 12.46,
+          "end": 12.5,
+          "text": " and"
+        },
+        {
+          "start": 12.5,
+          "end": 12.74,
+          "text": " take"
+        },
+        {
+          "start": 12.74,
+          "end": 12.9,
+          "text": " on"
+        },
+        {
+          "start": 12.9,
+          "end": 13.16,
+          "text": " other"
+        },
+        {
+          "start": 13.16,
+          "end": 13.48,
+          "text": " fighters"
+        },
+        {
+          "start": 13.48,
+          "end": 13.68,
+          "text": " in"
+        },
+        {
+          "start": 13.68,
+          "end": 13.78,
+          "text": " the"
+        },
+        {
+          "start": 13.78,
+          "end": 14.04,
+          "text": " air."
+        }
+      ]
+    },
+    {
+      "start": 14.72,
+      "end": 17.02,
+      "text": " But over time, the Typhoon evolved.",
+      "words": [
+        {
+          "start": 14.72,
+          "end": 14.96,
+          "text": " But"
+        },
+        {
+          "start": 14.96,
+          "end": 15.2,
+          "text": " over"
+        },
+        {
+          "start": 15.2,
+          "end": 15.6,
+          "text": " time,"
+        },
+        {
+          "start": 16.0,
+          "end": 16.1,
+          "text": " the"
+        },
+        {
+          "start": 16.1,
+          "end": 16.58,
+          "text": " Typhoon"
+        },
+        {
+          "start": 16.58,
+          "end": 17.02,
+          "text": " evolved."
+        }
+      ]
+    },
+    {
+      "start": 17.62,
+      "end": 23.62,
+      "text": " It stopped being just an air combat specialist and gradually took on missions against targets on the ground as well.",
+      "words": [
+        {
+          "start": 17.62,
+          "end": 17.74,
+          "text": " It"
+        },
+        {
+          "start": 17.74,
+          "end": 17.98,
+          "text": " stopped"
+        },
+        {
+          "start": 17.98,
+          "end": 18.3,
+          "text": " being"
+        },
+        {
+          "start": 18.3,
+          "end": 18.6,
+          "text": " just"
+        },
+        {
+          "start": 18.6,
+          "end": 18.78,
+          "text": " an"
+        },
+        {
+          "start": 18.78,
+          "end": 19.04,
+          "text": " air"
+        },
+        {
+          "start": 19.04,
+          "end": 19.42,
+          "text": " combat"
+        },
+        {
+          "start": 19.42,
+          "end": 20.08,
+          "text": " specialist"
+        },
+        {
+          "start": 20.08,
+          "end": 20.42,
+          "text": " and"
+        },
+        {
+          "start": 20.42,
+          "end": 20.92,
+          "text": " gradually"
+        },
+        {
+          "start": 20.92,
+          "end": 21.16,
+          "text": " took"
+        },
+        {
+          "start": 21.16,
+          "end": 21.38,
+          "text": " on"
+        },
+        {
+          "start": 21.38,
+          "end": 21.66,
+          "text": " missions"
+        },
+        {
+          "start": 21.66,
+          "end": 21.98,
+          "text": " against"
+        },
+        {
+          "start": 21.98,
+          "end": 22.42,
+          "text": " targets"
+        },
+        {
+          "start": 22.42,
+          "end": 22.7,
+          "text": " on"
+        },
+        {
+          "start": 22.7,
+          "end": 22.8,
+          "text": " the"
+        },
+        {
+          "start": 22.8,
+          "end": 23.16,
+          "text": " ground"
+        },
+        {
+          "start": 23.16,
+          "end": 23.34,
+          "text": " as"
+        },
+        {
+          "start": 23.34,
+          "end": 23.62,
+          "text": " well."
+        }
+      ]
+    },
+    {
+      "start": 24.2,
+      "end": 27.18,
+      "text": " On the other side, we have the Dassault Raphael.",
+      "words": [
+        {
+          "start": 24.2,
+          "end": 24.56,
+          "text": " On"
+        },
+        {
+          "start": 24.56,
+          "end": 24.7,
+          "text": " the"
+        },
+        {
+          "start": 24.7,
+          "end": 24.86,
+          "text": " other"
+        },
+        {
+          "start": 24.86,
+          "end": 25.24,
+          "text": " side,"
+        },
+        {
+          "start": 25.58,
+          "end": 25.74,
+          "text": " we"
+        },
+        {
+          "start": 25.74,
+          "end": 25.9,
+          "text": " have"
+        },
+        {
+          "start": 25.9,
+          "end": 26.02,
+          "text": " the"
+        },
+        {
+          "start": 26.02,
+          "end": 26.5,
+          "text": " Dassault"
+        },
+        {
+          "start": 26.5,
+          "end": 27.18,
+          "text": " Raphael."
+        }
+      ]
+    },
+    {
+      "start": 27.18,
+      "end": 31.44,
+      "text": " And from the beginning, the idea behind the Raphael was a little different.",
+      "words": [
+        {
+          "start": 27.18,
+          "end": 28.12,
+          "text": " And"
+        },
+        {
+          "start": 28.12,
+          "end": 28.3,
+          "text": " from"
+        },
+        {
+          "start": 28.3,
+          "end": 28.42,
+          "text": " the"
+        },
+        {
+          "start": 28.42,
+          "end": 28.8,
+          "text": " beginning,"
+        },
+        {
+          "start": 29.2,
+          "end": 29.28,
+          "text": " the"
+        },
+        {
+          "start": 29.28,
+          "end": 29.64,
+          "text": " idea"
+        },
+        {
+          "start": 29.64,
+          "end": 29.96,
+          "text": " behind"
+        },
+        {
+          "start": 29.96,
+          "end": 30.12,
+          "text": " the"
+        },
+        {
+          "start": 30.12,
+          "end": 30.54,
+          "text": " Raphael"
+        },
+        {
+          "start": 30.54,
+          "end": 30.66,
+          "text": " was"
+        },
+        {
+          "start": 30.66,
+          "end": 30.78,
+          "text": " a"
+        },
+        {
+          "start": 30.78,
+          "end": 31.02,
+          "text": " little"
+        },
+        {
+          "start": 31.02,
+          "end": 31.44,
+          "text": " different."
+        }
+      ]
+    },
+    {
+      "start": 31.98,
+      "end": 34.86,
+      "text": " It was designed as a more versatile do-it-all fighter.",
+      "words": [
+        {
+          "start": 31.98,
+          "end": 32.18,
+          "text": " It"
+        },
+        {
+          "start": 32.18,
+          "end": 32.28,
+          "text": " was"
+        },
+        {
+          "start": 32.28,
+          "end": 32.66,
+          "text": " designed"
+        },
+        {
+          "start": 32.66,
+          "end": 32.88,
+          "text": " as"
+        },
+        {
+          "start": 32.88,
+          "end": 33.0,
+          "text": " a"
+        },
+        {
+          "start": 33.0,
+          "end": 33.14,
+          "text": " more"
+        },
+        {
+          "start": 33.14,
+          "end": 33.66,
+          "text": " versatile"
+        },
+        {
+          "start": 33.66,
+          "end": 34.12,
+          "text": " do"
+        },
+        {
+          "start": 34.12,
+          "end": 34.26,
+          "text": "-it"
+        },
+        {
+          "start": 34.26,
+          "end": 34.44,
+          "text": "-all"
+        },
+        {
+          "start": 34.44,
+          "end": 34.86,
+          "text": " fighter."
+        }
+      ]
+    },
+    {
+      "start": 35.5,
+      "end": 41.26,
+      "text": " It can handle air-to-air combat, precision strikes, anti-ship missions, and in its naval version,",
+      "words": [
+        {
+          "start": 35.5,
+          "end": 35.66,
+          "text": " It"
+        },
+        {
+          "start": 35.66,
+          "end": 35.76,
+          "text": " can"
+        },
+        {
+          "start": 35.76,
+          "end": 36.02,
+          "text": " handle"
+        },
+        {
+          "start": 36.02,
+          "end": 36.26,
+          "text": " air"
+        },
+        {
+          "start": 36.26,
+          "end": 36.34,
+          "text": "-to"
+        },
+        {
+          "start": 36.34,
+          "end": 36.52,
+          "text": "-air"
+        },
+        {
+          "start": 36.52,
+          "end": 36.98,
+          "text": " combat,"
+        },
+        {
+          "start": 37.4,
+          "end": 37.76,
+          "text": " precision"
+        },
+        {
+          "start": 37.76,
+          "end": 38.28,
+          "text": " strikes,"
+        },
+        {
+          "start": 38.72,
+          "end": 39.0,
+          "text": " anti"
+        },
+        {
+          "start": 39.0,
+          "end": 39.32,
+          "text": "-ship"
+        },
+        {
+          "start": 39.32,
+          "end": 39.66,
+          "text": " missions,"
+        },
+        {
+          "start": 39.98,
+          "end": 40.32,
+          "text": " and"
+        },
+        {
+          "start": 40.32,
+          "end": 40.48,
+          "text": " in"
+        },
+        {
+          "start": 40.48,
+          "end": 40.62,
+          "text": " its"
+        },
+        {
+          "start": 40.62,
+          "end": 40.88,
+          "text": " naval"
+        },
+        {
+          "start": 40.88,
+          "end": 41.26,
+          "text": " version,"
+        }
+      ]
+    },
+    {
+      "start": 41.64,
+      "end": 44.34,
+      "text": " it can even operate directly from an aircraft carrier.",
+      "words": [
+        {
+          "start": 41.64,
+          "end": 41.8,
+          "text": " it"
+        },
+        {
+          "start": 41.8,
+          "end": 41.9,
+          "text": " can"
+        },
+        {
+          "start": 41.9,
+          "end": 42.12,
+          "text": " even"
+        },
+        {
+          "start": 42.12,
+          "end": 42.56,
+          "text": " operate"
+        },
+        {
+          "start": 42.56,
+          "end": 43.14,
+          "text": " directly"
+        },
+        {
+          "start": 43.14,
+          "end": 43.4,
+          "text": " from"
+        },
+        {
+          "start": 43.4,
+          "end": 43.58,
+          "text": " an"
+        },
+        {
+          "start": 43.58,
+          "end": 43.86,
+          "text": " aircraft"
+        },
+        {
+          "start": 43.86,
+          "end": 44.34,
+          "text": " carrier."
+        }
+      ]
+    },
+    {
+      "start": 44.98,
+      "end": 50.46,
+      "text": " So, we're talking about two of the most important combat aircraft ever produced in Europe.",
+      "words": [
+        {
+          "start": 44.98,
+          "end": 45.54,
+          "text": " So,"
+        },
+        {
+          "start": 45.76,
+          "end": 46.04,
+          "text": " we're"
+        },
+        {
+          "start": 46.04,
+          "end": 46.3,
+          "text": " talking"
+        },
+        {
+          "start": 46.3,
+          "end": 46.6,
+          "text": " about"
+        },
+        {
+          "start": 46.6,
+          "end": 46.94,
+          "text": " two"
+        },
+        {
+          "start": 46.94,
+          "end": 47.14,
+          "text": " of"
+        },
+        {
+          "start": 47.14,
+          "end": 47.22,
+          "text": " the"
+        },
+        {
+          "start": 47.22,
+          "end": 47.4,
+          "text": " most"
+        },
+        {
+          "start": 47.4,
+          "end": 48.04,
+          "text": " important"
+        },
+        {
+          "start": 48.04,
+          "end": 48.48,
+          "text": " combat"
+        },
+        {
+          "start": 48.48,
+          "end": 49.02,
+          "text": " aircraft"
+        },
+        {
+          "start": 49.02,
+          "end": 49.56,
+          "text": " ever"
+        },
+        {
+          "start": 49.56,
+          "end": 49.92,
+          "text": " produced"
+        },
+        {
+          "start": 49.92,
+          "end": 50.2,
+          "text": " in"
+        },
+        {
+          "start": 50.2,
+          "end": 50.46,
+          "text": " Europe."
+        }
+      ]
+    },
+    {
+      "start": 51.08,
+      "end": 55.62,
+      "text": " But what's interesting is that even though they compete for many of the same contracts today,",
+      "words": [
+        {
+          "start": 51.08,
+          "end": 51.34,
+          "text": " But"
+        },
+        {
+          "start": 51.34,
+          "end": 51.58,
+          "text": " what's"
+        },
+        {
+          "start": 51.58,
+          "end": 52.0,
+          "text": " interesting"
+        },
+        {
+          "start": 52.0,
+          "end": 52.62,
+          "text": " is"
+        },
+        {
+          "start": 52.62,
+          "end": 52.78,
+          "text": " that"
+        },
+        {
+          "start": 52.78,
+          "end": 53.08,
+          "text": " even"
+        },
+        {
+          "start": 53.08,
+          "end": 53.28,
+          "text": " though"
+        },
+        {
+          "start": 53.28,
+          "end": 53.4,
+          "text": " they"
+        },
+        {
+          "start": 53.4,
+          "end": 53.76,
+          "text": " compete"
+        },
+        {
+          "start": 53.76,
+          "end": 53.94,
+          "text": " for"
+        },
+        {
+          "start": 53.94,
+          "end": 54.22,
+          "text": " many"
+        },
+        {
+          "start": 54.22,
+          "end": 54.36,
+          "text": " of"
+        },
+        {
+          "start": 54.36,
+          "end": 54.44,
+          "text": " the"
+        },
+        {
+          "start": 54.44,
+          "end": 54.72,
+          "text": " same"
+        },
+        {
+          "start": 54.72,
+          "end": 55.26,
+          "text": " contracts"
+        },
+        {
+          "start": 55.26,
+          "end": 55.62,
+          "text": " today,"
+        }
+      ]
+    },
+    {
+      "start": 55.62,
+      "end": 58.1,
+      "text": " they came from very different ideas.",
+      "words": [
+        {
+          "start": 55.62,
+          "end": 56.32,
+          "text": " they"
+        },
+        {
+          "start": 56.32,
+          "end": 56.6,
+          "text": " came"
+        },
+        {
+          "start": 56.6,
+          "end": 56.84,
+          "text": " from"
+        },
+        {
+          "start": 56.84,
+          "end": 57.28,
+          "text": " very"
+        },
+        {
+          "start": 57.28,
+          "end": 57.64,
+          "text": " different"
+        },
+        {
+          "start": 57.64,
+          "end": 58.1,
+          "text": " ideas."
+        }
+      ]
+    },
+    {
+      "start": 58.68,
+      "end": 62.64,
+      "text": " The Typhoon grew out of a joint program involving four European countries.",
+      "words": [
+        {
+          "start": 58.68,
+          "end": 58.96,
+          "text": " The"
+        },
+        {
+          "start": 58.96,
+          "end": 59.38,
+          "text": " Typhoon"
+        },
+        {
+          "start": 59.38,
+          "end": 59.66,
+          "text": " grew"
+        },
+        {
+          "start": 59.66,
+          "end": 59.86,
+          "text": " out"
+        },
+        {
+          "start": 59.86,
+          "end": 59.98,
+          "text": " of"
+        },
+        {
+          "start": 59.98,
+          "end": 60.06,
+          "text": " a"
+        },
+        {
+          "start": 60.06,
+          "end": 60.34,
+          "text": " joint"
+        },
+        {
+          "start": 60.34,
+          "end": 60.84,
+          "text": " program"
+        },
+        {
+          "start": 60.84,
+          "end": 61.3,
+          "text": " involving"
+        },
+        {
+          "start": 61.3,
+          "end": 61.72,
+          "text": " four"
+        },
+        {
+          "start": 61.72,
+          "end": 62.22,
+          "text": " European"
+        },
+        {
+          "start": 62.22,
+          "end": 62.64,
+          "text": " countries."
+        }
+      ]
+    },
+    {
+      "start": 63.24,
+      "end": 68.7,
+      "text": " The Raphael, on the other hand, was developed essentially by France after Paris decided to go its own way.",
+      "words": [
+        {
+          "start": 63.24,
+          "end": 63.38,
+          "text": " The"
+        },
+        {
+          "start": 63.38,
+          "end": 63.8,
+          "text": " Raphael,"
+        },
+        {
+          "start": 63.84,
+          "end": 63.92,
+          "text": " on"
+        },
+        {
+          "start": 63.92,
+          "end": 64.04,
+          "text": " the"
+        },
+        {
+          "start": 64.04,
+          "end": 64.18,
+          "text": " other"
+        },
+        {
+          "start": 64.18,
+          "end": 64.46,
+          "text": " hand,"
+        },
+        {
+          "start": 64.7,
+          "end": 64.84,
+          "text": " was"
+        },
+        {
+          "start": 64.84,
+          "end": 65.16,
+          "text": " developed"
+        },
+        {
+          "start": 65.16,
+          "end": 65.74,
+          "text": " essentially"
+        },
+        {
+          "start": 65.74,
+          "end": 66.02,
+          "text": " by"
+        },
+        {
+          "start": 66.02,
+          "end": 66.48,
+          "text": " France"
+        },
+        {
+          "start": 66.48,
+          "end": 67.0,
+          "text": " after"
+        },
+        {
+          "start": 67.0,
+          "end": 67.32,
+          "text": " Paris"
+        },
+        {
+          "start": 67.32,
+          "end": 67.76,
+          "text": " decided"
+        },
+        {
+          "start": 67.76,
+          "end": 67.92,
+          "text": " to"
+        },
+        {
+          "start": 67.92,
+          "end": 68.1,
+          "text": " go"
+        },
+        {
+          "start": 68.1,
+          "end": 68.26,
+          "text": " its"
+        },
+        {
+          "start": 68.26,
+          "end": 68.44,
+          "text": " own"
+        },
+        {
+          "start": 68.44,
+          "end": 68.7,
+          "text": " way."
+        }
+      ]
+    },
+    {
+      "start": 69.48,
+      "end": 73.5,
+      "text": " Today, the two fighters compete for multi-billion dollar contracts,",
+      "words": [
+        {
+          "start": 69.48,
+          "end": 69.88,
+          "text": " Today,"
+        },
+        {
+          "start": 70.16,
+          "end": 70.22,
+          "text": " the"
+        },
+        {
+          "start": 70.22,
+          "end": 70.48,
+          "text": " two"
+        },
+        {
+          "start": 70.48,
+          "end": 70.82,
+          "text": " fighters"
+        },
+        {
+          "start": 70.82,
+          "end": 71.34,
+          "text": " compete"
+        },
+        {
+          "start": 71.34,
+          "end": 71.56,
+          "text": " for"
+        },
+        {
+          "start": 71.56,
+          "end": 71.98,
+          "text": " multi"
+        },
+        {
+          "start": 71.98,
+          "end": 72.56,
+          "text": "-billion"
+        },
+        {
+          "start": 72.56,
+          "end": 72.9,
+          "text": " dollar"
+        },
+        {
+          "start": 72.9,
+          "end": 73.5,
+          "text": " contracts,"
+        }
+      ]
+    },
+    {
+      "start": 73.68,
+      "end": 79.94,
+      "text": " and they represent two very different approaches to developing, upgrading, and selling a modern combat aircraft.",
+      "words": [
+        {
+          "start": 73.68,
+          "end": 73.9,
+          "text": " and"
+        },
+        {
+          "start": 73.9,
+          "end": 74.0,
+          "text": " they"
+        },
+        {
+          "start": 74.0,
+          "end": 74.4,
+          "text": " represent"
+        },
+        {
+          "start": 74.4,
+          "end": 74.78,
+          "text": " two"
+        },
+        {
+          "start": 74.78,
+          "end": 75.2,
+          "text": " very"
+        },
+        {
+          "start": 75.2,
+          "end": 75.54,
+          "text": " different"
+        },
+        {
+          "start": 75.54,
+          "end": 75.98,
+          "text": " approaches"
+        },
+        {
+          "start": 75.98,
+          "end": 76.26,
+          "text": " to"
+        },
+        {
+          "start": 76.26,
+          "end": 76.66,
+          "text": " developing,"
+        },
+        {
+          "start": 77.2,
+          "end": 77.52,
+          "text": " upgrading,"
+        },
+        {
+          "start": 77.88,
+          "end": 77.96,
+          "text": " and"
+        },
+        {
+          "start": 77.96,
+          "end": 78.38,
+          "text": " selling"
+        },
+        {
+          "start": 78.38,
+          "end": 78.62,
+          "text": " a"
+        },
+        {
+          "start": 78.62,
+          "end": 78.98,
+          "text": " modern"
+        },
+        {
+          "start": 78.98,
+          "end": 79.46,
+          "text": " combat"
+        },
+        {
+          "start": 79.46,
+          "end": 79.94,
+          "text": " aircraft."
+        }
+      ]
+    },
+    {
+      "start": 79.94,
+      "end": 86.4,
+      "text": " And to make this comparison as fair as possible, I had to decide exactly which versions we're going to use.",
+      "words": [
+        {
+          "start": 79.94,
+          "end": 80.98,
+          "text": " And"
+        },
+        {
+          "start": 80.98,
+          "end": 81.18,
+          "text": " to"
+        },
+        {
+          "start": 81.18,
+          "end": 81.34,
+          "text": " make"
+        },
+        {
+          "start": 81.34,
+          "end": 81.48,
+          "text": " this"
+        },
+        {
+          "start": 81.48,
+          "end": 81.96,
+          "text": " comparison"
+        },
+        {
+          "start": 81.96,
+          "end": 82.24,
+          "text": " as"
+        },
+        {
+          "start": 82.24,
+          "end": 82.52,
+          "text": " fair"
+        },
+        {
+          "start": 82.52,
+          "end": 82.68,
+          "text": " as"
+        },
+        {
+          "start": 82.68,
+          "end": 83.08,
+          "text": " possible,"
+        },
+        {
+          "start": 83.42,
+          "end": 83.68,
+          "text": " I"
+        },
+        {
+          "start": 83.68,
+          "end": 83.82,
+          "text": " had"
+        },
+        {
+          "start": 83.82,
+          "end": 83.92,
+          "text": " to"
+        },
+        {
+          "start": 83.92,
+          "end": 84.3,
+          "text": " decide"
+        },
+        {
+          "start": 84.3,
+          "end": 84.84,
+          "text": " exactly"
+        },
+        {
+          "start": 84.84,
+          "end": 85.32,
+          "text": " which"
+        },
+        {
+          "start": 85.32,
+          "end": 85.8,
+          "text": " versions"
+        },
+        {
+          "start": 85.8,
+          "end": 85.98,
+          "text": " we're"
+        },
+        {
+          "start": 85.98,
+          "end": 86.08,
+          "text": " going"
+        },
+        {
+          "start": 86.08,
+          "end": 86.16,
+          "text": " to"
+        },
+        {
+          "start": 86.16,
+          "end": 86.4,
+          "text": " use."
+        }
+      ]
+    },
+    {
+      "start": 86.94,
+      "end": 91.44,
+      "text": " For the Eurofighter, our reference will be the British Typhoon FGR4,",
+      "words": [
+        {
+          "start": 86.94,
+          "end": 87.2,
+          "text": " For"
+        },
+        {
+          "start": 87.2,
+          "end": 87.3,
+          "text": " the"
+        },
+        {
+          "start": 87.3,
+          "end": 88.02,
+          "text": " Eurofighter,"
+        },
+        {
+          "start": 88.28,
+          "end": 88.4,
+          "text": " our"
+        },
+        {
+          "start": 88.4,
+          "end": 88.7,
+          "text": " reference"
+        },
+        {
+          "start": 88.7,
+          "end": 88.94,
+          "text": " will"
+        },
+        {
+          "start": 88.94,
+          "end": 89.06,
+          "text": " be"
+        },
+        {
+          "start": 89.06,
+          "end": 89.16,
+          "text": " the"
+        },
+        {
+          "start": 89.16,
+          "end": 89.5,
+          "text": " British"
+        },
+        {
+          "start": 89.5,
+          "end": 90.14,
+          "text": " Typhoon"
+        },
+        {
+          "start": 90.14,
+          "end": 91.44,
+          "text": " FGR4,"
+        }
+      ]
+    },
+    {
+      "start": 91.98,
+      "end": 95.16,
+      "text": " especially upgraded Tranche 2 and Tranche 3 aircraft,",
+      "words": [
+        {
+          "start": 91.98,
+          "end": 92.34,
+          "text": " especially"
+        },
+        {
+          "start": 92.34,
+          "end": 93.04,
+          "text": " upgraded"
+        },
+        {
+          "start": 93.04,
+          "end": 93.52,
+          "text": " Tranche"
+        },
+        {
+          "start": 93.52,
+          "end": 93.9,
+          "text": " 2"
+        },
+        {
+          "start": 93.9,
+          "end": 94.12,
+          "text": " and"
+        },
+        {
+          "start": 94.12,
+          "end": 94.42,
+          "text": " Tranche"
+        },
+        {
+          "start": 94.42,
+          "end": 94.7,
+          "text": " 3"
+        },
+        {
+          "start": 94.7,
+          "end": 95.16,
+          "text": " aircraft,"
+        }
+      ]
+    },
+    {
+      "start": 95.52,
+      "end": 98.62,
+      "text": " incorporating capabilities introduced through the Centurion program",
+      "words": [
+        {
+          "start": 95.52,
+          "end": 95.92,
+          "text": " incorporating"
+        },
+        {
+          "start": 95.92,
+          "end": 96.74,
+          "text": " capabilities"
+        },
+        {
+          "start": 96.74,
+          "end": 97.2,
+          "text": " introduced"
+        },
+        {
+          "start": 97.2,
+          "end": 97.62,
+          "text": " through"
+        },
+        {
+          "start": 97.62,
+          "end": 97.72,
+          "text": " the"
+        },
+        {
+          "start": 97.72,
+          "end": 98.24,
+          "text": " Centurion"
+        },
+        {
+          "start": 98.24,
+          "end": 98.62,
+          "text": " program"
+        }
+      ]
+    },
+    {
+      "start": 98.62,
+      "end": 101.9,
+      "text": " and using the mechanically scanned CAPTR-M radar.",
+      "words": [
+        {
+          "start": 98.62,
+          "end": 99.3,
+          "text": " and"
+        },
+        {
+          "start": 99.3,
+          "end": 99.6,
+          "text": " using"
+        },
+        {
+          "start": 99.6,
+          "end": 99.78,
+          "text": " the"
+        },
+        {
+          "start": 99.78,
+          "end": 100.38,
+          "text": " mechanically"
+        },
+        {
+          "start": 100.38,
+          "end": 100.74,
+          "text": " scanned"
+        },
+        {
+          "start": 100.74,
+          "end": 101.3,
+          "text": " CAPTR"
+        },
+        {
+          "start": 101.3,
+          "end": 101.62,
+          "text": "-M"
+        },
+        {
+          "start": 101.62,
+          "end": 101.9,
+          "text": " radar."
+        }
+      ]
+    },
+    {
+      "start": 102.54,
+      "end": 105.26,
+      "text": " On the French side, we'll use the Raphael C,",
+      "words": [
+        {
+          "start": 102.54,
+          "end": 102.78,
+          "text": " On"
+        },
+        {
+          "start": 102.78,
+          "end": 102.92,
+          "text": " the"
+        },
+        {
+          "start": 102.92,
+          "end": 103.14,
+          "text": " French"
+        },
+        {
+          "start": 103.14,
+          "end": 103.5,
+          "text": " side,"
+        },
+        {
+          "start": 103.8,
+          "end": 103.98,
+          "text": " we'll"
+        },
+        {
+          "start": 103.98,
+          "end": 104.22,
+          "text": " use"
+        },
+        {
+          "start": 104.22,
+          "end": 104.36,
+          "text": " the"
+        },
+        {
+          "start": 104.36,
+          "end": 104.88,
+          "text": " Raphael"
+        },
+        {
+          "start": 104.88,
+          "end": 105.26,
+          "text": " C,"
+        }
+      ]
+    },
+    {
+      "start": 105.7,
+      "end": 108.96,
+      "text": " the single-seat land-based version in the F3R standard,",
+      "words": [
+        {
+          "start": 105.7,
+          "end": 105.82,
+          "text": " the"
+        },
+        {
+          "start": 105.82,
+          "end": 106.06,
+          "text": " single"
+        },
+        {
+          "start": 106.06,
+          "end": 106.34,
+          "text": "-seat"
+        },
+        {
+          "start": 106.34,
+          "end": 106.78,
+          "text": " land"
+        },
+        {
+          "start": 106.78,
+          "end": 107.04,
+          "text": "-based"
+        },
+        {
+          "start": 107.04,
+          "end": 107.46,
+          "text": " version"
+        },
+        {
+          "start": 107.46,
+          "end": 107.72,
+          "text": " in"
+        },
+        {
+          "start": 107.72,
+          "end": 107.82,
+          "text": " the"
+        },
+        {
+          "start": 107.82,
+          "end": 108.58,
+          "text": " F3R"
+        },
+        {
+          "start": 108.58,
+          "end": 108.96,
+          "text": " standard,"
+        }
+      ]
+    },
+    {
+      "start": 108.96,
+      "end": 112.34,
+      "text": " equipped with the RBE-2 AESA radar.",
+      "words": [
+        {
+          "start": 108.96,
+          "end": 109.58,
+          "text": " equipped"
+        },
+        {
+          "start": 109.58,
+          "end": 109.92,
+          "text": " with"
+        },
+        {
+          "start": 109.92,
+          "end": 110.04,
+          "text": " the"
+        },
+        {
+          "start": 110.04,
+          "end": 110.64,
+          "text": " RBE"
+        },
+        {
+          "start": 110.64,
+          "end": 111.08,
+          "text": "-2"
+        },
+        {
+          "start": 111.08,
+          "end": 112.06,
+          "text": " AESA"
+        },
+        {
+          "start": 112.06,
+          "end": 112.34,
+          "text": " radar."
+        }
+      ]
+    },
+    {
+      "start": 112.82,
+      "end": 115.4,
+      "text": " I chose these two versions for a simple reason.",
+      "words": [
+        {
+          "start": 112.82,
+          "end": 113.42,
+          "text": " I"
+        },
+        {
+          "start": 113.42,
+          "end": 113.74,
+          "text": " chose"
+        },
+        {
+          "start": 113.74,
+          "end": 113.98,
+          "text": " these"
+        },
+        {
+          "start": 113.98,
+          "end": 114.2,
+          "text": " two"
+        },
+        {
+          "start": 114.2,
+          "end": 114.58,
+          "text": " versions"
+        },
+        {
+          "start": 114.58,
+          "end": 114.8,
+          "text": " for"
+        },
+        {
+          "start": 114.8,
+          "end": 114.94,
+          "text": " a"
+        },
+        {
+          "start": 114.94,
+          "end": 115.08,
+          "text": " simple"
+        },
+        {
+          "start": 115.08,
+          "end": 115.4,
+          "text": " reason."
+        }
+      ]
+    },
+    {
+      "start": 115.82,
+      "end": 120.6,
+      "text": " They're mature, well-known configurations with capabilities that are relatively well-documented.",
+      "words": [
+        {
+          "start": 115.82,
+          "end": 116.02,
+          "text": " They're"
+        },
+        {
+          "start": 116.02,
+          "end": 116.38,
+          "text": " mature,"
+        },
+        {
+          "start": 116.76,
+          "end": 116.94,
+          "text": " well"
+        },
+        {
+          "start": 116.94,
+          "end": 117.22,
+          "text": "-known"
+        },
+        {
+          "start": 117.22,
+          "end": 117.76,
+          "text": " configurations"
+        },
+        {
+          "start": 117.76,
+          "end": 118.44,
+          "text": " with"
+        },
+        {
+          "start": 118.44,
+          "end": 118.88,
+          "text": " capabilities"
+        },
+        {
+          "start": 118.88,
+          "end": 119.22,
+          "text": " that"
+        },
+        {
+          "start": 119.22,
+          "end": 119.36,
+          "text": " are"
+        },
+        {
+          "start": 119.36,
+          "end": 119.82,
+          "text": " relatively"
+        },
+        {
+          "start": 119.82,
+          "end": 120.16,
+          "text": " well"
+        },
+        {
+          "start": 120.16,
+          "end": 120.6,
+          "text": "-documented."
+        }
+      ]
+    },
+    {
+      "start": 121.4,
+      "end": 125.68,
+      "text": " That doesn't necessarily mean we're comparing the absolute newest version of each aircraft.",
+      "words": [
+        {
+          "start": 121.4,
+          "end": 121.62,
+          "text": " That"
+        },
+        {
+          "start": 121.62,
+          "end": 121.9,
+          "text": " doesn't"
+        },
+        {
+          "start": 121.9,
+          "end": 122.3,
+          "text": " necessarily"
+        },
+        {
+          "start": 122.3,
+          "end": 122.72,
+          "text": " mean"
+        },
+        {
+          "start": 122.72,
+          "end": 122.92,
+          "text": " we're"
+        },
+        {
+          "start": 122.92,
+          "end": 123.24,
+          "text": " comparing"
+        },
+        {
+          "start": 123.24,
+          "end": 123.5,
+          "text": " the"
+        },
+        {
+          "start": 123.5,
+          "end": 123.94,
+          "text": " absolute"
+        },
+        {
+          "start": 123.94,
+          "end": 124.4,
+          "text": " newest"
+        },
+        {
+          "start": 124.4,
+          "end": 124.9,
+          "text": " version"
+        },
+        {
+          "start": 124.9,
+          "end": 125.06,
+          "text": " of"
+        },
+        {
+          "start": 125.06,
+          "end": 125.24,
+          "text": " each"
+        },
+        {
+          "start": 125.24,
+          "end": 125.68,
+          "text": " aircraft."
+        }
+      ]
+    },
+    {
+      "start": 126.28,
+      "end": 129.74,
+      "text": " The Raphael, for example, has already moved on to the F4 standard,",
+      "words": [
+        {
+          "start": 126.28,
+          "end": 126.44,
+          "text": " The"
+        },
+        {
+          "start": 126.44,
+          "end": 126.82,
+          "text": " Raphael,"
+        },
+        {
+          "start": 126.86,
+          "end": 126.96,
+          "text": " for"
+        },
+        {
+          "start": 126.96,
+          "end": 127.28,
+          "text": " example,"
+        },
+        {
+          "start": 127.44,
+          "end": 127.54,
+          "text": " has"
+        },
+        {
+          "start": 127.54,
+          "end": 127.98,
+          "text": " already"
+        },
+        {
+          "start": 127.98,
+          "end": 128.24,
+          "text": " moved"
+        },
+        {
+          "start": 128.24,
+          "end": 128.52,
+          "text": " on"
+        },
+        {
+          "start": 128.52,
+          "end": 128.7,
+          "text": " to"
+        },
+        {
+          "start": 128.7,
+          "end": 128.82,
+          "text": " the"
+        },
+        {
+          "start": 128.82,
+          "end": 129.36,
+          "text": " F4"
+        },
+        {
+          "start": 129.36,
+          "end": 129.74,
+          "text": " standard,"
+        }
+      ]
+    },
+    {
+      "start": 129.92,
+      "end": 133.72,
+      "text": " and the Typhoon is also appearing in configurations with more advanced radars.",
+      "words": [
+        {
+          "start": 129.92,
+          "end": 130.24,
+          "text": " and"
+        },
+        {
+          "start": 130.24,
+          "end": 130.32,
+          "text": " the"
+        },
+        {
+          "start": 130.32,
+          "end": 130.74,
+          "text": " Typhoon"
+        },
+        {
+          "start": 130.74,
+          "end": 130.96,
+          "text": " is"
+        },
+        {
+          "start": 130.96,
+          "end": 131.32,
+          "text": " also"
+        },
+        {
+          "start": 131.32,
+          "end": 131.66,
+          "text": " appearing"
+        },
+        {
+          "start": 131.66,
+          "end": 131.86,
+          "text": " in"
+        },
+        {
+          "start": 131.86,
+          "end": 132.24,
+          "text": " configurations"
+        },
+        {
+          "start": 132.24,
+          "end": 132.68,
+          "text": " with"
+        },
+        {
+          "start": 132.68,
+          "end": 132.92,
+          "text": " more"
+        },
+        {
+          "start": 132.92,
+          "end": 133.26,
+          "text": " advanced"
+        },
+        {
+          "start": 133.26,
+          "end": 133.72,
+          "text": " radars."
+        }
+      ]
+    },
+    {
+      "start": 134.26,
+      "end": 138.14,
+      "text": " So the goal here isn't to take the newest possible version of each fighter.",
+      "words": [
+        {
+          "start": 134.26,
+          "end": 134.64,
+          "text": " So"
+        },
+        {
+          "start": 134.64,
+          "end": 134.92,
+          "text": " the"
+        },
+        {
+          "start": 134.92,
+          "end": 135.14,
+          "text": " goal"
+        },
+        {
+          "start": 135.14,
+          "end": 135.46,
+          "text": " here"
+        },
+        {
+          "start": 135.46,
+          "end": 135.78,
+          "text": " isn't"
+        },
+        {
+          "start": 135.78,
+          "end": 135.96,
+          "text": " to"
+        },
+        {
+          "start": 135.96,
+          "end": 136.1,
+          "text": " take"
+        },
+        {
+          "start": 136.1,
+          "end": 136.24,
+          "text": " the"
+        },
+        {
+          "start": 136.24,
+          "end": 136.6,
+          "text": " newest"
+        },
+        {
+          "start": 136.6,
+          "end": 137.06,
+          "text": " possible"
+        },
+        {
+          "start": 137.06,
+          "end": 137.54,
+          "text": " version"
+        },
+        {
+          "start": 137.54,
+          "end": 137.7,
+          "text": " of"
+        },
+        {
+          "start": 137.7,
+          "end": 137.88,
+          "text": " each"
+        },
+        {
+          "start": 137.88,
+          "end": 138.14,
+          "text": " fighter."
+        }
+      ]
+    },
+    {
+      "start": 138.14,
+      "end": 142.98,
+      "text": " It's to compare two solid, relevant, and reasonably comparable configurations.",
+      "words": [
+        {
+          "start": 138.14,
+          "end": 138.78,
+          "text": " It's"
+        },
+        {
+          "start": 138.78,
+          "end": 138.88,
+          "text": " to"
+        },
+        {
+          "start": 138.88,
+          "end": 139.22,
+          "text": " compare"
+        },
+        {
+          "start": 139.22,
+          "end": 139.54,
+          "text": " two"
+        },
+        {
+          "start": 139.54,
+          "end": 140.12,
+          "text": " solid,"
+        },
+        {
+          "start": 140.36,
+          "end": 140.8,
+          "text": " relevant,"
+        },
+        {
+          "start": 141.04,
+          "end": 141.14,
+          "text": " and"
+        },
+        {
+          "start": 141.14,
+          "end": 141.64,
+          "text": " reasonably"
+        },
+        {
+          "start": 141.64,
+          "end": 142.32,
+          "text": " comparable"
+        },
+        {
+          "start": 142.32,
+          "end": 142.98,
+          "text": " configurations."
+        }
+      ]
+    },
+    {
+      "start": 143.72,
+      "end": 145.12,
+      "text": " And there's one more thing.",
+      "words": [
+        {
+          "start": 143.72,
+          "end": 144.32,
+          "text": " And"
+        },
+        {
+          "start": 144.32,
+          "end": 144.56,
+          "text": " there's"
+        },
+        {
+          "start": 144.56,
+          "end": 144.7,
+          "text": " one"
+        },
+        {
+          "start": 144.7,
+          "end": 144.9,
+          "text": " more"
+        },
+        {
+          "start": 144.9,
+          "end": 145.12,
+          "text": " thing."
+        }
+      ]
+    },
+    {
+      "start": 145.66,
+      "end": 149.3,
+      "text": " When we get into export contracts, we're going to look at them case by case,",
+      "words": [
+        {
+          "start": 145.66,
+          "end": 145.82,
+          "text": " When"
+        },
+        {
+          "start": 145.82,
+          "end": 145.98,
+          "text": " we"
+        },
+        {
+          "start": 145.98,
+          "end": 146.12,
+          "text": " get"
+        },
+        {
+          "start": 146.12,
+          "end": 146.3,
+          "text": " into"
+        },
+        {
+          "start": 146.3,
+          "end": 146.76,
+          "text": " export"
+        },
+        {
+          "start": 146.76,
+          "end": 147.2,
+          "text": " contracts,"
+        },
+        {
+          "start": 147.58,
+          "end": 147.74,
+          "text": " we're"
+        },
+        {
+          "start": 147.74,
+          "end": 147.84,
+          "text": " going"
+        },
+        {
+          "start": 147.84,
+          "end": 147.88,
+          "text": " to"
+        },
+        {
+          "start": 147.88,
+          "end": 148.02,
+          "text": " look"
+        },
+        {
+          "start": 148.02,
+          "end": 148.14,
+          "text": " at"
+        },
+        {
+          "start": 148.14,
+          "end": 148.3,
+          "text": " them"
+        },
+        {
+          "start": 148.3,
+          "end": 148.7,
+          "text": " case"
+        },
+        {
+          "start": 148.7,
+          "end": 148.92,
+          "text": " by"
+        },
+        {
+          "start": 148.92,
+          "end": 149.3,
+          "text": " case,"
+        }
+      ]
+    },
+    {
+      "start": 149.5,
+      "end": 152.88,
+      "text": " because the same fighter can look very different depending on the customer.",
+      "words": [
+        {
+          "start": 149.5,
+          "end": 150.0,
+          "text": " because"
+        },
+        {
+          "start": 150.0,
+          "end": 150.2,
+          "text": " the"
+        },
+        {
+          "start": 150.2,
+          "end": 150.52,
+          "text": " same"
+        },
+        {
+          "start": 150.52,
+          "end": 150.84,
+          "text": " fighter"
+        },
+        {
+          "start": 150.84,
+          "end": 151.04,
+          "text": " can"
+        },
+        {
+          "start": 151.04,
+          "end": 151.18,
+          "text": " look"
+        },
+        {
+          "start": 151.18,
+          "end": 151.5,
+          "text": " very"
+        },
+        {
+          "start": 151.5,
+          "end": 151.92,
+          "text": " different"
+        },
+        {
+          "start": 151.92,
+          "end": 152.18,
+          "text": " depending"
+        },
+        {
+          "start": 152.18,
+          "end": 152.46,
+          "text": " on"
+        },
+        {
+          "start": 152.46,
+          "end": 152.56,
+          "text": " the"
+        },
+        {
+          "start": 152.56,
+          "end": 152.88,
+          "text": " customer."
+        }
+      ]
+    },
+    {
+      "start": 153.4,
+      "end": 157.24,
+      "text": " Radar, weapons, training, support, logistics packages,",
+      "words": [
+        {
+          "start": 153.4,
+          "end": 153.96,
+          "text": " Radar,"
+        },
+        {
+          "start": 154.24,
+          "end": 154.52,
+          "text": " weapons,"
+        },
+        {
+          "start": 154.98,
+          "end": 155.32,
+          "text": " training,"
+        },
+        {
+          "start": 155.68,
+          "end": 156.0,
+          "text": " support,"
+        },
+        {
+          "start": 156.4,
+          "end": 156.76,
+          "text": " logistics"
+        },
+        {
+          "start": 156.76,
+          "end": 157.24,
+          "text": " packages,"
+        }
+      ]
+    },
+    {
+      "start": 157.64,
+      "end": 160.02,
+      "text": " all of that can change from one country to another.",
+      "words": [
+        {
+          "start": 157.64,
+          "end": 157.98,
+          "text": " all"
+        },
+        {
+          "start": 157.98,
+          "end": 158.1,
+          "text": " of"
+        },
+        {
+          "start": 158.1,
+          "end": 158.26,
+          "text": " that"
+        },
+        {
+          "start": 158.26,
+          "end": 158.44,
+          "text": " can"
+        },
+        {
+          "start": 158.44,
+          "end": 158.76,
+          "text": " change"
+        },
+        {
+          "start": 158.76,
+          "end": 159.0,
+          "text": " from"
+        },
+        {
+          "start": 159.0,
+          "end": 159.22,
+          "text": " one"
+        },
+        {
+          "start": 159.22,
+          "end": 159.58,
+          "text": " country"
+        },
+        {
+          "start": 159.58,
+          "end": 159.7,
+          "text": " to"
+        },
+        {
+          "start": 159.7,
+          "end": 160.02,
+          "text": " another."
+        }
+      ]
+    },
+    {
+      "start": 160.64,
+      "end": 165.04,
+      "text": " In the end, every deal depends both on what the manufacturer is willing to offer",
+      "words": [
+        {
+          "start": 160.64,
+          "end": 160.9,
+          "text": " In"
+        },
+        {
+          "start": 160.9,
+          "end": 161.04,
+          "text": " the"
+        },
+        {
+          "start": 161.04,
+          "end": 161.32,
+          "text": " end,"
+        },
+        {
+          "start": 161.62,
+          "end": 161.88,
+          "text": " every"
+        },
+        {
+          "start": 161.88,
+          "end": 162.18,
+          "text": " deal"
+        },
+        {
+          "start": 162.18,
+          "end": 162.5,
+          "text": " depends"
+        },
+        {
+          "start": 162.5,
+          "end": 162.88,
+          "text": " both"
+        },
+        {
+          "start": 162.88,
+          "end": 163.08,
+          "text": " on"
+        },
+        {
+          "start": 163.08,
+          "end": 163.24,
+          "text": " what"
+        },
+        {
+          "start": 163.24,
+          "end": 163.38,
+          "text": " the"
+        },
+        {
+          "start": 163.38,
+          "end": 163.92,
+          "text": " manufacturer"
+        },
+        {
+          "start": 163.92,
+          "end": 164.3,
+          "text": " is"
+        },
+        {
+          "start": 164.3,
+          "end": 164.48,
+          "text": " willing"
+        },
+        {
+          "start": 164.48,
+          "end": 164.68,
+          "text": " to"
+        },
+        {
+          "start": 164.68,
+          "end": 165.04,
+          "text": " offer"
+        }
+      ]
+    },
+    {
+      "start": 165.04,
+      "end": 169.06,
+      "text": " and on what the buyer wants and is actually allowed to purchase.",
+      "words": [
+        {
+          "start": 165.04,
+          "end": 165.68,
+          "text": " and"
+        },
+        {
+          "start": 165.68,
+          "end": 166.02,
+          "text": " on"
+        },
+        {
+          "start": 166.02,
+          "end": 166.18,
+          "text": " what"
+        },
+        {
+          "start": 166.18,
+          "end": 166.34,
+          "text": " the"
+        },
+        {
+          "start": 166.34,
+          "end": 166.66,
+          "text": " buyer"
+        },
+        {
+          "start": 166.66,
+          "end": 167.14,
+          "text": " wants"
+        },
+        {
+          "start": 167.14,
+          "end": 167.56,
+          "text": " and"
+        },
+        {
+          "start": 167.56,
+          "end": 167.7,
+          "text": " is"
+        },
+        {
+          "start": 167.7,
+          "end": 168.04,
+          "text": " actually"
+        },
+        {
+          "start": 168.04,
+          "end": 168.5,
+          "text": " allowed"
+        },
+        {
+          "start": 168.5,
+          "end": 168.76,
+          "text": " to"
+        },
+        {
+          "start": 168.76,
+          "end": 169.06,
+          "text": " purchase."
+        }
+      ]
+    },
+    {
+      "start": 169.64,
+      "end": 174.5,
+      "text": " And as always, all that the sources use to research this video will be linked in the description.",
+      "words": [
+        {
+          "start": 169.64,
+          "end": 170.04,
+          "text": " And"
+        },
+        {
+          "start": 170.04,
+          "end": 170.32,
+          "text": " as"
+        },
+        {
+          "start": 170.32,
+          "end": 170.66,
+          "text": " always,"
+        },
+        {
+          "start": 171.06,
+          "end": 171.22,
+          "text": " all"
+        },
+        {
+          "start": 171.22,
+          "end": 171.36,
+          "text": " that"
+        },
+        {
+          "start": 171.36,
+          "end": 171.46,
+          "text": " the"
+        },
+        {
+          "start": 171.46,
+          "end": 171.72,
+          "text": " sources"
+        },
+        {
+          "start": 171.72,
+          "end": 172.1,
+          "text": " use"
+        },
+        {
+          "start": 172.1,
+          "end": 172.32,
+          "text": " to"
+        },
+        {
+          "start": 172.32,
+          "end": 172.72,
+          "text": " research"
+        },
+        {
+          "start": 172.72,
+          "end": 172.98,
+          "text": " this"
+        },
+        {
+          "start": 172.98,
+          "end": 173.26,
+          "text": " video"
+        },
+        {
+          "start": 173.26,
+          "end": 173.52,
+          "text": " will"
+        },
+        {
+          "start": 173.52,
+          "end": 173.66,
+          "text": " be"
+        },
+        {
+          "start": 173.66,
+          "end": 173.92,
+          "text": " linked"
+        },
+        {
+          "start": 173.92,
+          "end": 174.08,
+          "text": " in"
+        },
+        {
+          "start": 174.08,
+          "end": 174.16,
+          "text": " the"
+        },
+        {
+          "start": 174.16,
+          "end": 174.5,
+          "text": " description."
+        }
+      ]
+    },
+    {
+      "start": 175.26,
+      "end": 178.36,
+      "text": " Even with careful research, details can still slip through",
+      "words": [
+        {
+          "start": 175.26,
+          "end": 175.54,
+          "text": " Even"
+        },
+        {
+          "start": 175.54,
+          "end": 175.74,
+          "text": " with"
+        },
+        {
+          "start": 175.74,
+          "end": 176.12,
+          "text": " careful"
+        },
+        {
+          "start": 176.12,
+          "end": 176.68,
+          "text": " research,"
+        },
+        {
+          "start": 177.0,
+          "end": 177.26,
+          "text": " details"
+        },
+        {
+          "start": 177.26,
+          "end": 177.56,
+          "text": " can"
+        },
+        {
+          "start": 177.56,
+          "end": 177.82,
+          "text": " still"
+        },
+        {
+          "start": 177.82,
+          "end": 178.08,
+          "text": " slip"
+        },
+        {
+          "start": 178.08,
+          "end": 178.36,
+          "text": " through"
+        }
+      ]
+    },
+    {
+      "start": 178.36,
+      "end": 180.28,
+      "text": " or information can be interpreted differently.",
+      "words": [
+        {
+          "start": 178.36,
+          "end": 178.6,
+          "text": " or"
+        },
+        {
+          "start": 178.6,
+          "end": 178.96,
+          "text": " information"
+        },
+        {
+          "start": 178.96,
+          "end": 179.32,
+          "text": " can"
+        },
+        {
+          "start": 179.32,
+          "end": 179.44,
+          "text": " be"
+        },
+        {
+          "start": 179.44,
+          "end": 179.84,
+          "text": " interpreted"
+        },
+        {
+          "start": 179.84,
+          "end": 180.28,
+          "text": " differently."
+        }
+      ]
+    },
+    {
+      "start": 180.72,
+      "end": 183.26,
+      "text": " So if you want to dig deeper into any particular point,",
+      "words": [
+        {
+          "start": 180.72,
+          "end": 180.86,
+          "text": " So"
+        },
+        {
+          "start": 180.86,
+          "end": 181.06,
+          "text": " if"
+        },
+        {
+          "start": 181.06,
+          "end": 181.16,
+          "text": " you"
+        },
+        {
+          "start": 181.16,
+          "end": 181.3,
+          "text": " want"
+        },
+        {
+          "start": 181.3,
+          "end": 181.38,
+          "text": " to"
+        },
+        {
+          "start": 181.38,
+          "end": 181.56,
+          "text": " dig"
+        },
+        {
+          "start": 181.56,
+          "end": 181.94,
+          "text": " deeper"
+        },
+        {
+          "start": 181.94,
+          "end": 182.16,
+          "text": " into"
+        },
+        {
+          "start": 182.16,
+          "end": 182.38,
+          "text": " any"
+        },
+        {
+          "start": 182.38,
+          "end": 182.88,
+          "text": " particular"
+        },
+        {
+          "start": 182.88,
+          "end": 183.26,
+          "text": " point,"
+        }
+      ]
+    },
+    {
+      "start": 183.58,
+      "end": 186.46,
+      "text": " I definitely recommend checking the original sources as well.",
+      "words": [
+        {
+          "start": 183.58,
+          "end": 183.72,
+          "text": " I"
+        },
+        {
+          "start": 183.72,
+          "end": 184.12,
+          "text": " definitely"
+        },
+        {
+          "start": 184.12,
+          "end": 184.62,
+          "text": " recommend"
+        },
+        {
+          "start": 184.62,
+          "end": 184.96,
+          "text": " checking"
+        },
+        {
+          "start": 184.96,
+          "end": 185.2,
+          "text": " the"
+        },
+        {
+          "start": 185.2,
+          "end": 185.54,
+          "text": " original"
+        },
+        {
+          "start": 185.54,
+          "end": 186.0,
+          "text": " sources"
+        },
+        {
+          "start": 186.0,
+          "end": 186.24,
+          "text": " as"
+        },
+        {
+          "start": 186.24,
+          "end": 186.46,
+          "text": " well."
+        }
+      ]
+    }
+  ]
+}

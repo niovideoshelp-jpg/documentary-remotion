@@ -4,7 +4,7 @@ Framework final: Remotion, React e TypeScript.
 
 ## Estado
 
-Pré-produção. O pedido fornecido contém direção de arte, mas não contém o roteiro da narração, o áudio narrado ou o tema final. O storyboard e a implementação das cenas dependem desses materiais. Nenhum vídeo final foi produzido ainda.
+Áudio recebido: introdução Typhoon vs Rafale, inglês, 186,82775 segundos. Storyboard em STORYBOARD.md e montagem implementada em remotion-app. Revisão e exportação em andamento.
 
 ## Linguagem visual
 
@@ -46,3 +46,4 @@ Texto somente para nomes, datas, números, lugares e conceitos essenciais, sem r
 - Formato de entrega caso diferente de 1920×1080, 30 fps.
 
 Não inventar narrativa, estatísticas ou sincronização enquanto esses materiais não estiverem disponíveis.
+

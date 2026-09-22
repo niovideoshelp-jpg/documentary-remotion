@@ -1,0 +1,11 @@
+node_modules/
+.tools/
+.cache/
+out/
+*.log
+.env*
+assets-contact.jpg
+video-contact.jpg
+remotion-app/public/world.json
+/public/
+

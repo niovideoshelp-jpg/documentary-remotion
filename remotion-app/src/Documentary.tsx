@@ -1,126 +1,49 @@
 import React from "react";
-import {
-  AbsoluteFill,
-  Audio,
-  Sequence,
-  OffthreadVideo,
-  staticFile,
-  useCurrentFrame,
-  interpolate,
-} from "remotion";
-import {
-  TyphoonOpening,
-  MissionScene,
-  RafaleOpening,
-  CarrierScene,
-  RivalScene,
-} from "./scenes/AircraftScenes";
-import {
-  ConfigurationScene,
-  ScopeScene,
-  DossiersScene,
-} from "./scenes/ConfigurationScenes";
-import {
-  ContractsScene,
-  PackageScene,
-  SourcesScene,
-} from "./scenes/EditorialScenes";
-import { DocumentaryMap } from "./components/DocumentaryMap";
-import { Label, palette, progress, clamp } from "./components/Visuals";
-const fps = 30;
-const times = [
-  0, 7.12, 14.72, 24.2, 35.5, 41.64, 44.98, 58.68, 69.48, 79.94, 86.94, 102.54,
-  112.82, 121.4, 134.26, 143.72, 153.4, 160.64, 169.64, 180.72, 186.82775,
-];
-const frames = times.map((t) => Math.round(t * fps));
-frames[20] = 5605;
-const scenes = [
-  <TyphoonOpening />,
-  <MissionScene />,
-  <MissionScene ground />,
-  <RafaleOpening />,
-  <MissionScene rafale />,
-  <CarrierScene />,
-  <RivalScene />,
-  <DocumentaryMap
-    highlights={[
-      { country: "United Kingdom", at: 8 },
-      { country: "Germany", at: 12 },
-      { country: "Italy", at: 16 },
-      { country: "Spain", at: 20 },
-      { country: "France", at: 147 },
-    ]}
-    label="EUROPE / TWO INDUSTRIAL PATHS"
-  />,
-  <ContractsScene intro />,
-  <DossiersScene />,
-  <ConfigurationScene />,
-  <ConfigurationScene rafale />,
-  <ScopeScene />,
-  <ScopeScene future />,
-  <RivalScene baseline />,
-  <ContractsScene />,
-  <PackageScene />,
-  <ContractsScene offer />,
-  <SourcesScene />,
-  <AbsoluteFill>
-    <OffthreadVideo
-      src={staticFile("video/closing-formation.mp4")}
-      
-      muted
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-    />
-    <Label light x={130} y={900}>
-      TYPHOON × RAFALE / THE COMPARISON
-    </Label>
-  </AbsoluteFill>,
-];
-const Transition: React.FC<{ children: React.ReactNode; type: number }> = ({
-  children,
-  type,
-}) => {
-  const f = useCurrentFrame();
-  const p = progress(f, 0, 20);
-  const clip =
-    type % 3 === 0
-      ? `polygon(0 0,${p * 110}% 0,${p * 110 - 4}% 33%,${p * 110}% 67%,${p * 110 - 2}% 100%,0 100%)`
-      : type % 3 === 1
-        ? `inset(${(1 - p) * 100}% 0 0 0)`
-        : "none";
-  return (
-    <AbsoluteFill
-      style={{
-        clipPath: p >= 1 ? "none" : clip,
-        opacity: type % 3 === 2 ? p : 1,
-      }}
-    >
-      {children}
-    </AbsoluteFill>
-  );
-};
-export const Documentary: React.FC = () => {
-  const f = useCurrentFrame();
-  return (
-    <AbsoluteFill style={{ background: palette.ink }}>
-      <Audio src={staticFile("audio/intro.mp3")} />
-      {scenes.map((scene, i) => (
-        <Sequence
-          key={i}
-          from={frames[i]}
-          durationInFrames={Math.min(5605, frames[i + 1] + 20) - frames[i]}
-          name={`${String(i + 1).padStart(2, "0")} · ${["Typhoon", "Intercept", "Expanded role", "Rafale", "Multirole", "Naval variant", "European rivals", "European origins", "Contracts", "Reference scope", "FGR4 configuration", "F3R configuration", "Mature standards", "Later upgrades", "Comparison baseline", "Export packages", "Package components", "Offer and requirements", "Sources", "Closing"][i]}`}
-        >
-          <Transition type={i}>{scene}</Transition>
-        </Sequence>
-      ))}
-      <AbsoluteFill
-        style={{
-          background: "#151a1d",
-          opacity: interpolate(f, [5558, 5604], [0, 1], clamp),
-          pointerEvents: "none",
-        }}
-      />
-    </AbsoluteFill>
-  );
-};
+import { AbsoluteFill, Audio, staticFile } from "remotion";
+import { Grain } from "./components/Paper";
+import { C } from "./lib/theme";
+import { useT } from "./lib/time";
+import { S01Typhoon, S02Mission, S03Ground } from "./scenes/Open";
+import { S04Rafale, S05Missions } from "./scenes/Rafale";
+import { S06Rivals, S07Map, S08Approaches } from "./scenes/Europe";
+import { S09Fair, S10FGR4, S11RafaleC, S12Mature, S13Timeline } from "./scenes/Versions";
+import { S14Cases, S14Package, S15Deal, S16Sources } from "./scenes/Deals";
 
+/*
+ * Scenes run on narration time (seconds) and overlap: the later scene is drawn on
+ * top and owns the transition (tear, blot, whip, camera tilt). See STORYBOARD.md.
+ */
+export const SCENES: { id: string; from: number; to: number; C: React.FC }[] = [
+  { id: "01 Typhoon", from: 0, to: 7.95, C: S01Typhoon },
+  { id: "02 Original mission", from: 7.0, to: 15.8, C: S02Mission },
+  { id: "03 Ground role", from: 14.75, to: 24.85, C: S03Ground },
+  { id: "04 Rafale", from: 24.2, to: 36.0, C: S04Rafale },
+  { id: "05 Missions + carrier", from: 35.25, to: 45.9, C: S05Missions },
+  { id: "06 European rivals", from: 44.95, to: 58.9, C: S06Rivals },
+  { id: "07 Europe map + exports", from: 57.9, to: 74.6, C: S07Map },
+  { id: "08 Approaches", from: 73.55, to: 80.9, C: S08Approaches },
+  { id: "09 Fair comparison", from: 79.95, to: 87.85, C: S09Fair },
+  { id: "10 Typhoon FGR4", from: 86.9, to: 103.1, C: S10FGR4 },
+  { id: "11 Rafale C", from: 102.45, to: 113.7, C: S11RafaleC },
+  { id: "12 Mature standards", from: 112.75, to: 122.25, C: S12Mature },
+  { id: "13 Versions timeline", from: 121.3, to: 144.45, C: S13Timeline },
+  { id: "14 Case by case", from: 143.72, to: 150.4, C: S14Cases },
+  { id: "14b Package", from: 149.45, to: 161.6, C: S14Package },
+  { id: "15 Deal", from: 160.65, to: 170.6, C: S15Deal },
+  { id: "16 Sources + close", from: 169.7, to: 187, C: S16Sources },
+];
+
+export const Documentary: React.FC = () => {
+  const t = useT();
+  return (
+    <AbsoluteFill style={{ background: C.night }}>
+      <Audio src={staticFile("audio/intro.mp3")} />
+      {SCENES.filter((s) => t >= s.from && t < s.to).map((s) => (
+        <AbsoluteFill key={s.id}>
+          <s.C />
+        </AbsoluteFill>
+      ))}
+      <Grain opacity={0.14} />
+    </AbsoluteFill>
+  );
+};

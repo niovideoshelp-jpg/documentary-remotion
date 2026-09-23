@@ -58,7 +58,7 @@ export const Photo: React.FC<PhotoProps> = ({
   revealFrom = "left",
   opacity = 1,
   shadow = 1,
-  grade = "contrast(1.04) saturate(0.9)",
+  grade = "contrast(1.05) saturate(0.84) sepia(0.1)",
   children,
 }) => {
   if (reveal <= 0 || opacity <= 0) return null;
@@ -99,7 +99,7 @@ export const Photo: React.FC<PhotoProps> = ({
               position: "absolute",
               inset: 0,
               clipPath: roughRect(w, h, 0, 2.2, seed + "o", 16),
-              background: "#efeadf",
+              background: "#e9dfca",
             }}
           >
             <PrintTexture opacity={0.8} />
@@ -162,7 +162,7 @@ export const Cutout: React.FC<{
         filter: [
           shadow ? `drop-shadow(0 ${8 * shadow}px ${12 * shadow}px rgba(8,10,12,${0.35 * shadow}))` : "",
           blur ? `blur(${blur}px)` : "",
-          "contrast(1.03) saturate(0.92)",
+          "contrast(1.04) saturate(0.86) sepia(0.12) brightness(0.97)",
         ].join(" "),
         ...style,
       }}

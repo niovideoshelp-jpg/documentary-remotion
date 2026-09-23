@@ -1,4 +1,5 @@
 import React from "react";
+import { random, staticFile } from "remotion";
 import { C, F } from "../lib/theme";
 import { ease } from "../lib/time";
 
@@ -36,6 +37,7 @@ export const Display: React.FC<{
       color,
       textTransform: "uppercase",
       whiteSpace: "nowrap",
+      filter: "url(#ink)",
       ...style,
     }}
   >
@@ -60,6 +62,7 @@ export const Label: React.FC<{
       textTransform: "uppercase",
       color,
       whiteSpace: "nowrap",
+      filter: "url(#ink-fine)",
       ...style,
     }}
   >
@@ -100,7 +103,17 @@ export const At: React.FC<{ x: number; y: number; children: React.ReactNode; rot
   </div>
 );
 
-/** Strip of paper tape with a label on it (for place/configuration names). */
+/** Torn ends for a strip of tape (deterministic per label). */
+const tornEnds = (seed: string) => {
+  const pts: string[] = [];
+  const n = 7;
+  const j = (k: string) => 4 + random(seed + k) * 9;
+  for (let i = 0; i <= n; i++) pts.push(`${i % 2 ? j("l" + i) : j("l" + i) * 0.3}px ${(i / n) * 100}%`);
+  for (let i = n; i >= 0; i--) pts.push(`calc(100% - ${i % 2 ? j("r" + i) : j("r" + i) * 0.3}px) ${(i / n) * 100}%`);
+  return `polygon(${pts.join(",")})`;
+};
+
+/** A strip of real masking tape (or black cloth tape) carrying a label. */
 export const Tape: React.FC<{ children: React.ReactNode; p: number; rot?: number; dark?: boolean; size?: number }> = ({
   children,
   p,
@@ -110,20 +123,45 @@ export const Tape: React.FC<{ children: React.ReactNode; p: number; rot?: number
 }) => {
   if (p <= 0) return null;
   const e = ease.out(p);
+  const seed = String(children);
   return (
-    <div
-      style={{
-        display: "inline-block",
-        transform: `rotate(${rot}deg) scale(${0.92 + 0.08 * e})`,
-        clipPath: `inset(0 ${(1 - e) * 100}% 0 0)`,
-        background: dark ? C.ink : C.offWhite,
-        padding: "8px 18px 6px",
-        boxShadow: "0 3px 6px rgba(0,0,0,0.25)",
-      }}
-    >
-      <Label size={size} color={dark ? C.offWhite : C.ink} weight={600}>
-        {children}
-      </Label>
+    <div style={{ display: "inline-block", transform: `rotate(${rot}deg) scale(${0.94 + 0.06 * e})`, filter: "drop-shadow(0 2px 2px rgba(0,0,0,0.28))" }}>
+      <div
+        style={{
+          position: "relative",
+          clipPath: `${tornEnds(seed)}`,
+          padding: `${size * 0.3}px ${size * 0.85}px ${size * 0.22}px`,
+          background: dark ? "#1f1c19" : "#e3d4b2",
+          opacity: e,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url(${staticFile("gen/tape.jpg")})`,
+            backgroundSize: "256px",
+            mixBlendMode: dark ? "overlay" : "multiply",
+            opacity: dark ? 0.55 : 0.9,
+          }}
+        />
+        <div
+          style={{
+            position: "relative",
+            fontFamily: F.tape,
+            fontSize: size,
+            letterSpacing: "0.09em",
+            textTransform: "uppercase",
+            color: dark ? "#ece3d0" : "#2a2520",
+            whiteSpace: "nowrap",
+            clipPath: `inset(0 ${(1 - e) * 100}% 0 0)`,
+            filter: "url(#ink)",
+            opacity: 0.92,
+          }}
+        >
+          {children}
+        </div>
+      </div>
     </div>
   );
 };

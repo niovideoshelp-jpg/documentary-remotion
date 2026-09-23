@@ -4,7 +4,7 @@ import { Camera, Layer } from "../components/Camera";
 import { PaperGround, PrintTexture, Vignette } from "../components/Paper";
 import { Cutout, Photo } from "../components/Photo";
 import { At, Display, Label, Rise, Tape } from "../components/Type";
-import { ArrowHead, DrawPath, Stage, handLine } from "../components/Draw";
+import { ArrowHead, DrawPath, Stage, handLine, handLineEndAngle } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { Blueprint, Dimension, TitleBlock } from "../components/Blueprint";
 import { GraphPaper } from "./Open";
@@ -126,12 +126,17 @@ export const S05Missions: React.FC = () => {
           <Layer depth={0.95}>
             <Blueprint view="rafaleTop" x={620} y={560} width={560} rot={180} p={ramp(t, 35.4, 36.4, ease.linear)} color="#e7dfcf" lineWidth={1.3} />
             <Stage>
-              <DrawPath d={handLine(nose.x + 10, nose.y - 30, tgt.a.x - 250, tgt.a.y + 30, 0.1, "a")} p={a2a} color={C.offWhite} width={3.5} dash={12} />
-              <ArrowHead x={tgt.a.x - 250} y={tgt.a.y + 30} angle={-32} color={C.offWhite} p={a2a} />
-              <DrawPath d={handLine(nose.x + 20, nose.y, tgt.s.x - 260, tgt.s.y, -0.05, "s")} p={strike} color={C.offWhite} width={3.5} dash={12} />
-              <ArrowHead x={tgt.s.x - 260} y={tgt.s.y} angle={3} color={C.offWhite} p={strike} />
-              <DrawPath d={handLine(nose.x + 10, nose.y + 30, tgt.x.x - 230, tgt.x.y - 40, -0.1, "x")} p={ship} color={C.red} width={4} dash={12} />
-              <ArrowHead x={tgt.x.x - 230} y={tgt.x.y - 40} angle={36} color={C.red} p={ship} />
+              {/* one solid-headed vector per mission; heads follow each stroke's end tangent */}
+              {[
+                { p: a2a, x1: nose.x + 10, y1: nose.y - 30, x2: tgt.a.x - 250, y2: tgt.a.y + 40, bow: 0.1, seed: "a", color: C.offWhite },
+                { p: strike, x1: nose.x + 20, y1: nose.y, x2: tgt.s.x - 250, y2: tgt.s.y, bow: -0.05, seed: "s", color: C.offWhite },
+                { p: ship, x1: nose.x + 10, y1: nose.y + 30, x2: tgt.x.x - 220, y2: tgt.x.y - 50, bow: -0.1, seed: "x", color: "#d8483a" },
+              ].map((v) => (
+                <g key={v.seed}>
+                  <DrawPath d={handLine(v.x1, v.y1, v.x2, v.y2, v.bow, v.seed)} p={v.p} color={v.color} width={3.5} />
+                  <ArrowHead x={v.x2} y={v.y2} angle={handLineEndAngle(v.x1, v.y1, v.x2, v.y2, v.bow, v.seed)} color={v.color} p={ramp(v.p, 0.85, 1)} size={16} />
+                </g>
+              ))}
             </Stage>
           </Layer>
           <Layer depth={1.05}>

@@ -100,3 +100,15 @@ export const ArrowHead: React.FC<{ x: number; y: number; angle: number; size?: n
       strokeLinejoin="round"
     />
   );
+
+/** Direction (degrees) of a handLine at its end point, so arrow heads sit on the stroke. */
+export const handLineEndAngle = (x1: number, y1: number, x2: number, y2: number, bow = 0.08, seed = "l") => {
+  const mx = (x1 + x2) / 2;
+  const my = (y1 + y2) / 2;
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const k = bow * (0.7 + random(seed) * 0.6);
+  const cx = mx - dy * k;
+  const cy = my + dx * k;
+  return (Math.atan2(y2 - cy, x2 - cx) * 180) / Math.PI;
+};

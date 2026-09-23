@@ -43,7 +43,18 @@ export const Documentary: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: C.night }}>
       <Soundtrack />
-      <AbsoluteFill style={{ transform: `translate(${hx}px, ${hy}px) rotate(${hr}deg) scale(1.018)` }}>
+      {/* letterpress: slightly broken glyph edges, shared by all type */}
+      <svg width={0} height={0} style={{ position: "absolute" }}>
+        <filter id="ink" x="-5%" y="-10%" width="110%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves={2} seed={3} result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale={2.6} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+        <filter id="ink-fine" x="-5%" y="-10%" width="110%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves={1} seed={7} result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale={1.3} xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+      </svg>
+      <AbsoluteFill style={{ transform: `translate(${hx}px, ${hy}px) rotate(${hr}deg) scale(1.018)`, filter: "contrast(1.04) saturate(0.88) sepia(0.06)" }}>
         {SCENES.filter((s) => t >= s.from && t < s.to).map((s) => (
           <AbsoluteFill key={s.id}>
             <s.C />

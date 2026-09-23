@@ -2,7 +2,9 @@ import React from "react";
 import { AbsoluteFill, staticFile, useCurrentFrame, random } from "remotion";
 import { C } from "../lib/theme";
 
-const paper = staticFile("gen/paper.jpg");
+const paper = staticFile("gen/paper2.jpg");
+const sheet = staticFile("gen/sheet.jpg");
+const sheetDark = staticFile("gen/sheet-dark.jpg");
 
 /** Paper ground. `dark` is an ink-toned sheet for night/technical scenes. */
 export const PaperGround: React.FC<{ dark?: boolean; tint?: string; children?: React.ReactNode }> = ({
@@ -21,9 +23,11 @@ export const PaperGround: React.FC<{ dark?: boolean; tint?: string; children?: R
         backgroundImage: `url(${paper})`,
         backgroundSize: "1024px 1024px",
         mixBlendMode: dark ? "overlay" : "multiply",
-        opacity: dark ? 0.35 : 0.9,
+        opacity: dark ? 0.5 : 1,
       }}
     />
+    {/* creases, folds, stains, worn edges */}
+    <AbsoluteFill style={{ backgroundImage: `url(${dark ? sheetDark : sheet})`, backgroundSize: "cover", mixBlendMode: dark ? "overlay" : "multiply", opacity: dark ? 0.9 : 0.75 }} />
     {children}
     <Vignette strength={dark ? 0.55 : 0.28} />
   </AbsoluteFill>

@@ -9,6 +9,7 @@ const faces: [string, string, FontFaceDescriptors?][] = [
   ["Fira Sans Condensed", "fonts/FiraSansCondensed-SemiBold.ttf", { weight: "600" }],
   ["Kaushan Script", "fonts/KaushanScript-Regular.ttf"],
   ["Oswald", "fonts/Oswald.ttf", { weight: "200 700" }],
+  ["Fjalla One", "fonts/FjallaOne-Regular.ttf"],
 ];
 
 if (typeof document !== "undefined") {

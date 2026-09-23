@@ -1,7 +1,7 @@
 import React from "react";
-import { AbsoluteFill } from "remotion";
+import { AbsoluteFill, staticFile } from "remotion";
 import { Camera, Layer } from "../components/Camera";
-import { PaperGround, PrintTexture } from "../components/Paper";
+import { PaperGround } from "../components/Paper";
 import { Cutout, roughRect } from "../components/Photo";
 import { Blueprint } from "../components/Blueprint";
 import { At, Display, Label, Rise } from "../components/Type";
@@ -118,20 +118,43 @@ const tearEdge = (w: number, h: number, right: boolean) => {
   return pts.join(",");
 };
 
-/** An illustrative procurement sheet (generic prop, no real terms). */
-const TenderSheet: React.FC<{ w: number; h: number }> = ({ w, h }) => (
-  <div style={{ position: "absolute", inset: 0, background: "#efe9dc", clipPath: roughRect(w, h, 0, 2, "tender") }}>
-    <PrintTexture opacity={0.9} />
-    <div style={{ position: "absolute", left: 44, top: 46, right: 44 }}>
-      <div style={{ fontFamily: F.label, fontWeight: 600, fontSize: 18, letterSpacing: "0.3em", color: C.inkSoft }}>REQUEST FOR PROPOSAL</div>
-      <div style={{ fontFamily: F.display, fontSize: 78, color: C.ink, marginTop: 10, lineHeight: 0.95 }}>FIGHTER{"\n"}</div>
-      <div style={{ fontFamily: F.display, fontSize: 78, color: C.red, lineHeight: 0.95 }}>CONTRACT</div>
-      {Array.from({ length: 9 }, (_, i) => (
-        <div key={i} style={{ height: 11, marginTop: i === 0 ? 34 : 16, width: `${[92, 80, 88, 60, 94, 70, 85, 50, 76][i]}%`, background: i === 3 || i === 7 ? C.ink : "#b9b2a4", opacity: i === 3 || i === 7 ? 0.85 : 0.7 }} />
-      ))}
+/** An illustrative procurement sheet (generic prop, no real terms): typed, folded, marked up. */
+const TenderSheet: React.FC<{ w: number; h: number }> = ({ w, h }) => {
+  const bars = [0.94, 0.82, 0.9, 0.62, 0.96, 0.7, 0.86, 0.5, 0.78, 0.66];
+  return (
+    <div style={{ position: "absolute", inset: 0, background: "#e7dcc3", clipPath: roughRect(w, h, 0, 2.4, "tender") }}>
+      <AbsoluteFill style={{ backgroundImage: `url(${staticFile("gen/paper2.jpg")})`, backgroundSize: "700px", mixBlendMode: "multiply" }} />
+      <AbsoluteFill style={{ backgroundImage: `url(${staticFile("gen/sheet.jpg")})`, backgroundSize: `${w * 3.2}px ${h * 1.6}px`, backgroundPosition: "38% 20%", mixBlendMode: "multiply", opacity: 0.9 }} />
+      {/* horizontal fold: the sheet came out of an envelope */}
+      <div style={{ position: "absolute", left: 0, right: 0, top: h * 0.36, height: 2, background: "rgba(60,45,30,0.25)", boxShadow: "0 3px 6px rgba(255,250,235,0.5)" }} />
+      <div style={{ position: "absolute", left: 40, top: 40, right: 40, color: "#2a2520" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontFamily: F.label, fontWeight: 600, fontSize: 15, letterSpacing: "0.28em", opacity: 0.75, filter: "url(#ink-fine)" }}>
+          <span>REQUEST FOR PROPOSAL</span>
+          <span>REF. — / —</span>
+        </div>
+        <div style={{ height: 2, background: "#2a2520", opacity: 0.7, margin: "10px 0 14px" }} />
+        <div style={{ fontFamily: F.condensed, fontSize: 84, lineHeight: 0.9, letterSpacing: "0.01em", filter: "url(#ink)" }}>MULTIROLE</div>
+        <div style={{ fontFamily: F.condensed, fontSize: 84, lineHeight: 0.9, letterSpacing: "0.01em", filter: "url(#ink)" }}>FIGHTER</div>
+        <div style={{ fontFamily: F.tape, fontSize: 30, letterSpacing: "0.14em", marginTop: 8, color: "#8e2a1c", filter: "url(#ink)" }}>SUPPLY CONTRACT</div>
+        {bars.map((wd, i) => (
+          <div
+            key={i}
+            style={{
+              height: i === 3 || i === 7 ? 13 : 7,
+              marginTop: i === 0 ? 30 : 15,
+              width: `${wd * 100}%`,
+              background: i === 3 || i === 7 ? "#1d1a17" : "#7d7466",
+              opacity: i === 3 || i === 7 ? 0.9 : 0.55,
+              borderRadius: 2,
+              filter: "url(#ink)",
+              transform: `rotate(${(i % 3) * 0.15 - 0.15}deg)`,
+            }}
+          />
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 /* ------------------------------------------------------------------ S07
  * 57.9–75.0 "The Typhoon grew out of a joint program involving four European
@@ -174,7 +197,7 @@ export const S07Map: React.FC = () => {
   const inDim = 1 - ramp(t, 57.9, 58.9, ease.inOut);
   const links = ramp(t, 62.2, 63.0);
   // the Eurofighter node stays visible while Paris is linked to it and breaks away
-  const nodeP = Math.max(links * (1 - ramp(t, 63.3, 64.0)), ramp(t, 66.9, 67.3) * (1 - ramp(t, 69.3, 69.9)));
+  const nodeP = links * (1 - ramp(t, 63.3, 64.0));
   const linksOut = ramp(t, 63.3, 64.0);
   const paris = ramp(t, 66.95, 67.4);
   const routes = (i: number, t0: number) => ramp(t, t0 + i * 0.16, t0 + i * 0.16 + 0.9, ease.soft);
@@ -214,31 +237,6 @@ export const S07Map: React.FC = () => {
                 </text>
               </g>
             )}
-            {/* Paris ↔ the joint company: the link forms, then snaps on "go its own way" */}
-            {(() => {
-              const form = ramp(t, 67.0, 67.7, ease.soft);
-              const snap = ramp(t, 67.95, 68.6, ease.out);
-              const mid = [(parisXY[0] + munich[0]) / 2, (parisXY[1] + munich[1]) / 2];
-              const reach = form * (1 - snap * 0.85);
-              const fade = 1 - ramp(t, 69.3, 69.9);
-              if (form <= 0 || fade <= 0) return null;
-              const end = (from: [number, number]) => [from[0] + (mid[0] - from[0]) * reach, from[1] + (mid[1] - from[1]) * reach];
-              const [ax, ay] = end(parisXY);
-              const [bx, by] = end(munich);
-              const flash = snap > 0 ? Math.sin(Math.min(1, snap * 1.6) * Math.PI) : 0;
-              return (
-                <g opacity={fade}>
-                  <line x1={parisXY[0]} y1={parisXY[1]} x2={ax} y2={ay} stroke="#f7f1e6" strokeWidth={3 / z} strokeDasharray={`${10 / z} ${7 / z}`} />
-                  <line x1={munich[0]} y1={munich[1]} x2={bx} y2={by} stroke="#f7f1e6" strokeWidth={3 / z} strokeDasharray={`${10 / z} ${7 / z}`} />
-                  {flash > 0 && (
-                    <g transform={`translate(${mid[0]},${mid[1]}) scale(${1 / z})`} opacity={flash}>
-                      <line x1={-16} y1={-16} x2={16} y2={16} stroke={C.red} strokeWidth={6} strokeLinecap="round" />
-                      <line x1={16} y1={-16} x2={-16} y2={16} stroke={C.red} strokeWidth={6} strokeLinecap="round" />
-                    </g>
-                  )}
-                </g>
-              );
-            })()}
             {/* export routes: Typhoon from the consortium, Rafale from France */}
             {TYPHOON_TO.map((k, i) => (
               <DrawPath key={"ty" + k} d={arc(munich, P(k), 0.18)} p={routes(i, 70.4)} q={ramp(t, 74.3, 75.0)} color="#f7f1e6" width={2.4 / z} dash={10 / z} />

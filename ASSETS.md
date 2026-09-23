@@ -89,3 +89,23 @@ Part 1 has no music and no jet-engine effects; the effects are the ElevenLabs se
 - src-photos/cdg-2019.jpg — French aircraft carrier Charles de Gaulle (R91) underway in the Red Sea on 15 April 2019 (190415-N-IL409-0017).JPG — U.S. Navy — Public domain.
 - src-photos/cdg-2016.jpg — French aircraft carrier Charles de Gaulle (R91) underway in the Mediterranean Sea on 25 October 2016.JPG — U.S. Navy — Public domain.
 - src-photos/rafale-india-takeoff.jpg (two-seat Rafale RB005, used for "B") — see table above.
+
+## Part 2 additions
+
+Photos (Wikimedia Commons, `public/src-photos`):
+- asraam-launch.jpg — RAF Typhoon Firing ASRAAM Missile MOD 45155899.jpg — Geoffrey Lee — OGL v1.0.
+- aasm.jpg — Aasm5.jpg — Killersurprise64 — Public domain.
+- talios.jpg — MBDA Meteor et Thales Talios.jpg — Tiraden — CC BY-SA 4.0.
+- stormshadow.jpg — Storm Shadow-SCALP-EG long-range general-purpose cruise missile, RAF Museum, London, Ank Kumar , Infosys 01.jpg — Ank Kumar — CC BY-SA 4.0.
+- rafale-scalp.jpg — Rafale with two Strom Shadow Scalp Demonstrators.jpg — Boevaya mashina — CC BY-SA 4.0.
+- brimstone.jpg — The Brimstone Missile fitted to a Tornado GR4. MOD 45159236.jpg — Sergeant Laura Bibby — OGL v1.0.
+- rafale-m-launch.jpg — French Rafale M launch from USS Enterprise.jpg — Brandon Morris — Public domain.
+- rafale-weaponry.jpg — Dassault Rafale weaponry DSC04186.JPG — David Monniaux — CC BY-SA 3.0.
+- stormshadow-side.jpg — Storm Shadow p1220865.jpg — Copyright © 2007 David Monniaux — CC BY-SA 3.0.
+- cdg-2016.jpg / cdg-2019.jpg / typhoon-leuchars.jpg / rafale-india-takeoff.jpg / exocet.jpg — see above.
+
+Video clips (cut in CI by `scripts/media.py` → `public/video/p2`, sources on Wikimedia Commons):
+- pv-impact — "Royal Air Force Typhoon dropping a Paveway IV precision guided bomb" — UK Ministry of Defence — CC BY 4.0.
+- tr-typhoon-taxi — "Atlantic Trident 2017 - Ready to fight" — U.S. Air Force — Public domain.
+
+3D models (Typhoon, Rafale) are low-poly reconstructions built for this edit from published dimensions; towed decoy, flares, jamming and threat tracks are illustrative animations, not recorded data.

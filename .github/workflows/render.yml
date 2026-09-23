@@ -48,8 +48,12 @@ jobs:
           mkdir -p out/pub
           npx remotion render TyphoonVsRafaleIntro out/intro.mp4 --codec=h264 --crf=19 --concurrency=4 --audio-bitrate=320k 2>&1 | tee out/pub/render.log | grep -v "Rendered|Encoded" || { cd out/pub; tail -200 render.log > tail.log; rm render.log; git init -q -b render-output && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render FAILED ${GITHUB_SHA::7}" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" render-output; exit 1; }
           rm out/pub/render.log
-          # master: narration-led mix to YouTube loudness (-14 LUFS, -1.5 dBTP)
-          ffmpeg -y -loglevel error -i out/intro.mp4 -c:v copy -af loudnorm=I=-14:TP=-1.5:LRA=11 -ar 48000 -c:a aac -b:a 320k out/master.mp4
+          # master: one fixed gain to -14 LUFS (linear: the voice/SFX balance of the mix is kept;
+          # dynamic loudnorm would lift the pauses and push the effects up), peak limiter only
+          I=$(ffmpeg -hide_banner -i out/intro.mp4 -vn -af ebur128 -f null - 2>&1 | grep -A2 "Integrated loudness" | grep -oE "I: +-?[0-9.]+" | grep -oE "-?[0-9.]+$")
+          G=$(python3 -c "print(round(-14 - ($I), 2))")
+          echo "integrated $I LUFS, gain $G dB"
+          ffmpeg -y -loglevel error -i out/intro.mp4 -c:v copy -af "volume=${G}dB,alimiter=limit=0.84:attack=3:release=60:level=false" -ar 48000 -c:a aac -b:a 320k out/master.mp4
           mv out/master.mp4 out/intro.mp4
           ls -la out/intro.mp4
           # git refuses files over 100 MB: ship 90 MB parts, joined locally with cat

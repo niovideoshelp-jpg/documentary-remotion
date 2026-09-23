@@ -1,7 +1,6 @@
 import React from "react";
 import { Audio, Sequence, interpolate, staticFile } from "remotion";
-import speech from "./data/speech.json";
-import { FPS, DURATION } from "./lib/time";
+import { FPS } from "./lib/time";
 
 /*
  * Sound design.
@@ -21,7 +20,9 @@ const PEAK: Record<string, number> = {
 
 // [visual event time, file, gain, start-mode duration (textures only)]
 type Cue = [at: number, file: string, vol: number, dur?: number];
-const SFX_GAIN = 0.5;
+const SFX_GAIN = 0.25;
+// engine noise and impacts carry far more energy than paper/pencil sounds: pull them further down
+const HEAVY: Record<string, number> = { "jet-flyby": 0.3, afterburner: 0.3, carrier: 0.35, bomb: 0.4, "boom-1": 0.5, "boom-2": 0.5 };
 
 const CUES: Cue[] = [
   // S01 Typhoon: lift, title, fly-off
@@ -62,33 +63,8 @@ const CUES: Cue[] = [
   [170.2, "whoosh-3", 0.16], [170.3, "docs", 0.22], [177.45, "marker-2", 0.16], [179.9, "marker-1", 0.16], [181.05, "whoosh-2", 0.2], [182.6, "jet-flyby", 0.2],
 ];
 
-const SPEECH = speech as [number, number][];
-/** Music gain: low under the voice, lifting in the pauses, smoothed at the edges. */
-const duck = (t: number) => {
-  let d = Infinity;
-  for (const [s, e] of SPEECH) {
-    if (t >= s - 0.15 && t <= e + 0.25) return 0.15;
-    d = Math.min(d, Math.abs(t - (s - 0.15)), Math.abs(t - (e + 0.25)));
-  }
-  return 0.15 + 0.12 * Math.min(1, d / 0.6);
-};
-
-const Music: React.FC<{ file: string; from: number; to: number; fadeIn: number; fadeOut: number; trim?: number }> = ({ file, from, to, fadeIn, fadeOut, trim = 0 }) => (
-  <Sequence from={Math.round(from * FPS)} durationInFrames={Math.round((to - from) * FPS)} layout="none">
-    <Audio
-      src={staticFile(`music/${file}.mp3`)}
-      startFrom={Math.round(trim * FPS)}
-      volume={(f) => {
-        const t = from + f / FPS;
-        const env = interpolate(t, [from, from + fadeIn, to - fadeOut, to], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-        return env * duck(t);
-      }}
-    />
-  </Sequence>
-);
-
 const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, v, dur] }) => {
-  const vol = v * SFX_GAIN;
+  const vol = v * SFX_GAIN * (HEAVY[file] ?? 1);
   const start = dur ? at : at - (PEAK[file] ?? 0);
   const frame = Math.round(start * FPS);
   // a cue that would start before 0 is trimmed instead of shifted
@@ -108,9 +84,7 @@ const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, v, dur] }) => {
 export const Soundtrack: React.FC = () => (
   <>
     <Audio src={staticFile("audio/intro.mp3")} />
-    <Music file="doc-a" from={0} to={121.6} fadeIn={1.5} fadeOut={2.2} />
-    <Music file="doc-b" from={119.4} to={DURATION / FPS} fadeIn={2.2} fadeOut={1.8} trim={82} />
-    <Audio src={staticFile("sfx/projector.mp3")} loop volume={0.018} />
+    {/* no music bed: the owner adds their own score */}
     {CUES.map((c, i) => (
       <SfxCue key={i} cue={c} />
     ))}

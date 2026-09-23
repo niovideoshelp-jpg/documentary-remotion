@@ -39,8 +39,8 @@ export const S04Rafale: React.FC = () => {
   const camS = keys(t, [[24.2, 1.08], [27.9, 1.0], [29.5, 1.06], [32.0, 1.0], [35.9, 1.05]], ease.soft);
   const camX = keys(t, [[24.2, 0], [29.5, -120], [32.0, 0], [35.9, 60]], ease.soft);
   const camY = keys(t, [[24.2, 0], [29.5, -130], [32.0, 40], [35.9, 60]], ease.soft);
-  const px = lerp(W / 2, 1560, back);
-  const py = lerp(H / 2, 610, back);
+  const px = lerp(W / 2, 1440, back);
+  const py = lerp(H / 2, 560, back);
   const printOut = ramp(t, 32.3, 32.8, ease.inOut);
   const ps = lerp(1, 0.27, back);
   return (

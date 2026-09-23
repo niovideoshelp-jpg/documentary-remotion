@@ -125,13 +125,13 @@ export const Tape: React.FC<{ children: React.ReactNode; p: number; rot?: number
   const e = ease.out(p);
   const seed = String(children);
   return (
-    <div style={{ display: "inline-block", transform: `rotate(${rot}deg) scale(${0.94 + 0.06 * e})`, filter: "drop-shadow(0 2px 2px rgba(0,0,0,0.28))" }}>
+    <div style={{ display: "inline-block", transform: `rotate(${rot}deg) scale(${0.94 + 0.06 * e})`, filter: "drop-shadow(0 3px 3px rgba(20,14,8,0.45)) drop-shadow(0 0 1px rgba(20,14,8,0.35))" }}>
       <div
         style={{
           position: "relative",
           clipPath: `${tornEnds(seed)}`,
           padding: `${size * 0.3}px ${size * 0.85}px ${size * 0.22}px`,
-          background: dark ? "#1f1c19" : "#e3d4b2",
+          background: dark ? "#1f1c19" : "#f3ead6",
           opacity: e,
         }}
       >
@@ -142,7 +142,7 @@ export const Tape: React.FC<{ children: React.ReactNode; p: number; rot?: number
             backgroundImage: `url(${staticFile("gen/tape.jpg")})`,
             backgroundSize: "256px",
             mixBlendMode: dark ? "overlay" : "multiply",
-            opacity: dark ? 0.55 : 0.9,
+            opacity: dark ? 0.55 : 0.55,
           }}
         />
         <div
@@ -152,11 +152,11 @@ export const Tape: React.FC<{ children: React.ReactNode; p: number; rot?: number
             fontSize: size,
             letterSpacing: "0.09em",
             textTransform: "uppercase",
-            color: dark ? "#ece3d0" : "#2a2520",
+            color: dark ? "#f1e9d8" : "#1a1612",
             whiteSpace: "nowrap",
             clipPath: `inset(0 ${(1 - e) * 100}% 0 0)`,
             filter: "url(#ink)",
-            opacity: 0.92,
+            opacity: 0.96,
           }}
         >
           {children}

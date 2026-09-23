@@ -90,7 +90,7 @@ export const S01Typhoon: React.FC = () => {
           </Stage>
         </Layer>
       </Camera>
-      <At x={W / 2} y={110}>
+      <At x={330} y={H - 170}>
         <Rise p={ramp(t, 5.75, 6.3)} q={ramp(t, 7.0, 7.4)}>
           <Tape p={1} dark>
             Air combat

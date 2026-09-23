@@ -5,12 +5,12 @@ import { PaperGround, PrintTexture, Vignette } from "../components/Paper";
 import { Photo } from "../components/Photo";
 import { At, Label, Rise, Tape } from "../components/Type";
 import { BlotReveal, TearReveal } from "../components/Transitions";
-import { Blueprint } from "../components/Blueprint";
 import { KeyTitle, springIn } from "../components/AnimeText";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
 import { C, F, W, H } from "../lib/theme";
 import { ease, keys, ramp, useT } from "../lib/time";
 import { Check, CirclePhoto, ClipFull, Strike } from "../part1/kit";
+import { Jet3D } from "../components/Jet3D";
 
 /* Q14 176.4–189.5 "more versatile" doesn't settle it; the upgraded Typhoon FGR4 has a broad arsenal too. */
 export const Q14Versatile: React.FC = () => {
@@ -153,9 +153,9 @@ export const Q16Families: React.FC = () => {
   const t = useT();
   const glowM = ramp(t, 203.6, 204.2);
   const rafale = [
-    { src: "photos/rafale-landing.jpg", tag: "C", pos: "58% 58%", zoom: 1.5, at: 205.4 },
-    { src: "src-photos/rafale-india-takeoff.jpg", tag: "B", pos: "55% 45%", zoom: 1.3, at: 205.6 },
-    { src: "src-photos/rafale-m-flight.jpg", tag: "M", pos: "50% 50%", zoom: 1.25, at: 205.8 },
+    { src: "photos/rafale-landing.jpg", tag: "C", pos: "58% 58%", zoom: 1.5, at: 201.0 },
+    { src: "src-photos/rafale-india-takeoff.jpg", tag: "B", pos: "55% 45%", zoom: 1.3, at: 201.3 },
+    { src: "src-photos/rafale-m-flight.jpg", tag: "M", pos: "50% 50%", zoom: 1.25, at: 201.6 },
   ];
   return (
     <BlotReveal t={t} start={200.4} dur={0.7} cx={W / 2} cy={H / 2}>
@@ -185,8 +185,8 @@ export const Q16Families: React.FC = () => {
                 Typhoon
               </Label>
             </At>
-            <CirclePhoto src="src-photos/typhoon-front.jpg" x={720} y={830} d={240} p={springIn(t, 206.2, 0.9)} pos="50% 45%" zoom={1.3} />
-            <CirclePhoto src="src-photos/typhoon-side.jpg" x={1100} y={830} d={240} p={springIn(t, 206.4, 0.9)} pos="50% 50%" zoom={1.2} />
+            <CirclePhoto src="src-photos/typhoon-front.jpg" x={720} y={830} d={240} p={springIn(t, 202.0, 0.9)} pos="50% 45%" zoom={1.3} />
+            <CirclePhoto src="src-photos/typhoon-side.jpg" x={1100} y={830} d={240} p={springIn(t, 202.3, 0.9)} pos="50% 50%" zoom={1.2} />
           </Layer>
         </Camera>
       </PaperGround>
@@ -240,9 +240,19 @@ export const Q17Naval: React.FC = () => {
             <Camera s={keys(t, [[214.7, 1.06], [226.9, 1.0]], ease.soft)}>
               <Layer>
                 <AbsoluteFill style={{ opacity: 1 - need * 0.8, filter: need > 0 ? `blur(${need * 4}px)` : undefined }}>
-                  <Blueprint view="rafaleTop" x={560} y={470} width={520} p={ramp(t, 214.8, 216.2, ease.linear)} lineWidth={2} label="Rafale M" />
+                  <Jet3D cam={{ yaw: 90, pitch: 88, zoom: 0.4 + 0.6 * springIn(t, 214.9, 1.0), focus: 0 }} cx={560} cy={470} scale={36} model="rafale" sensor={false} />
+                  <At x={560} y={760}>
+                    <Label size={34} color={C.ink} weight={700} style={{ letterSpacing: "0.32em", opacity: ramp(t, 215.3, 215.7) }}>
+                      Rafale M
+                    </Label>
+                  </At>
                   <Check x={820} y={260} p={ramp(t, 215.4, 215.8)} size={80} />
-                  <Blueprint view="typhoonTop" x={1360} y={470} width={560} p={ramp(t, 215.2, 216.6, ease.linear)} lineWidth={2} label="Typhoon" />
+                  <Jet3D cam={{ yaw: 90, pitch: 88, zoom: 0.4 + 0.6 * springIn(t, 215.3, 1.0), focus: 0 }} cx={1360} cy={470} scale={36} model="typhoon" sensor={false} />
+                  <At x={1360} y={760}>
+                    <Label size={34} color={C.ink} weight={700} style={{ letterSpacing: "0.32em", opacity: ramp(t, 215.7, 216.1) }}>
+                      Typhoon
+                    </Label>
+                  </At>
                   <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
                     {ramp(t, 216.6, 217.0) > 0 && (
                       <g stroke={C.red} strokeWidth={12} strokeLinecap="round" opacity={ramp(t, 216.6, 217.0)} filter="url(#ink)">
@@ -298,15 +308,15 @@ export const Q18Land: React.FC = () => {
             <KeyTitle text="Rafale C" t={t} at={230.3} size={100} neon="white" />
           </At>
         </AbsoluteFill>
-        <AbsoluteFill style={{ clipPath: `inset(0 0 0 ${100 - 50 * ramp(t, 232.8, 233.5, ease.inOut)}%)` }}>
-          <AbsoluteFill style={{ left: "25%" }}>
-            <ClipFull src="p2/tr-typhoon-to" t={t} from={232.8} to={235.2} clipDur={4.5} trim={1.8} />
+        <AbsoluteFill style={{ clipPath: "inset(0 0 0 50%)" }}>
+          <AbsoluteFill style={{ left: "25%", filter: `blur(${(1 - ramp(t, 233.0, 233.6)) * 6}px) brightness(${0.45 + 0.55 * ramp(t, 233.0, 233.6)})` }}>
+            <ClipFull src="p2/tr-typhoon-to" t={t} from={227.0} to={235.2} clipDur={4.5} trim={0.6} />
           </AbsoluteFill>
           <At x={W * 0.75} y={H - 170}>
             <KeyTitle text="Typhoon" t={t} at={233.8} size={100} neon="white" />
           </At>
         </AbsoluteFill>
-        <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 4, marginLeft: -2, background: C.offWhite, opacity: ramp(t, 232.8, 233.5) }} />
+        <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 4, marginLeft: -2, background: C.offWhite, opacity: 0.9 }} />
         <At x={W / 2} y={110}>
           <Rise p={ramp(t, 232.3, 232.8)}>
             <Tape p={1} size={34}>

@@ -167,14 +167,14 @@ export const Q03Dass: React.FC = () => {
   const t = useT();
   const cam = useJetCamera(t, 24.8, { yaw: 64, pitch: 22, zoom: 0.84, focus: 0 }, [
     { at: 0, to: { yaw: 36, pitch: 24 }, dur: 9.2, ease: "linear" },
-    { at: 9.4, to: { yaw: -142, pitch: 17, zoom: 0.6, focus: 1 }, dur: 2.4, ease: "inOutCubic" },
+    { at: 9.4, to: { yaw: -138, pitch: 16, zoom: 0.95, focus: 1 }, dur: 2.4, ease: "inOutCubic" },
   ]);
   const CX = 860;
   const CY = 590;
   const SC = 58;
   const emitter: [number, number] = [2050, 80];
-  const L = 30 * ease.inOut(ramp(t, 35.4, 37.6));
-  const cable = (s: number): V => [DECOY_EXIT[0] - L * s, DECOY_EXIT[1] + 0.8 * s * (L / 30), DECOY_EXIT[2] - 1.8 * Math.sin((s * Math.PI) / 2) * (L / 30)];
+  const L = 16 * ease.inOut(ramp(t, 35.4, 37.6));
+  const cable = (s: number): V => [DECOY_EXIT[0] - L * s, DECOY_EXIT[1] + 0.5 * s * (L / 16), DECOY_EXIT[2] - 1.1 * Math.sin((s * Math.PI) / 2) * (L / 16)];
   const toDecoy = ramp(t, 37.5, 38.2, ease.inOut);
   return (
     <TearReveal t={t} start={24.8} dur={0.7} dir="rtl">
@@ -186,7 +186,7 @@ export const Q03Dass: React.FC = () => {
           scale={SC}
           model="typhoon"
           sensor={false}
-          focusPt={[-15, 5, -1]}
+          focusPt={[-11, 4.2, -0.8]}
           overlay={(P) => {
             const c = P([0, 0, 0]);
             const pods = [P([-5, 5.47, -0.3]), P([-5, -5.47, -0.3])];
@@ -250,7 +250,7 @@ export const Q03Dass: React.FC = () => {
         <At x={W / 2} y={130}>
           <KeyTitle text="RAF Typhoon" t={t} at={34.5} size={80} />
         </At>
-        <At x={1420} y={880}>
+        <At x={W / 2} y={960}>
           <Rise p={ramp(t, 37.2, 37.7)}>
             <Tape p={1} size={36} dark>
               Towed decoy
@@ -280,7 +280,7 @@ export const Q04Docs: React.FC = () => {
       <PaperGround>
         <Camera s={keys(t, [[38.6, 1.08], [45.4, 1.0], [48.4, 1.06], [59.2, 1.0]], ease.soft)}>
           <Layer>
-            <AbsoluteFill style={{ ...recede(back, 6, 0.6, 0.1), transformOrigin: "960px 560px" }}>
+            <AbsoluteFill style={{ ...recede(back, 6, 0.6, 0.1), opacity: 1 - back * 0.9, transformOrigin: "960px 560px" }}>
               <RedactedDoc x={640} y={590} w={560} h={740} p={ramp(t, 38.9, 39.5)} redact={redact} title="SPECTRA" rot={-3} open={[0, 1, 2]} highlight={hl} />
               <RedactedDoc x={1280} y={600} w={560} h={740} p={ramp(t, 39.2, 39.8)} redact={redact} title="DASS" rot={2.5} open={[0, 1, 2]} highlight={hl} />
               <At x={W / 2} y={130}>
@@ -404,7 +404,7 @@ export const Q06Survive: React.FC = () => {
           <Layer>
             <At x={W / 2} y={lerp(520, 150, up)}>
               <div style={{ transform: `scale(${lerp(1.5, 0.72, up)})` }}>
-                <KeyTitle text="Invulnerable" t={t} at={73.4} size={120} />
+                <KeyTitle text="Invulnerable" t={t} at={72.4} size={120} />
               </div>
             </At>
             <Strike x1={W / 2 - lerp(470, 225, up)} x2={W / 2 + lerp(470, 225, up)} y={lerp(520, 150, up)} p={ramp(t, 74.2, 74.7)} width={lerp(16, 9, up)} />

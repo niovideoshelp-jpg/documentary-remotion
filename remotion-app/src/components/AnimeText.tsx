@@ -29,6 +29,9 @@ const useSeekedTimeline = (build: (tl: Timeline, root: HTMLElement) => void, ms:
 };
 
 type Glow = "red" | "white" | undefined;
+/** Dark halo under light type: keeps words readable over bright skies and photos. */
+export const LEGIBLE = "drop-shadow(0 2px 2px rgba(0,0,0,0.7)) drop-shadow(0 0 16px rgba(0,0,0,0.55))";
+
 const glowShadow = (g: Glow) =>
   g === "red"
     ? "0 0 6px rgba(255,110,80,0.55), 0 0 18px rgba(230,70,45,0.35), 0 0 42px rgba(200,50,30,0.18)"
@@ -76,7 +79,7 @@ export const KeyTitle: React.FC<{
     whiteSpace: "nowrap",
   };
   return (
-    <div ref={ref} style={{ position: "relative", display: "inline-block", opacity: o, ...style }}>
+    <div ref={ref} style={{ position: "relative", display: "inline-block", opacity: o, filter: LEGIBLE, ...style }}>
       {/* outline (or solid) letters */}
       <div style={{ ...base, color: fill ? "transparent" : color, WebkitTextStroke: fill ? `${Math.max(1.5, size / 90)}px ${color}` : undefined, filter: "url(#ink)" }}>
         {letters.map((ch, i) => (

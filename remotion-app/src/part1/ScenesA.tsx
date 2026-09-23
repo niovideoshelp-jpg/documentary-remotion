@@ -10,7 +10,7 @@ import { KeyTitle, recede, springIn } from "../components/AnimeText";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
 import { C, W, H } from "../lib/theme";
 import { ease, keys, ramp, useT } from "../lib/time";
-import { Balance, Check, ClipFull, Strike } from "./kit";
+import { Check, CirclePhoto, ClipFull, Fader, Strike } from "./kit";
 
 /* P01 0–8.4 "Back in the 1980s, France, the UK, Germany, Italy and Spain were discussing
  * the development of a new European fighter." Five countries light up as they are named. */
@@ -33,7 +33,7 @@ export const P01Eighties: React.FC = () => {
       <WorldMap t={t} view={viewAt(lon, lat, z)} highlights={FIVE} overlay={<AbsoluteFill style={{ background: C.night, opacity: 0.25 + title * 0.55 }} />} />
       <At x={W / 2} y={H / 2}>
         <div style={{ opacity: title }}>
-          <KeyTitle text="1980s" t={t} at={0.35} size={260} fill neon="white" />
+          <KeyTitle text="1980" t={t} at={0.35} size={260} fill neon="white" />
         </div>
       </At>
       <At x={W / 2} y={H - 120}>
@@ -91,43 +91,44 @@ export const P02Agreement: React.FC = () => {
   );
 };
 
-/* P03 15.4–32.0 priorities: France balanced and lighter; the four lean to air superiority. */
+/* P03 15.4–32.0 priorities as a mixing desk: France keeps air and ground level (and lighter);
+ * the four push air superiority to the top. */
 export const P03Priorities: React.FC = () => {
   const t = useT();
-  const wobble = Math.sin(t * 5) * 6 * (1 - ramp(t, 16.2, 18.8));
-  const frTilt = keys(t, [[18.8, 8], [22.3, 0]], ease.inOut) + wobble;
-  const fourTilt = keys(t, [[25.5, 0], [30.6, -16]], ease.inOut);
+  // France: the two channels hunt for a mix, then settle level
+  const hunt = 1 - ramp(t, 18.8, 22.3, ease.inOut);
+  const frAir = 0.55 + Math.sin((t - 15.8) * 2.2) * 0.22 * hunt;
+  const frGround = 0.55 - Math.sin((t - 15.8) * 2.2) * 0.22 * hunt;
+  const push = ramp(t, 25.6, 30.6, ease.inOut);
+  const fourAir = 0.55 + 0.38 * push;
+  const fourGround = 0.55 - 0.27 * push;
   const four = ramp(t, 25.5, 26.3);
   const frIn = ramp(t, 19.8, 20.5);
-  const pan = (label: string, _color: string, dark?: boolean) => (
-    <Tape p={1} size={36} dark={dark} rot={0}>
-      {label}
-    </Tape>
-  );
   return (
     <BlotReveal t={t} start={15.4} dur={0.8} cx={W / 2} cy={H / 2}>
       <PaperGround>
         <Camera x={keys(t, [[15.4, 0], [24.8, 0], [26.6, 480], [32, 520]], ease.inOut)} s={keys(t, [[15.4, 1.1], [18.5, 1.0], [24.8, 1.0], [26.6, 1.0]], ease.soft)}>
           <Layer>
-            <At x={W / 2} y={150}>
+            <At x={W / 2} y={140}>
               <KeyTitle text="How much priority?" t={t} at={15.6} size={84} out={19.6} />
             </At>
-            {/* France: a lighter, balanced aircraft */}
+            {/* France */}
             <AbsoluteFill style={{ ...recede(ramp(t, 25.6, 26.4) * 0.7), transformOrigin: "760px 560px" }}>
-              <Balance x={760} y={520} w={560} tilt={frTilt} p={ramp(t, 15.8, 16.5)} left={pan("Air", C.ink)} right={pan("Ground", C.ink, true)} />
-              <At x={760} y={260}>
+              <Fader x={640} y={540} h={420} level={frAir} p={ramp(t, 15.8, 16.4)} label="Air" />
+              <Fader x={880} y={540} h={420} level={frGround} p={ramp(t, 16.0, 16.6)} label="Ground" color={C.ink} />
+              <At x={760} y={230}>
                 <div style={{ opacity: frIn }}>
                   <KeyTitle text="France" t={t} at={19.85} size={96} color={C.red} fill />
                 </div>
               </At>
-              <At x={760} y={850}>
+              <At x={760} y={905}>
                 <Rise p={ramp(t, 20.9, 21.4)}>
                   <Tape p={1} size={34}>
                     Lighter
                   </Tape>
                 </Rise>
               </At>
-              <At x={760} y={915}>
+              <At x={760} y={975}>
                 <Rise p={ramp(t, 22.2, 22.7)}>
                   <Label size={26} color={C.inkSoft} weight={600}>
                     Balanced emphasis
@@ -135,15 +136,16 @@ export const P03Priorities: React.FC = () => {
                 </Rise>
               </At>
             </AbsoluteFill>
-            {/* UK, Germany, Italy, Spain: air superiority first */}
+            {/* UK, Germany, Italy, Spain */}
             <AbsoluteFill style={{ opacity: four }}>
-              <Balance x={1480} y={520} w={560} tilt={fourTilt} p={four} left={pan("Air", C.ink)} right={pan("Ground", C.ink, true)} />
-              <At x={1480} y={250}>
+              <Fader x={1360} y={540} h={420} level={fourAir} p={four} label="Air" />
+              <Fader x={1600} y={540} h={420} level={fourGround} p={four} label="Ground" color={C.ink} />
+              <At x={1480} y={230}>
                 <Label size={34} color={C.ink} weight={600} style={{ letterSpacing: "0.3em" }}>
                   UK · Germany · Italy · Spain
                 </Label>
               </At>
-              <At x={1480} y={880}>
+              <At x={1480} y={915}>
                 <KeyTitle text="Air superiority" t={t} at={30.4} size={80} color={C.red} fill neon="red" />
               </At>
             </AbsoluteFill>
@@ -264,60 +266,74 @@ export const P06Family: React.FC = () => {
   );
 };
 
-/* P07 59.3–71.4 entry into service: Rafale Navy 2004, Air Force 2006, Typhoon RAF 2003 */
-const X_OF = (year: number) => 260 + (year - 2002) * 300;
+/* P07 59.3–71.4 entry into service. One long timeline; the camera glides along it. Years stay
+ * white on the axis; each milestone grows a dotted stem to a round photo. */
+const YX = (year: number) => 200 + (year - 2001) * 460;
+const AXIS_Y = 560;
+const MARKS = [
+  { year: 2004, at: 61.2, src: "src-photos/rafale-m-flight.jpg", pos: "50% 50%", zoom: 1.25, tag: "Rafale · French Navy", up: true },
+  { year: 2006, at: 64.2, src: "photos/rafale-landing.jpg", pos: "58% 58%", zoom: 1.5, tag: "Rafale · French Air Force", up: false },
+  { year: 2003, at: 69.6, src: "src-photos/typhoon-front.jpg", pos: "50% 45%", zoom: 1.3, tag: "Typhoon · RAF", up: false },
+];
 export const P07Service: React.FC = () => {
   const t = useT();
-  const axis = ramp(t, 59.5, 60.4, ease.inOut);
-  const marks = [
-    { year: 2004, at: 61.2, src: "src-photos/rafale-m-flight.jpg", tag: "Rafale · French Navy", up: true },
-    { year: 2006, at: 64.2, src: "photos/rafale-landing.jpg", tag: "Rafale · French Air Force", up: false },
-    { year: 2003, at: 69.6, src: "src-photos/typhoon-front.jpg", tag: "Typhoon · RAF", up: true },
-  ];
+  const axis = ramp(t, 59.4, 60.8, ease.inOut);
+  const fx = keys(t, [[59.3, YX(2002.6)], [60.9, YX(2004.2)], [63.4, YX(2004.4)], [64.4, YX(2005.7)], [68.6, YX(2005.6)], [69.8, YX(2004.4)], [71.4, YX(2004.4)]], ease.inOut);
+  const s = keys(t, [[59.3, 1.12], [61.5, 1.0], [64.0, 1.0], [64.8, 1.04], [68.6, 1.04], [69.8, 0.9], [71.4, 0.88]], ease.inOut);
+  const D = 290;
   return (
     <BlotReveal t={t} start={59.3} dur={0.8} cx={W / 2} cy={H / 2}>
       <PaperGround>
-        <Camera s={keys(t, [[59.3, 1.04], [71.4, 1.0]], ease.soft)} x={keys(t, [[59.3, 60], [66.3, 60], [69.5, -60], [71.4, -60]], ease.inOut)}>
-          <Layer>
-            <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
-              <line x1={180} y1={560} x2={180 + 1580 * axis} y2={560} stroke={C.ink} strokeWidth={4} />
-              {[2002, 2003, 2004, 2005, 2006, 2007].map((y) => (
-                <g key={y} opacity={axis > (X_OF(y) - 180) / 1580 ? 1 : 0}>
-                  <line x1={X_OF(y)} y1={545} x2={X_OF(y)} y2={575} stroke={C.ink} strokeWidth={3} />
-                  <text x={X_OF(y)} y={612} textAnchor="middle" fontFamily="'Fira Sans Condensed'" fontWeight={600} fontSize={26} fill={C.inkSoft}>
+        <AbsoluteFill style={{ transform: `translate(${W / 2}px, ${AXIS_Y}px) scale(${s}) translate(${-fx}px, ${-AXIS_Y}px)`, transformOrigin: "0 0" }}>
+          <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
+            <line x1={YX(2000.4)} y1={AXIS_Y} x2={YX(2000.4) + (YX(2008.6) - YX(2000.4)) * axis} y2={AXIS_Y} stroke={C.ink} strokeWidth={4} strokeLinecap="round" />
+            {Array.from({ length: 8 }, (_, i) => 2001 + i).map((y) => {
+              const vis = ramp(axis, (YX(y) - YX(2000.4)) / (YX(2008.6) - YX(2000.4)) - 0.02, (YX(y) - YX(2000.4)) / (YX(2008.6) - YX(2000.4)) + 0.05);
+              const m = MARKS.find((q) => q.year === y);
+              const on = m ? ramp(t, m.at - 0.2, m.at + 0.3) : 0;
+              return (
+                <g key={y} opacity={vis}>
+                  <line x1={YX(y)} y1={AXIS_Y - 16} x2={YX(y)} y2={AXIS_Y + 16} stroke={C.ink} strokeWidth={3} />
+                  <circle cx={YX(y)} cy={AXIS_Y} r={on * 11} fill={C.ink} />
+                  <text
+                    x={YX(y)}
+                    y={m && !m.up ? AXIS_Y - 34 : AXIS_Y + 56}
+                    textAnchor="middle"
+                    fontFamily="Anton, 'Bebas Neue', sans-serif"
+                    fontSize={34 + on * 34}
+                    fill={C.ink}
+                    opacity={0.62 + on * 0.38}
+                    style={{ filter: on > 0 ? `drop-shadow(0 0 ${on * 10}px rgba(255,246,228,0.45))` : undefined }}
+                  >
                     {y}
                   </text>
                 </g>
-              ))}
-            </svg>
-            {marks.map((m, i) => {
-              const r = ramp(t, m.at - 0.2, m.at + 0.4);
-              const x = X_OF(m.year);
-              const y = m.up ? 300 : 810;
-              return (
-                <React.Fragment key={m.year}>
-                  <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible", opacity: r }} width={1} height={1}>
-                    <circle cx={x} cy={560} r={14 * springIn(t, m.at - 0.2, 0.7)} fill={C.red} />
-                    <line x1={x} y1={m.up ? 545 : 575} x2={x} y2={m.up ? 470 : 650} stroke={C.red} strokeWidth={3} />
-                  </svg>
-                  <Photo src={m.src} x={x} y={y} w={420} h={280} rot={[-3, 2, 3][i]} reveal={r} revealFrom={m.up ? "bottom" : "top"} seed={"svc" + m.year} zoom={1.1} />
-                  <At x={x} y={m.up ? 128 : 990}>
-                    <Rise p={ramp(t, m.at + 0.1, m.at + 0.6)}>
-                      <Tape p={1} size={28} dark={i === 2}>
-                        {m.tag}
-                      </Tape>
-                    </Rise>
-                  </At>
-                  <At x={x} y={m.up ? 505 : 620}>
-                    <div style={{ opacity: r }}>
-                      <KeyTitle text={String(m.year)} t={t} at={m.at} size={72} color={C.red} fill />
-                    </div>
-                  </At>
-                </React.Fragment>
               );
             })}
-          </Layer>
-        </Camera>
+            {MARKS.map((m) => {
+              const stem = ramp(t, m.at - 0.1, m.at + 0.45, ease.inOut);
+              const y0 = m.up ? AXIS_Y - 70 : AXIS_Y + 70;
+              const y1 = m.up ? AXIS_Y - 230 : AXIS_Y + 230;
+              return stem > 0 ? <line key={m.year} x1={YX(m.year)} y1={y0} x2={YX(m.year)} y2={y0 + (y1 - y0) * stem} stroke={C.ink} strokeWidth={3} strokeDasharray="2 10" strokeLinecap="round" /> : null;
+            })}
+          </svg>
+          {MARKS.map((m, i) => {
+            const cy = m.up ? AXIS_Y - 230 - D / 2 : AXIS_Y + 230 + D / 2;
+            const p = springIn(t, m.at + 0.3, 0.9);
+            return (
+              <React.Fragment key={m.year}>
+                <CirclePhoto src={m.src} x={YX(m.year)} y={cy} d={D} p={p} pos={m.pos} zoom={m.zoom} />
+                <At x={YX(m.year) + D / 2 + 30} y={cy} anchor="left">
+                  <Rise p={ramp(t, m.at + 0.6, m.at + 1.1)}>
+                    <Tape p={1} size={30} dark={i === 2}>
+                      {m.tag}
+                    </Tape>
+                  </Rise>
+                </At>
+              </React.Fragment>
+            );
+          })}
+        </AbsoluteFill>
       </PaperGround>
     </BlotReveal>
   );
@@ -333,7 +349,7 @@ export const P08Progressive: React.FC = () => {
       <PaperGround>
         <Camera s={keys(t, [[71.3, 1.05], [79.5, 1.0]], ease.soft)}>
           <Layer>
-            <Blueprint view="typhoonUnder" x={620} y={520} width={860} p={ramp(t, 71.5, 73.4, ease.linear)} redP={ramp(t, 76.8, 78.6, ease.linear)} lineWidth={1.4} />
+            <Blueprint view="typhoonUnder" x={620} y={500} width={860} p={ramp(t, 71.5, 73.4, ease.linear)} redP={ramp(t, 76.8, 78.6, ease.linear)} lineWidth={2} label="Typhoon" />
             <div style={{ position: "absolute", left: 1150, top: 330 }}>
               <div style={{ opacity: ramp(t, 73.8, 74.3) }}>
                 <Label size={28} color={C.inkSoft} weight={600}>
@@ -373,8 +389,8 @@ export const P09NotExclusive: React.FC = () => {
         <Camera s={keys(t, [[79.4, 1.06], [91.5, 1.0]], ease.soft)}>
           <Layer depth={0.9}>
             <AbsoluteFill style={{ ...recede(ramp(t, 84.9, 85.6) * 0.8), transformOrigin: "960px 540px" }}>
-              <Blueprint view="typhoonTop" x={520} y={520} width={700} p={ramp(t, 79.6, 81.8, ease.linear)} lineWidth={1.3} />
-              <Blueprint view="rafaleTop" x={1400} y={520} width={640} p={ramp(t, 80.0, 82.2, ease.linear)} lineWidth={1.3} />
+              <Blueprint view="typhoonTop" x={520} y={500} width={700} p={ramp(t, 79.6, 81.8, ease.linear)} lineWidth={2} label="Typhoon" />
+              <Blueprint view="rafaleTop" x={1400} y={500} width={640} p={ramp(t, 80.0, 82.2, ease.linear)} lineWidth={2} label="Rafale" />
             </AbsoluteFill>
           </Layer>
           <Layer>

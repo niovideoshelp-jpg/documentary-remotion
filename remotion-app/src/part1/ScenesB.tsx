@@ -108,7 +108,7 @@ export const P11Factors: React.FC = () => {
 export const P12Engines: React.FC = () => {
   const t = useT();
   const bars = ramp(t, 134.3, 135.2);
-  const photosBack = ramp(t, 134.2, 134.9) * 0.75;
+  const photosBack = ramp(t, 134.2, 134.9);
   const board = ramp(t, 117.6, 118.2, ease.inOut);
   return (
     <TearReveal t={t} start={113.5} dur={0.7} dir="rtl">
@@ -127,7 +127,7 @@ export const P12Engines: React.FC = () => {
             <At x={W / 2} y={120}>
               <KeyTitle text="Engines" t={t} at={117.7} size={96} out={133.9} />
             </At>
-            <AbsoluteFill style={{ ...recede(photosBack, 6, 0.55, 0.08), transformOrigin: "960px 520px" }}>
+            <AbsoluteFill style={{ ...recede(photosBack, 9, 0.85, 0.1), transformOrigin: "960px 520px" }}>
               <Photo src="src-photos/ej200-ab.jpg" x={560} y={470} w={720} h={480} rot={-2} reveal={ramp(t, 118.2, 118.9)} revealFrom="left" seed="ej" />
               <At x={560} y={760}>
                 <KeyTitle text="EJ200" t={t} at={118.5} size={90} />
@@ -148,9 +148,10 @@ export const P12Engines: React.FC = () => {
               </At>
             </AbsoluteFill>
             <AbsoluteFill style={{ opacity: bars }}>
-              <Bar x={260} y={380} w={1100} value={180} max={200} p={ramp(t, 134.9, 136.0)} label="Typhoon · 2 × EJ200" color={C.red} right={<CountUp t={t} at={135.0} to={180} suffix=" kN" size={70} color={C.red} neon="red" />} />
-              <Bar x={260} y={560} w={1100} value={147} max={200} p={ramp(t, 135.2, 136.3)} label="Rafale · 2 × M88" color={C.ink} right={<CountUp t={t} at={135.3} to={147} suffix=" kN" size={70} />} />
-              <At x={W / 2} y={820}>
+              <div style={{ position: "absolute", left: 200, top: 320, width: 1520, height: 600, background: "rgba(10,10,10,0.78)", borderRadius: 10, boxShadow: "0 20px 50px rgba(0,0,0,0.5)" }} />
+              <Bar x={260} y={380} w={1100} value={180} max={200} p={ramp(t, 134.9, 136.0)} label="Typhoon · 2 × EJ200" color={C.red} right={<CountUp t={t} at={135.0} to={180} suffix=" kN" size={92} color="#ff6a52" neon="red" />} />
+              <Bar x={260} y={560} w={1100} value={147} max={200} p={ramp(t, 135.2, 136.3)} label="Rafale · 2 × M88" color={C.ink} right={<CountUp t={t} at={135.3} to={147} suffix=" kN" size={92} />} />
+              <At x={W / 2} y={830}>
                 <KeyTitle text="Maximum thrust" t={t} at={135.6} size={80} />
               </At>
             </AbsoluteFill>
@@ -172,7 +173,6 @@ export const P13Behaviour: React.FC = () => {
     { w: "Weapons", at: 145.7, x: 1590, y: 820 },
     { w: "Drag", at: 146.5, x: 960, y: 950 },
   ];
-  const sink = ramp(t, 143.3, 144.2, ease.inOut) * 30;
   const drag = ramp(t, 146.5, 147.2);
   return (
     <BlotReveal t={t} start={138.8} dur={0.8} cx={W / 2} cy={H / 2}>
@@ -182,7 +182,7 @@ export const P13Behaviour: React.FC = () => {
             <At x={W / 2} y={160}>
               <KeyTitle text="Actual performance?" t={t} at={141.5} size={90} out={143.1} />
             </At>
-            <Blueprint view="typhoonUnder" x={W / 2} y={520 + sink} width={900} p={ramp(t, 139.0, 141.4, ease.linear)} redP={ramp(t, 144.9, 146.2, ease.linear)} lineWidth={1.4} fill={C.paper} fillP={1} />
+            <Blueprint view="typhoonUnder" x={W / 2} y={520} width={900} p={ramp(t, 139.0, 141.4, ease.linear)} redP={ramp(t, 144.9, 146.2, ease.linear)} lineWidth={2} />
             <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
               {/* drag: airflow lines bending round the airframe */}
               {Array.from({ length: 9 }, (_, i) => {

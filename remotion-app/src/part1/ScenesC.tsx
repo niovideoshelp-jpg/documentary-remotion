@@ -1,7 +1,7 @@
 import React from "react";
-import { AbsoluteFill, Img, random, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, random, useCurrentFrame } from "remotion";
 import { Camera, Layer } from "../components/Camera";
-import { PaperGround, PrintTexture, Vignette } from "../components/Paper";
+import { PaperGround, Vignette } from "../components/Paper";
 import { Cutout, Photo } from "../components/Photo";
 import { At, Label, Rise, Tape } from "../components/Type";
 import { BlotReveal, TearReveal } from "../components/Transitions";
@@ -11,6 +11,7 @@ import { DrawPath } from "../components/Draw";
 import { C, F, W, H } from "../lib/theme";
 import { ease, keys, ramp, useT } from "../lib/time";
 import { Clip, ClipFull, ClipPrint, Tile } from "./kit";
+import { Jet3D, PIRATE_POS, project as projectJet, useJetCamera } from "../components/Jet3D";
 
 /* P17 194.1–207.5 who detects first: six factors named in the narration. */
 const Static: React.FC = () => {
@@ -122,55 +123,85 @@ export const P18NoTest: React.FC = () => {
   );
 };
 
-/* P19 217.4–230.0 PIRATE: passive infrared search and track. */
+/* P19 217.4–230.0 PIRATE, on a 3D Typhoon: the model turns to show the nose, the camera
+ * pushes in to the sensor ahead of the windscreen (port side), and heat from a target ahead
+ * arrives at it — nothing is transmitted. */
 export const P19Pirate: React.FC = () => {
   const t = useT();
-  const zoom = keys(t, [[217.4, 1.0], [220.8, 1.0], [222.0, 1.9], [230, 2.0]], ease.inOut);
-  const passive = ramp(t, 226.2, 226.8);
-  const noEmit = ramp(t, 227.6, 228.2);
+  const cam = useJetCamera(t, 217.4, { yaw: 128, pitch: 17, zoom: 0.92, focus: 0 }, [
+    { at: 0, to: { yaw: 58, pitch: 14 }, dur: 3.6, ease: "inOutSine" },
+    { at: 3.7, to: { yaw: 42, pitch: 9, zoom: 2.9, focus: 1 }, dur: 1.7, ease: "inOutQuart" },
+    { at: 5.5, to: { yaw: 30, pitch: 7 }, dur: 7.2, ease: "linear" },
+  ]);
+  const CX = 820;
+  const CY = 600;
+  const SCALE = 64;
+  const passive = ramp(t, 226.1, 226.7);
+  const noEmit = ramp(t, 228.2, 228.8);
+  const sensor = projectJet(PIRATE_POS, cam, CX, CY, SCALE);
+  const nose = projectJet([9.5, -0.5, 0.66], cam, CX, CY, SCALE);
+  const dir = Math.atan2(nose.y - sensor.y, nose.x - sensor.x);
+  const leader = ramp(t, 221.6, 222.2);
   return (
     <TearReveal t={t} start={217.4} dur={0.7} dir="rtl">
-      <AbsoluteFill style={{ background: C.night }}>
-        {/* RAF Typhoon, nose-on: PIRATE sits ahead of the windscreen, port side */}
-        <AbsoluteFill style={{ transform: `scale(${zoom})`, transformOrigin: "46% 48%" }}>
-          <Img src={staticFile("src-photos/typhoon-front.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", filter: `contrast(1.08) saturate(${1 - passive * 0.9}) brightness(${1 - passive * 0.25})` }} />
-          <PrintTexture opacity={0.2} />
-        </AbsoluteFill>
+      <PaperGround dark>
+        <Jet3D cam={cam} cx={CX} cy={CY} scale={SCALE} sensorGlow={ramp(t, 221.2, 221.8) * (0.6 + passive * 0.4)} />
         <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={W} height={H}>
-          {/* heat from a target reaches the sensor; nothing is transmitted */}
+          {/* heat arriving from ahead of the nose: arcs close in on the sensor (passive) */}
           {passive > 0 &&
             [0, 1, 2, 3].map((i) => {
-              const ph = ((t * 0.9 + i * 0.25) % 1);
-              const r = 900 * (1 - ph);
-              return <circle key={i} cx={880} cy={520} r={r} fill="none" stroke="#ff9a5a" strokeWidth={4} opacity={passive * ph * 0.8} />;
+              const ph = (t * 0.8 + i * 0.25) % 1;
+              const r = 40 + 620 * (1 - ph);
+              const a0 = dir - 0.5;
+              const a1 = dir + 0.5;
+              return (
+                <path
+                  key={i}
+                  d={`M${sensor.x + Math.cos(a0) * r},${sensor.y + Math.sin(a0) * r} A${r},${r} 0 0 1 ${sensor.x + Math.cos(a1) * r},${sensor.y + Math.sin(a1) * r}`}
+                  fill="none"
+                  stroke="#ff9a5a"
+                  strokeWidth={5}
+                  strokeLinecap="round"
+                  opacity={passive * Math.sin(ph * Math.PI) * 0.85}
+                />
+              );
             })}
+          {/* leader from the name to the sensor head */}
+          {leader > 0 && <line x1={1250} y1={330} x2={1250 + (sensor.x + 24 - 1250) * leader} y2={330 + (sensor.y - 12 - 330) * leader} stroke="#ffb27a" strokeWidth={2.5} strokeDasharray="3 9" strokeLinecap="round" />}
         </svg>
-        <At x={1450} y={250}>
+        <At x={CX} y={930}>
+          <div style={{ opacity: ramp(t, 218.0, 218.5) * (1 - ramp(t, 221.0, 221.5)) }}>
+            <Label size={34} color={C.ink} weight={700} style={{ letterSpacing: "0.34em" }}>
+              Typhoon FGR4
+            </Label>
+          </div>
+        </At>
+        <At x={1500} y={250}>
           <KeyTitle text="PIRATE" t={t} at={221.2} size={140} neon="red" color="#ffb08a" />
         </At>
-        <At x={1450} y={360}>
+        <At x={1500} y={360}>
           <Rise p={ramp(t, 222.3, 222.9)}>
             <Label size={30} color={C.offWhite} weight={600}>
               Infrared search &amp; track
             </Label>
           </Rise>
         </At>
-        <At x={1450} y={450}>
+        <At x={1500} y={450}>
           <Rise p={passive}>
             <Tape p={1} size={34}>
               Passive
             </Tape>
           </Rise>
         </At>
-        <At x={1450} y={530}>
+        <At x={1500} y={530}>
           <Rise p={noEmit}>
             <Tape p={1} size={30} dark>
               No radar emissions
             </Tape>
           </Rise>
         </At>
-        <Vignette strength={0.5} />
-      </AbsoluteFill>
+        <Vignette strength={0.45} />
+      </PaperGround>
     </TearReveal>
   );
 };
@@ -201,9 +232,9 @@ export const P20Meteor: React.FC = () => {
               <At x={W / 2} y={150}>
                 <KeyTitle text="Long-range air-to-air" t={t} at={230.7} size={90} />
               </At>
-              <Blueprint view="typhoonTop" x={560} y={560} width={680} p={ramp(t, 230.5, 232.6, ease.linear)} color={C.ink} lineWidth={1.3} />
-              <Blueprint view="rafaleTop" x={1360} y={560} width={620} p={ramp(t, 231.0, 233.1, ease.linear)} color={C.ink} lineWidth={1.3} />
-              <At x={W / 2} y={880}>
+              <Blueprint view="typhoonTop" x={560} y={520} width={680} p={ramp(t, 230.5, 232.6, ease.linear)} color={C.ink} lineWidth={2} label="Typhoon" />
+              <Blueprint view="rafaleTop" x={1360} y={520} width={620} p={ramp(t, 231.0, 233.1, ease.linear)} color={C.ink} lineWidth={2} label="Rafale" />
+              <At x={W / 2} y={940}>
                 <Rise p={ramp(t, 233.3, 233.8)}>
                   <Tape p={1} size={36} dark>
                     One shared capability
@@ -250,10 +281,10 @@ export const P20Meteor: React.FC = () => {
             </AbsoluteFill>
             {/* both fighters carry it: the tie stays */}
             <AbsoluteFill style={{ opacity: both }}>
-              <Blueprint view="typhoonTop" x={560} y={500} width={640} p={ramp(t, 244.2, 245.8, ease.linear)} color={C.ink} lineWidth={1.2} />
-              <Blueprint view="rafaleTop" x={1360} y={500} width={580} p={ramp(t, 244.4, 246.0, ease.linear)} color={C.ink} lineWidth={1.2} />
-              <Cutout name="meteor" x={560} y={800} w={300} sticker opacity={ramp(t, 246.9, 247.3)} />
-              <Cutout name="meteor" x={1360} y={800} w={300} sticker opacity={ramp(t, 247.1, 247.5)} />
+              <Blueprint view="typhoonTop" x={560} y={470} width={640} p={ramp(t, 244.2, 245.8, ease.linear)} color={C.ink} lineWidth={2} label="Typhoon" />
+              <Blueprint view="rafaleTop" x={1360} y={470} width={580} p={ramp(t, 244.4, 246.0, ease.linear)} color={C.ink} lineWidth={2} label="Rafale" />
+              <Cutout name="meteor" x={560} y={860} w={300} sticker opacity={ramp(t, 246.9, 247.3)} />
+              <Cutout name="meteor" x={1360} y={860} w={300} sticker opacity={ramp(t, 247.1, 247.5)} />
               <At x={W / 2} y={500}>
                 <KeyTitle text="=" t={t} at={246.9} size={160} color={C.red} />
               </At>
@@ -341,8 +372,8 @@ export const P22Network: React.FC = () => {
             <At x={W / 2} y={140}>
               <KeyTitle text="Not in isolation" t={t} at={266.3} size={90} out={268.3} />
             </At>
-            <Blueprint view="typhoonTop" x={hub.x - 210} y={hub.y} width={400} p={ramp(t, 264.3, 265.6, ease.linear)} color={C.ink} lineWidth={1.2} />
-            <Blueprint view="rafaleTop" x={hub.x + 210} y={hub.y} width={370} p={ramp(t, 264.5, 265.8, ease.linear)} color={C.ink} lineWidth={1.2} />
+            <Blueprint view="typhoonTop" x={hub.x - 210} y={hub.y} width={400} p={ramp(t, 264.3, 265.6, ease.linear)} color={C.ink} lineWidth={2} label="Typhoon" labelSize={26} />
+            <Blueprint view="rafaleTop" x={hub.x + 210} y={hub.y} width={370} p={ramp(t, 264.5, 265.8, ease.linear)} color={C.ink} lineWidth={2} label="Rafale" labelSize={26} />
             <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
               {NODES.map((n) => {
                 const p = ramp(t, n.at - 0.2, n.at + 0.5);

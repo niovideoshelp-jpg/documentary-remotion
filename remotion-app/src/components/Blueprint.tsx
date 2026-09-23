@@ -67,7 +67,9 @@ export const Blueprint: React.FC<{
   flip?: boolean;
   anchor?: "center" | "left";
   highlight?: { box: number[]; color: string; p: number }; // drawing-unit box tinted
-}> = ({ view, x, y, width, p, redP = 0, color = C.ink, redColor = C.red, lineWidth = 1.6, rot = 0, opacity = 1, fill, fillP = 0, flip, anchor = "center", highlight }) => {
+  label?: string; // aircraft name set under the drawing
+  labelSize?: number;
+}> = ({ view, x, y, width, p, redP = 0, color = C.ink, redColor = C.red, lineWidth = 1.8, rot = 0, opacity = 1, fill, fillP = 0, flip, anchor = "center", highlight, label, labelSize }) => {
   const v = DRAWINGS[VIEWS[view].d].views[VIEWS[view].i];
   const [x0, y0, x1, y1] = v.bbox;
   const pad = (x1 - x0) * 0.02;
@@ -79,6 +81,8 @@ export const Blueprint: React.FC<{
   const black = v.paths.filter((q) => !q.r);
   const red = v.paths.filter((q) => q.r);
   const n = black.length;
+  // the source files mark outlines with their heaviest pen: keep those bold, detail lighter
+  const heavy = Math.max(...black.map((q) => q.w || 0));
   if (p <= 0 && redP <= 0 && fillP <= 0) return null;
   const seg = (i: number, total: number, prog: number) => {
     // each stroke gets a short window; windows overlap so the plotter keeps several pens moving
@@ -86,6 +90,7 @@ export const Blueprint: React.FC<{
     return Math.max(0, Math.min(1, (prog - start) / 0.2));
   };
   return (
+    <>
     <svg
       width={width}
       height={height}
@@ -97,6 +102,7 @@ export const Blueprint: React.FC<{
         overflow: "visible",
         opacity,
         transform: `translate(${anchor === "center" ? "-50%" : "0"}, -50%) rotate(${rot}deg) scaleX(${flip ? -1 : 1})`,
+        filter: "drop-shadow(0 0 2.5px rgba(243,238,226,0.35))",
       }}
     >
       {fill && fillP > 0 && (
@@ -116,6 +122,7 @@ export const Blueprint: React.FC<{
       {black.map((q, i) => {
         const s = seg(i, n, ease.soft(Math.min(1, p)));
         if (s <= 0) return null;
+        const outline = (q.w || 0) >= heavy * 0.9;
         return q.f ? (
           <path key={i} d={q.d} fill={color} opacity={s} />
         ) : (
@@ -125,7 +132,8 @@ export const Blueprint: React.FC<{
             pathLength={1}
             fill="none"
             stroke={color}
-            strokeWidth={Math.max(sw * 0.6, Math.min(sw * 1.4, q.w * 0.9 || sw))}
+            opacity={outline ? 1 : 0.62}
+            strokeWidth={outline ? sw * 1.6 : sw * 0.75}
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeDasharray={s >= 1 ? undefined : `${s} 2`}
@@ -135,11 +143,34 @@ export const Blueprint: React.FC<{
       {red.map((q, i) => {
         const s = seg(i, red.length, Math.min(1, redP));
         if (s <= 0) return null;
-        return <path key={"r" + i} d={q.d} pathLength={1} fill="none" stroke={redColor} strokeWidth={sw * 1.25} strokeLinecap="round" strokeDasharray={s >= 1 ? undefined : `${s} 2`} />;
+        return <path key={"r" + i} d={q.d} pathLength={1} fill="none" stroke={redColor} strokeWidth={sw * 1.6} strokeLinecap="round" strokeDasharray={s >= 1 ? undefined : `${s} 2`} />;
       })}
     </svg>
+    {label && (
+      <div
+        style={{
+          position: "absolute",
+          left: anchor === "center" ? x : x + width / 2,
+          top: y + height / 2 + 26,
+          transform: `translate(-50%, ${(1 - ease.out(ramp01((p - 0.55) * 2.2))) * 14}px)`,
+          opacity: ramp01((p - 0.55) * 2.2) * opacity,
+          fontFamily: F.label,
+          fontWeight: 700,
+          fontSize: labelSize ?? Math.max(26, Math.min(44, width * 0.055)),
+          letterSpacing: "0.32em",
+          textTransform: "uppercase",
+          color,
+          whiteSpace: "nowrap",
+          textShadow: "0 1px 2px rgba(0,0,0,0.8), 0 0 12px rgba(0,0,0,0.6)",
+        }}
+      >
+        {label}
+      </div>
+    )}
+    </>
   );
 };
+const ramp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 /** Size of a view when drawn at `width` px (for layout maths). */
 export const viewHeight = (view: ViewName, width: number) => {

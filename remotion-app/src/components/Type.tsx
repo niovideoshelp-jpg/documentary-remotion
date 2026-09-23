@@ -63,6 +63,7 @@ export const Label: React.FC<{
       color,
       whiteSpace: "nowrap",
       filter: "url(#ink-fine)",
+      textShadow: "0 1px 2px rgba(0,0,0,0.8), 0 0 12px rgba(0,0,0,0.6)",
       ...style,
     }}
   >

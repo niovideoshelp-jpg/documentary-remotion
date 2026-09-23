@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, OffthreadVideo, Sequence, staticFile } from "remotion";
+import { AbsoluteFill, Img, OffthreadVideo, Sequence, staticFile } from "remotion";
 import { roughRect } from "../components/Photo";
 import { PrintTexture } from "../components/Paper";
 import { C, F } from "../lib/theme";
@@ -87,7 +87,60 @@ export const ClipFull: React.FC<{ src: string; t: number; from: number; to: numb
       <Clip src={src} from={from} to={to} clipDur={clipDur} trim={trim} />
       <PrintTexture opacity={0.18} />
       <AbsoluteFill style={{ background: "radial-gradient(ellipse 80% 75% at 50% 50%, rgba(0,0,0,0) 55%, rgba(8,8,8,0.55) 100%)" }} />
+      {/* scrims where captions sit, so light words never land on a light sky */}
+      <AbsoluteFill style={{ background: "linear-gradient(0deg, rgba(6,6,6,0.62) 0%, rgba(6,6,6,0) 36%), linear-gradient(180deg, rgba(6,6,6,0.4) 0%, rgba(6,6,6,0) 18%)" }} />
     </AbsoluteFill>
+  );
+};
+
+/** A photo in a circle with a white rim; pops in on a soft spring. */
+export const CirclePhoto: React.FC<{ src: string; x: number; y: number; d: number; p: number; pos?: string; zoom?: number }> = ({ src, x, y, d, p, pos = "50% 50%", zoom = 1.15 }) => {
+  if (p <= 0) return null;
+  const e = ease.out(Math.min(1, p));
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: x - d / 2,
+        top: y - d / 2,
+        width: d,
+        height: d,
+        borderRadius: "50%",
+        overflow: "hidden",
+        border: `${Math.round(d * 0.028)}px solid #f3eee2`,
+        boxShadow: "0 14px 30px rgba(0,0,0,0.55)",
+        transform: `scale(${0.6 + 0.4 * e})`,
+        opacity: Math.min(1, p * 2.5),
+        background: "#111",
+      }}
+    >
+      <Img src={staticFile(src)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: pos, transform: `scale(${zoom + (1 - e) * 0.15})`, filter: "contrast(1.05) saturate(0.85) sepia(0.06)" }} />
+    </div>
+  );
+};
+
+/** A mixing-desk fader: `level` 0..1 sets the knob; the lit track shows the share. */
+export const Fader: React.FC<{ x: number; y: number; h: number; level: number; p: number; label: string; color?: string }> = ({ x, y, h, level, p, label, color = C.red }) => {
+  if (p <= 0) return null;
+  const e = ease.out(Math.min(1, p));
+  const ky = y + h / 2 - level * h;
+  return (
+    <div style={{ position: "absolute", left: 0, top: 0, opacity: e }}>
+      <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
+        {Array.from({ length: 11 }, (_, i) => (
+          <line key={i} x1={x - 44} x2={x - (i % 5 === 0 ? 20 : 28)} y1={y - h / 2 + (i * h) / 10} y2={y - h / 2 + (i * h) / 10} stroke={C.inkSoft} strokeWidth={2} opacity={0.7} />
+        ))}
+        <rect x={x - 7} y={y - h / 2} width={14} height={h} rx={7} fill="#0e0f10" stroke="rgba(235,227,210,0.35)" strokeWidth={2} />
+        <rect x={x - 5} y={ky} width={10} height={y + h / 2 - ky} rx={5} fill={color} style={{ filter: `drop-shadow(0 0 8px ${color})` }} />
+        <g transform={`translate(${x},${ky})`}>
+          <rect x={-46} y={-22} width={92} height={44} rx={6} fill="#e9e3d6" stroke="#0e0f10" strokeWidth={2} />
+          {[-10, 0, 10].map((o) => (
+            <line key={o} x1={-30} x2={30} y1={o} y2={o} stroke="#6b6559" strokeWidth={2} />
+          ))}
+        </g>
+      </svg>
+      <div style={{ position: "absolute", left: x, top: y + h / 2 + 46, transform: "translateX(-50%)", fontFamily: F.label, fontWeight: 700, fontSize: 30, letterSpacing: "0.24em", textTransform: "uppercase", color: C.ink, whiteSpace: "nowrap", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>{label}</div>
+    </div>
   );
 };
 
@@ -157,7 +210,7 @@ export const Bar: React.FC<{ x: number; y: number; w: number; h?: number; value:
   const len = (value / max) * w * ease.out(p);
   return (
     <div style={{ position: "absolute", left: x, top: y }}>
-      <div style={{ fontFamily: F.label, fontWeight: 600, fontSize: 26, letterSpacing: "0.16em", textTransform: "uppercase", color: C.inkSoft, marginBottom: 8, filter: "url(#ink-fine)" }}>{label}</div>
+      <div style={{ fontFamily: F.label, fontWeight: 600, fontSize: 30, letterSpacing: "0.16em", textTransform: "uppercase", color: C.ink, marginBottom: 10, filter: "url(#ink-fine)" }}>{label}</div>
       <div style={{ position: "relative", width: w, height: h, borderLeft: `3px solid ${C.ink}` }}>
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: len, background: color, boxShadow: `0 0 18px ${color}55`, filter: "url(#ink)" }} />
         <div style={{ position: "absolute", left: len + 18, top: "50%", transform: "translateY(-50%)" }}>{right}</div>

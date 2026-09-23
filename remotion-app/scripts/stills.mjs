@@ -16,7 +16,7 @@ const out = path.resolve("out/review");
 fs.mkdirSync(path.join(out, "frames"), { recursive: true });
 const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
 const browser = await openBrowser("chrome");
-const composition = await selectComposition({ serveUrl, id: "TyphoonVsRafaleIntro", puppeteerInstance: browser });
+const composition = await selectComposition({ serveUrl, id: process.env.COMP || "TyphoonVsRafaleIntro", puppeteerInstance: browser });
 const files = [];
 for (const t of TIMES) {
   const frame = Math.min(composition.durationInFrames - 1, Math.round(t * 30));

@@ -1,6 +1,7 @@
 name: Render
 # Push to `rebuild` with "[stills]" in the commit message -> review frames on branch `review`.
 # Push with "[render]" -> full 1080p video on branch `render-output`.
+# "[stills:part1]" / "[render:part1]" select Part 1 (composition TyphoonVsRafalePart1).
 # Manual runs are also available from the Actions tab.
 on:
   push:
@@ -17,12 +18,15 @@ concurrency:
   cancel-in-progress: true
 jobs:
   render:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[stills]') || contains(github.event.head_commit.message, '[render]')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[stills') || contains(github.event.head_commit.message, '[render')
     runs-on: ubuntu-latest
     timeout-minutes: 90
     defaults:
       run:
         working-directory: remotion-app
+    env:
+      COMP: ${{ contains(github.event.head_commit.message, ':part1]') && 'TyphoonVsRafalePart1' || 'TyphoonVsRafaleIntro' }}
+      NAME: ${{ contains(github.event.head_commit.message, ':part1]') && 'typhoon-rafale-part1' || 'typhoon-rafale-intro' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,26 +38,27 @@ jobs:
       - run: npx tsc --noEmit
       - run: sudo apt-get install -y -qq ffmpeg > /dev/null
       - name: Stills
-        if: contains(github.event.head_commit.message, '[stills]') || inputs.mode == 'stills'
+        if: contains(github.event.head_commit.message, '[stills') || inputs.mode == 'stills'
         run: |
+          if [ -f "scripts/stills-$NAME.txt" ]; then export STILL_TIMES="$(cat scripts/stills-$NAME.txt)"; fi
           node scripts/stills.mjs
           cd out/review
           git init -q -b review && git add -A
           git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Review frames for ${GITHUB_SHA::7}"
           git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" review
       - name: Full render
-        if: contains(github.event.head_commit.message, '[render]') || inputs.mode == 'render'
+        if: contains(github.event.head_commit.message, '[render') || inputs.mode == 'render'
         run: |
           set -o pipefail
           mkdir -p out/pub
-          npx remotion render TyphoonVsRafaleIntro out/intro.mp4 --codec=h264 --crf=19 --concurrency=4 --audio-bitrate=320k 2>&1 | tee out/pub/render.log | grep -v "Rendered|Encoded" || { cd out/pub; tail -200 render.log > tail.log; rm render.log; git init -q -b render-output && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render FAILED ${GITHUB_SHA::7}" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" render-output; exit 1; }
+          npx remotion render $COMP out/intro.mp4 --codec=h264 --crf=19 --concurrency=4 --audio-bitrate=320k 2>&1 | tee out/pub/render.log | grep -v "Rendered|Encoded" || { cd out/pub; tail -200 render.log > tail.log; rm render.log; git init -q -b render-output && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render FAILED ${GITHUB_SHA::7}" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" render-output; exit 1; }
           rm out/pub/render.log
           # master: narration-led mix to YouTube loudness (-14 LUFS, -1.5 dBTP)
           ffmpeg -y -loglevel error -i out/intro.mp4 -c:v copy -af loudnorm=I=-14:TP=-1.5:LRA=11 -ar 48000 -c:a aac -b:a 320k out/master.mp4
           mv out/master.mp4 out/intro.mp4
           ls -la out/intro.mp4
           # git refuses files over 100 MB: ship 90 MB parts, joined locally with cat
-          split -b 90m -d out/intro.mp4 out/pub/typhoon-rafale-intro.mp4.part
+          split -b 90m -d out/intro.mp4 out/pub/$NAME.mp4.part
           (cd out && sha256sum intro.mp4 > pub/SHA256)
           cd out/pub
           git init -q -b render-output && git add -A

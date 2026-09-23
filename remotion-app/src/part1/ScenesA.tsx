@@ -1,0 +1,378 @@
+import React from "react";
+import { AbsoluteFill, Img, staticFile } from "remotion";
+import { Camera, Layer } from "../components/Camera";
+import { PaperGround, PrintTexture, Vignette } from "../components/Paper";
+import { Cutout, Photo } from "../components/Photo";
+import { At, Label, Rise, Tape } from "../components/Type";
+import { BlotReveal, TearReveal } from "../components/Transitions";
+import { Blueprint } from "../components/Blueprint";
+import { CountUp, KeyTitle, recede, springIn } from "../components/AnimeText";
+import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
+import { C, W, H } from "../lib/theme";
+import { ease, keys, ramp, useT } from "../lib/time";
+import { Balance, Check, Strike } from "./kit";
+
+/* P01 0–8.4 "Back in the 1980s, France, the UK, Germany, Italy and Spain were discussing
+ * the development of a new European fighter." Five countries light up as they are named. */
+const FIVE: Highlight[] = [
+  { name: "France", draw: [1.5, 1.95], fill: [1.75, 2.3], origin: [2.35, 48.86], label: { text: "FRANCE", lon: 2.6, lat: 46.6, size: 70, at: 2.1 } },
+  { name: "United Kingdom", draw: [2.2, 2.65], fill: [2.45, 3.0], origin: [-1.5, 52.5], label: { text: "UK", lon: -1.6, lat: 52.6, size: 60, at: 2.8 } },
+  { name: "Germany", draw: [3.25, 3.7], fill: [3.5, 4.05], origin: [10.2, 51.0], label: { text: "GERMANY", lon: 10.3, lat: 51.0, size: 56, at: 3.85 } },
+  { name: "Italy", draw: [3.9, 4.35], fill: [4.15, 4.7], origin: [12.0, 43.5], label: { text: "ITALY", lon: 13.2, lat: 42.6, size: 48, at: 4.5, rot: 50 } },
+  { name: "Spain", draw: [4.5, 4.95], fill: [4.75, 5.3], origin: [-3.7, 40.3], label: { text: "SPAIN", lon: -3.6, lat: 40.0, size: 70, at: 5.1 } },
+];
+
+export const P01Eighties: React.FC = () => {
+  const t = useT();
+  const lon = keys(t, [[0, 6], [1.4, 5], [8.4, 4.5]], ease.inOut);
+  const lat = keys(t, [[0, 47.5], [8.4, 46.5]], ease.inOut);
+  const z = keys(t, [[0, 0.8], [1.4, 0.95], [8.4, 1.08]], ease.soft);
+  const title = 1 - ramp(t, 1.2, 1.7, ease.inOut);
+  return (
+    <AbsoluteFill>
+      <WorldMap t={t} view={viewAt(lon, lat, z)} highlights={FIVE} overlay={<AbsoluteFill style={{ background: C.night, opacity: 0.25 + title * 0.55 }} />} />
+      <At x={W / 2} y={H / 2}>
+        <div style={{ opacity: title }}>
+          <KeyTitle text="1980s" t={t} at={0.35} size={260} fill neon="white" />
+        </div>
+      </At>
+      <At x={W / 2} y={H - 120}>
+        <KeyTitle text="A new European fighter" t={t} at={6.6} size={72} />
+      </At>
+    </AbsoluteFill>
+  );
+};
+
+/* P02 8.3–15.5 "agreement on one thing: air-to-air and surface attack missions." */
+export const P02Agreement: React.FC = () => {
+  const t = useT();
+  const a = springIn(t, 12.2, 0.9);
+  const b = springIn(t, 13.6, 0.9);
+  return (
+    <TearReveal t={t} start={8.3} dur={0.7} dir="ltr">
+      <PaperGround>
+        <Camera s={keys(t, [[8.3, 1.06], [15.5, 1.0]], ease.soft)}>
+          <Layer>
+            <At x={W / 2} y={170}>
+              <KeyTitle text="Agreed on one thing" t={t} at={8.7} size={84} />
+            </At>
+            <Cutout name="meteor" x={600} y={540} w={620} rot={-6} opacity={ramp(t, 12.2, 12.5)} scale={0.8 + a * 0.2} />
+            <At x={600} y={760}>
+              <Rise p={ramp(t, 12.3, 12.8)}>
+                <Tape p={1} size={40}>
+                  Air-to-air
+                </Tape>
+              </Rise>
+            </At>
+            <Check x={880} y={420} p={ramp(t, 12.7, 13.1)} />
+            <Cutout name="paveway" x={1330} y={540} w={560} rot={4} opacity={ramp(t, 13.6, 13.9)} scale={0.8 + b * 0.2} />
+            <At x={1330} y={790}>
+              <Rise p={ramp(t, 13.7, 14.2)}>
+                <Tape p={1} size={40} dark>
+                  Surface attack
+                </Tape>
+              </Rise>
+            </At>
+            <Check x={1600} y={400} p={ramp(t, 14.1, 14.5)} />
+          </Layer>
+        </Camera>
+      </PaperGround>
+    </TearReveal>
+  );
+};
+
+/* P03 15.4–32.0 priorities: France balanced and lighter; the four lean to air superiority. */
+export const P03Priorities: React.FC = () => {
+  const t = useT();
+  const wobble = Math.sin(t * 5) * 6 * (1 - ramp(t, 16.2, 18.8));
+  const frTilt = keys(t, [[18.8, 8], [22.3, 0]], ease.inOut) + wobble;
+  const fourTilt = keys(t, [[25.5, 0], [30.6, -16]], ease.inOut);
+  const four = ramp(t, 25.5, 26.3);
+  const frIn = ramp(t, 19.8, 20.5);
+  const pan = (label: string, color: string, dark?: boolean) => (
+    <Tape p={1} size={30} dark={dark} rot={0}>
+      <span style={{ color }}>{label}</span>
+    </Tape>
+  );
+  return (
+    <BlotReveal t={t} start={15.4} dur={0.8} cx={W / 2} cy={H / 2}>
+      <PaperGround>
+        <Camera x={keys(t, [[15.4, 0], [24.8, 0], [26.6, 480], [32, 520]], ease.inOut)} s={keys(t, [[15.4, 1.1], [18.5, 1.0], [24.8, 1.0], [26.6, 1.0]], ease.soft)}>
+          <Layer>
+            <At x={W / 2} y={150}>
+              <KeyTitle text="How much priority?" t={t} at={15.6} size={84} out={19.6} />
+            </At>
+            {/* France: a lighter, balanced aircraft */}
+            <AbsoluteFill style={{ ...recede(ramp(t, 25.6, 26.4) * 0.7), transformOrigin: "760px 560px" }}>
+              <Balance x={760} y={520} w={560} tilt={frTilt} p={ramp(t, 15.8, 16.5)} left={pan("Air", C.ink)} right={pan("Ground", C.ink, true)} />
+              <At x={760} y={260}>
+                <div style={{ opacity: frIn }}>
+                  <KeyTitle text="France" t={t} at={19.85} size={96} color={C.red} fill />
+                </div>
+              </At>
+              <At x={760} y={850}>
+                <Rise p={ramp(t, 20.9, 21.4)}>
+                  <Tape p={1} size={34}>
+                    Lighter
+                  </Tape>
+                </Rise>
+              </At>
+              <At x={760} y={915}>
+                <Rise p={ramp(t, 22.2, 22.7)}>
+                  <Label size={26} color={C.inkSoft} weight={600}>
+                    Balanced emphasis
+                  </Label>
+                </Rise>
+              </At>
+            </AbsoluteFill>
+            {/* UK, Germany, Italy, Spain: air superiority first */}
+            <AbsoluteFill style={{ opacity: four }}>
+              <Balance x={1480} y={520} w={560} tilt={fourTilt} p={four} left={pan("Air", C.ink)} right={pan("Ground", C.ink, true)} />
+              <At x={1480} y={250}>
+                <Label size={34} color={C.ink} weight={600} style={{ letterSpacing: "0.3em" }}>
+                  UK · Germany · Italy · Spain
+                </Label>
+              </At>
+              <At x={1480} y={880}>
+                <KeyTitle text="Air superiority" t={t} at={30.4} size={80} color={C.red} fill neon="red" />
+              </At>
+            </AbsoluteFill>
+          </Layer>
+        </Camera>
+      </PaperGround>
+    </BlotReveal>
+  );
+};
+
+/* P04 31.9–38.2 "In 1985, France left the joint program and moved forward with its own aircraft." */
+const SPLIT: Highlight[] = [
+  ...FIVE.filter((h) => h.name !== "France").map((h) => ({ ...h, draw: [31.9, 32.1] as [number, number], fill: [31.9, 32.1] as [number, number], label: h.label ? { ...h.label, at: 31.9 } : undefined, dim: [33.6, 34.4] as [number, number] })),
+  { ...FIVE[0], draw: [31.9, 32.1], fill: [31.9, 32.1], label: { text: "FRANCE", lon: 2.6, lat: 46.6, size: 84, at: 33.7 } },
+];
+export const P04Leaves: React.FC = () => {
+  const t = useT();
+  const lon = keys(t, [[31.9, 5], [33.6, 5], [35.5, 2.6]], ease.inOut);
+  const lat = keys(t, [[31.9, 47], [35.5, 46.6]], ease.inOut);
+  const z = keys(t, [[31.9, 1.0], [33.6, 1.0], [35.5, 1.45], [38.2, 1.52]], ease.inOut);
+  return (
+    <TearReveal t={t} start={31.9} dur={0.7} dir="rtl">
+      <WorldMap t={t} view={viewAt(lon, lat, z)} highlights={SPLIT} />
+      <At x={W / 2} y={H - 170}>
+        <CountUp t={t} at={32.6} to={1985} size={170} neon="white" dur={0.9} />
+      </At>
+      <At x={W / 2} y={140}>
+        <Rise p={ramp(t, 36.7, 37.2)}>
+          <Tape p={1} size={36} dark>
+            Its own aircraft
+          </Tape>
+        </Rise>
+      </At>
+    </TearReveal>
+  );
+};
+
+/* P05 38.1–45.6 carrier aviation requirement */
+export const P05Carrier: React.FC = () => {
+  const t = useT();
+  const s = keys(t, [[38.1, 1.15], [41.2, 1.05]], ease.soft);
+  const deck = ramp(t, 41.0, 41.7, ease.inOut);
+  return (
+    <BlotReveal t={t} start={38.1} dur={0.8} cx={W / 2} cy={H * 0.62}>
+      <AbsoluteFill style={{ background: C.night }}>
+        <Img src={staticFile("src-photos/carrier-wide.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", transform: `scale(${s})`, filter: "contrast(1.05) saturate(0.8) sepia(0.1)" }} />
+        <AbsoluteFill style={{ opacity: deck }}>
+          <Img src={staticFile("src-photos/rafale-deck.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", transform: `scale(${keys(t, [[41, 1.2], [45.6, 1.06]], ease.soft)})`, filter: "contrast(1.05) saturate(0.82) sepia(0.08)" }} />
+        </AbsoluteFill>
+        <PrintTexture opacity={0.25} />
+        <Vignette strength={0.55} />
+        <At x={W / 2} y={150}>
+          <KeyTitle text="Requirement" t={t} at={39.7} size={90} out={41.0} />
+        </At>
+        <At x={W / 2} y={H - 150}>
+          <KeyTitle text="French carrier aviation" t={t} at={43.7} size={90} />
+        </At>
+      </AbsoluteFill>
+    </BlotReveal>
+  );
+};
+
+/* P06 45.5–59.4 the Rafale family: C, B, M */
+const FAMILY = [
+  { key: "C", at: 50.1, src: "photos/rafale-landing.jpg", tag: "Single-seat · land", x: 420 },
+  { key: "B", at: 53.9, src: "src-photos/rafale-india.jpg", tag: "Two-seat", x: 960 },
+  { key: "M", at: 55.5, src: "src-photos/rafale-m-flight.jpg", tag: "Carrier", x: 1500 },
+];
+export const P06Family: React.FC = () => {
+  const t = useT();
+  return (
+    <TearReveal t={t} start={45.5} dur={0.7} dir="ltr">
+      <PaperGround>
+        <Camera s={keys(t, [[45.5, 1.08], [49.8, 1.0], [59.4, 1.03]], ease.soft)} x={keys(t, [[49.8, -120], [53.6, 0], [55.5, 110], [59.4, 0]], ease.inOut)}>
+          <Layer>
+            <At x={W / 2} y={160}>
+              <KeyTitle text="The Rafale family" t={t} at={47.9} size={96} />
+            </At>
+            {FAMILY.map((f, i) => {
+              const r = ramp(t, f.at - 0.15, f.at + 0.45);
+              const next = FAMILY[i + 1];
+              const back = next ? ramp(t, next.at, next.at + 0.5) * (1 - ramp(t, 57.2, 57.8)) * 0.6 : 0;
+              return (
+                <AbsoluteFill key={f.key} style={{ ...recede(back, 4, 0.4, 0.05), transformOrigin: `${f.x}px 560px` }}>
+                  <Photo src={f.src} x={f.x} y={560} w={500} h={333} rot={[-3, 1.5, 3][i]} reveal={r} revealFrom="bottom" seed={"fam" + f.key} zoom={1.15} />
+                  <At x={f.x - 190} y={330}>
+                    <div style={{ opacity: r }}>
+                      <KeyTitle text={f.key} t={t} at={f.at} size={140} color={C.red} fill neon="red" />
+                    </div>
+                  </At>
+                  <At x={f.x} y={780}>
+                    <Rise p={ramp(t, f.at + 0.3, f.at + 0.8)}>
+                      <Tape p={1} size={32} dark={i === 1}>
+                        {f.tag}
+                      </Tape>
+                    </Rise>
+                  </At>
+                </AbsoluteFill>
+              );
+            })}
+          </Layer>
+        </Camera>
+      </PaperGround>
+    </TearReveal>
+  );
+};
+
+/* P07 59.3–71.4 entry into service: Rafale Navy 2004, Air Force 2006, Typhoon RAF 2003 */
+const X_OF = (year: number) => 260 + (year - 2002) * 300;
+export const P07Service: React.FC = () => {
+  const t = useT();
+  const axis = ramp(t, 59.5, 60.4, ease.inOut);
+  const marks = [
+    { year: 2004, at: 62.1, src: "src-photos/rafale-m-flight.jpg", tag: "Rafale · French Navy", up: true },
+    { year: 2006, at: 64.7, src: "photos/rafale-landing.jpg", tag: "Rafale · French Air Force", up: false },
+    { year: 2003, at: 70.1, src: "src-photos/typhoon-front.jpg", tag: "Typhoon · RAF", up: true },
+  ];
+  return (
+    <BlotReveal t={t} start={59.3} dur={0.8} cx={W / 2} cy={H / 2}>
+      <PaperGround>
+        <Camera s={keys(t, [[59.3, 1.04], [71.4, 1.0]], ease.soft)} x={keys(t, [[59.3, 60], [66.3, 60], [69.5, -60], [71.4, -60]], ease.inOut)}>
+          <Layer>
+            <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
+              <line x1={180} y1={560} x2={180 + 1580 * axis} y2={560} stroke={C.ink} strokeWidth={4} />
+              {[2002, 2003, 2004, 2005, 2006, 2007].map((y) => (
+                <g key={y} opacity={axis > (X_OF(y) - 180) / 1580 ? 1 : 0}>
+                  <line x1={X_OF(y)} y1={545} x2={X_OF(y)} y2={575} stroke={C.ink} strokeWidth={3} />
+                  <text x={X_OF(y)} y={612} textAnchor="middle" fontFamily="'Fira Sans Condensed'" fontWeight={600} fontSize={26} fill={C.inkSoft}>
+                    {y}
+                  </text>
+                </g>
+              ))}
+            </svg>
+            {marks.map((m, i) => {
+              const r = ramp(t, m.at - 0.2, m.at + 0.4);
+              const x = X_OF(m.year);
+              const y = m.up ? 330 : 800;
+              return (
+                <React.Fragment key={m.year}>
+                  <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible", opacity: r }} width={1} height={1}>
+                    <circle cx={x} cy={560} r={14 * springIn(t, m.at - 0.2, 0.7)} fill={C.red} />
+                    <line x1={x} y1={m.up ? 545 : 575} x2={x} y2={m.up ? 470 : 650} stroke={C.red} strokeWidth={3} />
+                  </svg>
+                  <Photo src={m.src} x={x} y={y} w={330} h={220} rot={[-3, 2, 3][i]} reveal={r} revealFrom={m.up ? "bottom" : "top"} seed={"svc" + m.year} zoom={1.1} />
+                  <At x={x} y={m.up ? 180 : 950}>
+                    <Rise p={ramp(t, m.at + 0.1, m.at + 0.6)}>
+                      <Tape p={1} size={28} dark={i === 2}>
+                        {m.tag}
+                      </Tape>
+                    </Rise>
+                  </At>
+                  <At x={x} y={m.up ? 505 : 620}>
+                    <div style={{ opacity: r }}>
+                      <CountUp t={t} at={m.at} to={m.year} size={64} color={C.red} dur={0.7} />
+                    </div>
+                  </At>
+                </React.Fragment>
+              );
+            })}
+          </Layer>
+        </Camera>
+      </PaperGround>
+    </BlotReveal>
+  );
+};
+
+/* P08 71.3–79.5 Typhoon: air defence first, ground attack added progressively. */
+export const P08Progressive: React.FC = () => {
+  const t = useT();
+  const steps = [76.85, 77.4, 78.1];
+  const stepN = steps.filter((s) => t >= s).length;
+  return (
+    <TearReveal t={t} start={71.3} dur={0.7} dir="btt">
+      <PaperGround>
+        <Camera s={keys(t, [[71.3, 1.05], [79.5, 1.0]], ease.soft)}>
+          <Layer>
+            <Blueprint view="typhoonUnder" x={620} y={520} width={860} p={ramp(t, 71.5, 73.4, ease.linear)} redP={ramp(t, 76.8, 78.6, ease.linear)} lineWidth={1.4} />
+            <div style={{ position: "absolute", left: 1150, top: 330 }}>
+              <div style={{ opacity: ramp(t, 73.8, 74.3) }}>
+                <Label size={28} color={C.inkSoft} weight={600}>
+                  Air defence
+                </Label>
+                <div style={{ width: 600 * ease.out(ramp(t, 74.0, 74.9)), height: 46, background: C.ink, marginTop: 10, filter: "url(#ink)" }} />
+              </div>
+              <div style={{ opacity: ramp(t, 75.2, 75.7), marginTop: 50 }}>
+                <Label size={28} color={C.inkSoft} weight={600}>
+                  Ground attack
+                </Label>
+                <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} style={{ width: 190, height: 46, background: i < stepN ? C.red : "transparent", border: `2px solid ${C.red}`, transform: `scaleX(${i < stepN ? springIn(t, steps[i], 0.6) : 1})`, transformOrigin: "left", filter: "url(#ink)" }} />
+                  ))}
+                </div>
+              </div>
+              <div style={{ marginTop: 30, opacity: ramp(t, 77.4, 77.9) }}>
+                <Tape p={1} size={30} dark>
+                  Expanded over time
+                </Tape>
+              </div>
+            </div>
+          </Layer>
+        </Camera>
+      </PaperGround>
+    </TearReveal>
+  );
+};
+
+/* P09 79.4–91.5 not "exclusively" one or the other */
+export const P09NotExclusive: React.FC = () => {
+  const t = useT();
+  return (
+    <BlotReveal t={t} start={79.4} dur={0.8} cx={W / 2} cy={H / 2}>
+      <PaperGround>
+        <Camera s={keys(t, [[79.4, 1.06], [91.5, 1.0]], ease.soft)}>
+          <Layer depth={0.9}>
+            <AbsoluteFill style={{ ...recede(ramp(t, 84.9, 85.6) * 0.8), transformOrigin: "960px 540px" }}>
+              <Blueprint view="typhoonTop" x={520} y={520} width={700} p={ramp(t, 79.6, 81.8, ease.linear)} lineWidth={1.3} />
+              <Blueprint view="rafaleTop" x={1400} y={520} width={640} p={ramp(t, 80.0, 82.2, ease.linear)} lineWidth={1.3} />
+            </AbsoluteFill>
+          </Layer>
+          <Layer>
+            <At x={W / 2} y={300}>
+              <KeyTitle text="Exclusively" t={t} at={85.2} size={150} />
+            </At>
+            <Strike x1={W / 2 - 420} x2={W / 2 + 420} y={300} p={ramp(t, 88.4, 88.9)} width={14} />
+            <At x={W / 2} y={780}>
+              <div style={{ display: "flex", gap: 30 }}>
+                <Tape p={ramp(t, 86.3, 86.8)} size={36}>
+                  Air combat
+                </Tape>
+                <Tape p={ramp(t, 89.7, 90.2)} size={36} dark>
+                  Multirole
+                </Tape>
+              </div>
+            </At>
+          </Layer>
+        </Camera>
+      </PaperGround>
+    </BlotReveal>
+  );
+};
+

@@ -10,7 +10,7 @@ import { FPS } from "./lib/time";
  * servo, radar, afterburner, carrier) start on the event instead.
  * Files are peak-normalised to -3 dBFS; the mix sits well under the narration.
  */
-const PEAK: Record<string, number> = {
+export const PEAK: Record<string, number> = {
   aesa: 0.33, afterburner: 2.88, bomb: 1.85, "boom-1": 0.19, "boom-2": 0.22, carrier: 0.47, docs: 0.17, "jet-flyby": 1.81,
   "liquid-1": 0.23, "liquid-2": 0.22, "marker-1": 0.85, "marker-2": 0.86, pencil: 0, "ping-1": 0.02, "ping-2": 0.08, riser: 2.62,
   servo: 0, "slide-1": 0.39, "slide-2": 0.12, "slide-3": 0.08, snap: 0.48, split: 0.86, "stamp-1": 0.02, "stamp-2": 0.34, "stamp-3": 0,
@@ -19,7 +19,7 @@ const PEAK: Record<string, number> = {
 };
 
 // [visual event time, file, gain, start-mode duration (textures only)]
-type Cue = [at: number, file: string, vol: number, dur?: number];
+export type Cue = [at: number, file: string, vol: number, dur?: number];
 const SFX_GAIN = 0.5;
 
 const CUES: Cue[] = [
@@ -61,7 +61,7 @@ const CUES: Cue[] = [
   [170.2, "whoosh-3", 0.16], [170.3, "docs", 0.22], [177.45, "marker-2", 0.16], [179.9, "marker-1", 0.16], [181.05, "whoosh-2", 0.2], 
 ];
 
-const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, v, dur] }) => {
+export const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, v, dur] }) => {
   const vol = v * SFX_GAIN;
   const start = dur ? at : at - (PEAK[file] ?? 0);
   const frame = Math.round(start * FPS);

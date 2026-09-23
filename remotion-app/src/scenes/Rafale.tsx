@@ -3,7 +3,8 @@ import { AbsoluteFill, Img, staticFile } from "remotion";
 import { Camera, Layer } from "../components/Camera";
 import { PaperGround, PrintTexture, Vignette } from "../components/Paper";
 import { Cutout, Photo } from "../components/Photo";
-import { At, Display, Label, Rise, Tape } from "../components/Type";
+import { At, Label, Rise, Tape } from "../components/Type";
+import { CountUp, KeyTitle, recede, springIn } from "../components/AnimeText";
 import { ArrowHead, DrawPath, Stage, handLine, handLineEndAngle } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { Blueprint, Dimension, TitleBlock } from "../components/Blueprint";
@@ -29,7 +30,6 @@ export const S04Rafale: React.FC = () => {
   const rect = { x: (W - pw) / 2, y: (H - ph) / 2 - 20, w: pw, h: ph };
   const lift = liftFrom("rafale-croatia", rect);
   const up = ramp(t, 25.9, 26.8);
-  const name = ramp(t, 26.1, 26.8);
   const back = ramp(t, 28.0, 29.5, ease.inOut);
   const side = ramp(t, 28.6, 30.6, ease.linear);
   const plan = ramp(t, 29.6, 32.0, ease.linear);
@@ -64,9 +64,7 @@ export const S04Rafale: React.FC = () => {
             <TitleBlock x={1240} y={800} kicker="Dassault Aviation · three views" title="Rafale" rows={[["Length", "15.27 m"], ["Span", "10.90 m"], ["Height", "5.34 m"]]} p={ramp(t, 31.2, 31.9)} width={560} />
             <At x={1085} y={610} anchor="left">
               <div style={{ display: "flex", alignItems: "baseline", gap: 18, opacity: hard, transform: `scale(${0.9 + hard * 0.1})`, transformOrigin: "left center" }}>
-                <Display size={190} color={C.red}>
-                  14
-                </Display>
+                <CountUp t={t} at={32.9} to={14} size={190} color={C.red} neon="red" dur={0.8} />
                 <Label size={30} color={C.ink} weight={600}>
                   hardpoints
                 </Label>
@@ -81,11 +79,7 @@ export const S04Rafale: React.FC = () => {
                 <Img src={staticFile("src-photos/rafale-croatia.jpg")} style={{ position: "absolute", left: rect.x, top: rect.y, width: rect.w, height: rect.h, filter: `brightness(${1 - up * 0.35 * (1 - back)}) blur(${up * 3 * (1 - back)}px)` }} />
                 <PrintTexture opacity={0.3} />
                 <At x={W / 2} y={H / 2 + 230}>
-                  <Rise p={name} q={back}>
-                    <Display size={360} color={C.offWhite} tracking={0.04}>
-                      Rafale
-                    </Display>
-                  </Rise>
+                  <KeyTitle text="Rafale" t={t} at={26.1} size={360} fill tracking={0.04} out={28.0} />
                   <br />
                   <Rise p={ramp(t, 26.4, 26.9)} q={back}>
                     <Label size={36} color={C.offWhite} weight={600} style={{ letterSpacing: "0.5em", marginTop: 4 }}>
@@ -140,23 +134,27 @@ export const S05Missions: React.FC = () => {
             </Stage>
           </Layer>
           <Layer depth={1.05}>
-            <Cutout name="meteor" x={tgt.a.x} y={tgt.a.y} w={460} rot={-6} opacity={a2a} scale={0.85 + a2a * 0.15} />
-            <At x={tgt.a.x} y={tgt.a.y + 130}>
-              <Rise p={ramp(t, 36.3, 36.8)}>
-                <Tape p={1} rot={-2}>
-                  Air-to-air
-                </Tape>
-              </Rise>
-            </At>
-            <Photo src="src-photos/rafale-m-armed.jpg" x={tgt.s.x} y={tgt.s.y} w={420} h={273} rot={2} reveal={strike} revealFrom="left" seed="strk" zoom={1.25} />
-            <At x={tgt.s.x} y={tgt.s.y + 170}>
-              <Rise p={ramp(t, 37.7, 38.2)}>
-                <Tape p={1} rot={1.5}>
-                  Precision strike
-                </Tape>
-              </Rise>
-            </At>
-            <Cutout name="exocet" x={tgt.x.x} y={tgt.x.y} w={340} rot={4} opacity={ship} scale={0.85 + ship * 0.15} />
+            <AbsoluteFill style={{ ...recede(ramp(t, 37.4, 37.9) * 0.8), transformOrigin: `${tgt.a.x}px ${tgt.a.y}px` }}>
+              <Cutout name="meteor" x={tgt.a.x} y={tgt.a.y} w={460} rot={-6} opacity={a2a} scale={0.85 + springIn(t, 36.0) * 0.15} />
+              <At x={tgt.a.x} y={tgt.a.y + 130}>
+                <Rise p={ramp(t, 36.3, 36.8)}>
+                  <Tape p={1} rot={-2}>
+                    Air-to-air
+                  </Tape>
+                </Rise>
+              </At>
+            </AbsoluteFill>
+            <AbsoluteFill style={{ ...recede(ramp(t, 38.72, 39.2) * 0.8), transformOrigin: `${tgt.s.x}px ${tgt.s.y}px` }}>
+              <Photo src="src-photos/rafale-m-armed.jpg" x={tgt.s.x} y={tgt.s.y} w={420} h={273} rot={2} reveal={strike} revealFrom="left" seed="strk" zoom={1.25} />
+              <At x={tgt.s.x} y={tgt.s.y + 170}>
+                <Rise p={ramp(t, 37.7, 38.2)}>
+                  <Tape p={1} rot={1.5}>
+                    Precision strike
+                  </Tape>
+                </Rise>
+              </At>
+            </AbsoluteFill>
+            <Cutout name="exocet" x={tgt.x.x} y={tgt.x.y} w={340} rot={4} opacity={ship} scale={0.85 + springIn(t, 38.72) * 0.15} />
             <At x={tgt.x.x} y={tgt.x.y + 140}>
               <Rise p={ramp(t, 39.0, 39.5)}>
                 <Tape p={1} rot={-1} dark>

@@ -1,35 +1,27 @@
 import React from "react";
 import { AbsoluteFill, staticFile, useCurrentFrame, random } from "remotion";
-import { C } from "../lib/theme";
 
 const paper = staticFile("gen/paper2.jpg");
-const sheet = staticFile("gen/sheet.jpg");
-const sheetDark = staticFile("gen/sheet-dark.jpg");
 
-/** Paper ground. `dark` is an ink-toned sheet for night/technical scenes. */
-export const PaperGround: React.FC<{ dark?: boolean; tint?: string; children?: React.ReactNode }> = ({
-  dark,
-  tint,
-  children,
-}) => (
-  <AbsoluteFill
-    style={{
-      background: tint ?? (dark ? "#1f2529" : C.paper),
-      overflow: "hidden",
-    }}
-  >
+const ground = staticFile("gen/bg-dark.jpg");
+
+/**
+ * The edit's ground: the owner's dark textured board (gen/bg-dark.jpg). `dark` sits a
+ * little deeper for technical scenes; `tint` is kept for API compatibility (ignored).
+ */
+export const PaperGround: React.FC<{ dark?: boolean; tint?: string; children?: React.ReactNode }> = ({ dark, children }) => (
+  <AbsoluteFill style={{ background: "#1b1b1b", overflow: "hidden" }}>
     <AbsoluteFill
       style={{
-        backgroundImage: `url(${paper})`,
-        backgroundSize: "1024px 1024px",
-        mixBlendMode: dark ? "overlay" : "multiply",
-        opacity: dark ? 0.5 : 1,
+        backgroundImage: `url(${ground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "50% 50%",
+        filter: `brightness(${dark ? 0.78 : 0.95}) contrast(1.05)`,
+        transform: "scale(1.04)",
       }}
     />
-    {/* creases, folds, stains, worn edges */}
-    <AbsoluteFill style={{ backgroundImage: `url(${dark ? sheetDark : sheet})`, backgroundSize: "cover", mixBlendMode: dark ? "overlay" : "multiply", opacity: dark ? 0.9 : 0.75 }} />
     {children}
-    <Vignette strength={dark ? 0.55 : 0.28} />
+    <Vignette strength={dark ? 0.6 : 0.45} />
   </AbsoluteFill>
 );
 
@@ -105,7 +97,7 @@ export const FilmLook: React.FC = () => {
     ) : null;
   return (
     <>
-      <AbsoluteFill style={{ backgroundImage: `url(${paper})`, backgroundSize: "900px 900px", mixBlendMode: "multiply", opacity: 0.14, pointerEvents: "none" }} />
+      <AbsoluteFill style={{ backgroundImage: `url(${paper})`, backgroundSize: "900px 900px", mixBlendMode: "multiply", opacity: 0.06, pointerEvents: "none" }} />
       <AbsoluteFill style={{ background: "#f3d9b0", mixBlendMode: "soft-light", opacity: 0.16, pointerEvents: "none" }} />
       <Grain opacity={0.16} />
       <svg width={1920} height={1080} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>

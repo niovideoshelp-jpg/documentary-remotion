@@ -3,14 +3,16 @@ export const C = {
   oceanDeep: "#1c2d39",
   land: "#d9d4c8",
   landEdge: "#8f8a80",
-  red: "#A8301F",
+  red: "#C9402E",
   redPrint: "#c8342a",
-  paper: "#e6dcc6",
+  // the ground is now the dark board: "paper" is the ground colour behind drawings
+  paper: "#1d1d1c",
   paperDark: "#d8d0bf",
-  ink: "#221f1b",
-  inkSoft: "#3a4046",
+  // chalk-light ink for drawings and type on the dark board
+  ink: "#ebe3d2",
+  inkSoft: "#b3ab9c",
   offWhite: "#f4efe4",
-  pencil: "#2b2f33",
+  pencil: "#d9d1c1",
   night: "#15191c",
 };
 

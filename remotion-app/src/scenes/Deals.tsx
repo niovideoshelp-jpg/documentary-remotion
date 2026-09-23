@@ -4,6 +4,7 @@ import { Camera, Layer } from "../components/Camera";
 import { PaperGround, PrintTexture, Vignette } from "../components/Paper";
 import { Cutout, Photo } from "../components/Photo";
 import { At, Display, Hand, Label, Rise, Tape } from "../components/Type";
+import { KeyTitle, recede, springIn } from "../components/AnimeText";
 import { ArrowHead, DrawPath, Stage, handLine, scribbleEllipse } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
@@ -27,16 +28,11 @@ export const S14Cases: React.FC = () => {
   const lon = keys(t, [[143.8, 40], [145.6, 38], [146.4, 30.5], [148.1, 30.5], [148.3, 50.5], [148.75, 50.5], [149.0, 75], [150.4, 60]], ease.inOut);
   const lat = keys(t, [[143.8, 32], [145.6, 30], [146.4, 27], [148.1, 27], [148.3, 25.6], [148.75, 25.6], [149.0, 22], [150.4, 25]], ease.inOut);
   const z = keys(t, [[143.8, 0.3], [145.6, 0.36], [146.4, 0.62], [148.1, 0.66], [148.3, 1.1], [148.75, 1.15], [149.0, 0.55], [150.4, 0.4]], ease.inOut);
-  const beat = ramp(t, 143.72, 144.2);
   return (
     <TearReveal t={t} start={143.72} dur={0.7} dir="ttb" seed="s14" slope={0.05}>
       <WorldMap t={t} view={viewAt(lon, lat, z)} highlights={CASES} />
       <At x={W / 2} y={H / 2}>
-        <div style={{ opacity: (1 - ramp(t, 145.5, 146.0)) * beat }}>
-          <Display size={120} color={C.offWhite}>
-            Export contracts
-          </Display>
-        </div>
+        <KeyTitle text="Export contracts" t={t} at={143.95} size={120} out={145.5} />
       </At>
     </TearReveal>
   );
@@ -108,7 +104,14 @@ export const S14Package: React.FC = () => {
               const j = (i + 2) % 5;
               const x = lerp(it.x, PACKAGE[j].x, swap);
               const y = lerp(it.y, PACKAGE[j].y, swap) - Math.sin(swap * Math.PI) * 60;
-              return <PackageItem key={it.key} kind={it.key} x={x} y={y} p={e} word={it.word} t={t} />;
+              // each item steps back when the next is named; all return to focus on "all of that"
+              const next = PACKAGE[i + 1];
+              const f = next ? ramp(t, next.at, next.at + 0.4) * 0.6 * (1 - ramp(t, 157.6, 158.0)) : 0;
+              return (
+                <AbsoluteFill key={it.key} style={{ ...recede(f, 4, 0.35, 0.05), transformOrigin: `${x}px ${y}px` }}>
+                  <PackageItem kind={it.key} x={x} y={y} p={e} pop={springIn(t, it.at - 0.1, 0.8)} word={it.word} t={t} />
+                </AbsoluteFill>
+              );
             })}
           </Layer>
         </Camera>
@@ -122,9 +125,9 @@ export const S14Package: React.FC = () => {
   );
 };
 
-const PackageItem: React.FC<{ kind: string; x: number; y: number; p: number; word: string; t: number }> = ({ kind, x, y, p, word, t }) => {
+const PackageItem: React.FC<{ kind: string; x: number; y: number; p: number; pop: number; word: string; t: number }> = ({ kind, x, y, p, pop, word, t }) => {
   if (p <= 0) return null;
-  const s = 0.8 + ease.out(p) * 0.2;
+  const s = 0.75 + pop * 0.25; // Anime.js elastic settle
   const media: Record<string, React.ReactNode> = {
     radar: <Cutout name="rbe2" x={x} y={y} w={230} rot={-4} scale={s} opacity={p} />,
     weapons: <Cutout name="meteor" x={x} y={y} w={380} rot={5} scale={s} opacity={p} />,
@@ -228,11 +231,7 @@ export const S15Deal: React.FC = () => {
               </Rise>
             </At>
             <At x={(L.x + R.x) / 2 - 40 * allowed} y={L.y}>
-              <Rise p={deal}>
-                <Display size={64} color={C.offWhite}>
-                  Deal
-                </Display>
-              </Rise>
+              <KeyTitle text="Deal" t={t} at={166.6} size={64} neon="white" />
             </At>
             <At x={cutX + 20} y={150} anchor="left">
               <Rise p={ramp(t, 168.4, 168.9)}>

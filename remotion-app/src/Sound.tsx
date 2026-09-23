@@ -21,44 +21,45 @@ const PEAK: Record<string, number> = {
 
 // [visual event time, file, gain, start-mode duration (textures only)]
 type Cue = [at: number, file: string, vol: number, dur?: number];
+const SFX_GAIN = 0.5;
 
 const CUES: Cue[] = [
   // S01 Typhoon: lift, title, fly-off
   [1.3, "slide-1", 0.22], [2.05, "boom-1", 0.22], [6.1, "jet-flyby", 0.28],
   // S02 plate + flight
-  [7.45, "tear-1", 0.26], [7.25, "pencil", 0.16, 1.8], [9.35, "whoosh-1", 0.2], [9.7, "slide-2", 0.2], [10.9, "whoosh-2", 0.18], [12.0, "jet-flyby", 0.2], [12.8, "whoosh-3", 0.16],
+  [7.52, "whoosh-3", 0.2], [7.25, "pencil", 0.16, 1.8], [9.35, "whoosh-1", 0.2], [9.7, "slide-2", 0.2], [10.9, "whoosh-2", 0.18], [12.0, "jet-flyby", 0.2], [12.8, "whoosh-3", 0.16],
   // S03 tilt, underside, drop
   [15.25, "whoosh-3", 0.2], [15.3, "pencil", 0.15, 2.0], [17.95, "slide-3", 0.2], [20.4, "pencil", 0.15, 1.4], [21.25, "slide-1", 0.2], [22.65, "bomb", 0.28], [24.5, "whip-1", 0.28],
   // S04 Rafale
   [24.4, "afterburner", 0.26, 3.6], [26.5, "boom-2", 0.22], [28.75, "whoosh-1", 0.2], [28.6, "pencil", 0.16, 3.6], [33.15, "stamp-1", 0.3],
   // S05 missions + carrier
-  [35.65, "tear-1", 0.26], [35.4, "pencil", 0.14, 1.0], [36.25, "slide-3", 0.18], [37.7, "slide-2", 0.18], [39.0, "slide-1", 0.18], [40.9, "whoosh-2", 0.22], [40.6, "carrier", 0.26, 3.4],
+  [35.69, "whoosh-2", 0.2], [35.4, "pencil", 0.14, 1.0], [36.25, "slide-3", 0.18], [37.7, "slide-2", 0.18], [39.0, "slide-1", 0.18], [40.95, "whoosh-2", 0.2], [40.6, "carrier", 0.26, 3.4],
   // S06 rivals
-  [45.4, "tear-1", 0.26], [46.2, "whoosh-3", 0.16], [47.0, "whoosh-1", 0.16], [53.75, "slide-3", 0.2], [56.7, "split", 0.32],
+  [45.45, "whoosh-1", 0.2], [46.2, "whoosh-3", 0.16], [47.0, "whoosh-1", 0.16], [53.75, "slide-3", 0.2], [56.7, "split", 0.32],
   // S07 map
   [58.4, "whoosh-2", 0.16], [59.9, "pencil", 0.13, 1.6], [61.75, "liquid-1", 0.24], [62.1, "liquid-2", 0.18], [62.55, "ping-1", 0.16],
   [64.6, "pencil", 0.13, 1.2], [66.45, "liquid-1", 0.24], [67.2, "ping-2", 0.18], [70.35, "whoosh-3", 0.22], [71.3, "ping-1", 0.14], [71.95, "boom-1", 0.16],
   // S08 develop / upgrade / sell
-  [74.25, "whoosh-1", 0.18], [74.3, "pencil", 0.14, 2.4], [77.55, "marker-2", 0.16], [78.27, "stamp-1", 0.32], [78.52, "stamp-3", 0.3],
+  [74.3, "whoosh-1", 0.18], [74.3, "pencil", 0.14, 2.4], [77.55, "marker-2", 0.16], [78.27, "stamp-1", 0.32], [78.52, "stamp-3", 0.3],
   // S09 fair comparison
-  [80.4, "tear-1", 0.26], [80.2, "pencil", 0.14, 2.0], [84.6, "docs", 0.2], [86.7, "ping-2", 0.16], [87.1, "whoosh-2", 0.2],
+  [80.45, "whoosh-3", 0.2], [80.2, "pencil", 0.14, 2.0], [84.6, "docs", 0.2], [86.7, "ping-2", 0.16], [87.1, "whoosh-2", 0.2],
   // S10 Typhoon FGR4
-  [87.35, "whoosh-3", 0.16], [90.4, "boom-2", 0.18], [97.15, "slide-2", 0.18], [99.0, "whoosh-1", 0.22], [99.5, "servo", 0.2, 3.6],
+  [87.4, "whoosh-3", 0.16], [90.4, "boom-2", 0.18], [97.15, "slide-2", 0.18], [99.0, "whoosh-1", 0.22], [99.69, "whoosh-1", 0.14], [99.5, "servo", 0.2, 3.6],
   // S11 Rafale C
-  [102.75, "whip-2", 0.26], [104.65, "boom-1", 0.18], [106.15, "marker-1", 0.16], [109.5, "whoosh-2", 0.22], [109.9, "aesa", 0.18, 3.5],
+  [102.75, "whip-2", 0.26], [104.65, "boom-1", 0.18], [106.15, "marker-1", 0.16], [109.5, "whoosh-2", 0.22], [110.09, "whoosh-3", 0.14], [109.9, "aesa", 0.18, 3.5],
   // S12 mature standards
-  [113.2, "tear-1", 0.26], [113.8, "docs", 0.22], [116.3, "stamp-1", 0.32], [117.05, "stamp-2", 0.32], [120.1, "stamp-3", 0.32],
+  [113.25, "whoosh-2", 0.2], [113.8, "docs", 0.22], [116.3, "stamp-1", 0.32], [117.05, "stamp-2", 0.32], [120.1, "stamp-3", 0.32],
   // S13 timeline
-  [121.75, "whoosh-3", 0.18], [121.4, "pencil", 0.13, 1.6], [122.35, "marker-1", 0.14], [124.5, "whoosh-1", 0.16], [129.1, "ping-1", 0.2],
+  [121.8, "whoosh-3", 0.18], [121.4, "pencil", 0.13, 1.6], [122.35, "marker-1", 0.14], [124.5, "whoosh-1", 0.16], [129.1, "ping-1", 0.2],
   [132.9, "ping-2", 0.2], [134.4, "whoosh-2", 0.16], [138.75, "slide-3", 0.2],
   // S14 case by case + package
-  [144.1, "tear-1", 0.26], [146.8, "liquid-2", 0.18], [147.4, "ping-1", 0.16], [148.9, "ping-2", 0.16], [149.8, "ping-1", 0.16],
-  [149.9, "whoosh-1", 0.18], [150.3, "slide-1", 0.16], [150.6, "slide-2", 0.16], [150.9, "slide-3", 0.16], [153.1, "whoosh-2", 0.16],
+  [144.1, "whoosh-1", 0.2], [146.8, "liquid-2", 0.18], [147.4, "ping-1", 0.16], [148.9, "ping-2", 0.16], [149.8, "ping-1", 0.16],
+  [149.95, "whoosh-1", 0.18], [150.3, "slide-1", 0.16], [150.6, "slide-2", 0.16], [150.9, "slide-3", 0.16], [153.1, "whoosh-2", 0.16],
   [153.6, "slide-3", 0.14], [154.44, "slide-2", 0.14], [155.18, "slide-3", 0.14], [155.88, "slide-2", 0.14], [156.6, "slide-1", 0.14], [158.7, "whoosh-3", 0.18],
   // S15 deal
-  [161.1, "tear-1", 0.24], [163.4, "whoosh-1", 0.14], [166.0, "whoosh-2", 0.14], [167.0, "liquid-2", 0.2], [168.4, "marker-1", 0.16],
+  [161.15, "whoosh-3", 0.18], [163.4, "whoosh-1", 0.14], [166.0, "whoosh-2", 0.14], [167.0, "liquid-2", 0.2], [168.4, "marker-1", 0.16],
   // S16 sources + close
-  [170.15, "whoosh-3", 0.16], [170.3, "docs", 0.22], [177.45, "marker-2", 0.16], [179.9, "marker-1", 0.16], [181.0, "tear-1", 0.22], [182.6, "jet-flyby", 0.2],
+  [170.2, "whoosh-3", 0.16], [170.3, "docs", 0.22], [177.45, "marker-2", 0.16], [179.9, "marker-1", 0.16], [181.05, "whoosh-2", 0.2], [182.6, "jet-flyby", 0.2],
 ];
 
 const SPEECH = speech as [number, number][];
@@ -72,10 +73,11 @@ const duck = (t: number) => {
   return 0.15 + 0.12 * Math.min(1, d / 0.6);
 };
 
-const Music: React.FC<{ file: string; from: number; to: number; fadeIn: number; fadeOut: number }> = ({ file, from, to, fadeIn, fadeOut }) => (
+const Music: React.FC<{ file: string; from: number; to: number; fadeIn: number; fadeOut: number; trim?: number }> = ({ file, from, to, fadeIn, fadeOut, trim = 0 }) => (
   <Sequence from={Math.round(from * FPS)} durationInFrames={Math.round((to - from) * FPS)} layout="none">
     <Audio
       src={staticFile(`music/${file}.mp3`)}
+      startFrom={Math.round(trim * FPS)}
       volume={(f) => {
         const t = from + f / FPS;
         const env = interpolate(t, [from, from + fadeIn, to - fadeOut, to], [0, 1, 1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
@@ -85,7 +87,8 @@ const Music: React.FC<{ file: string; from: number; to: number; fadeIn: number; 
   </Sequence>
 );
 
-const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, vol, dur] }) => {
+const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, v, dur] }) => {
+  const vol = v * SFX_GAIN;
   const start = dur ? at : at - (PEAK[file] ?? 0);
   const frame = Math.round(start * FPS);
   // a cue that would start before 0 is trimmed instead of shifted
@@ -105,8 +108,8 @@ const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, vol, dur] }) => {
 export const Soundtrack: React.FC = () => (
   <>
     <Audio src={staticFile("audio/intro.mp3")} />
-    <Music file="score-a" from={0} to={82.5} fadeIn={1.2} fadeOut={3.0} />
-    <Music file="score-b" from={79.6} to={DURATION / FPS} fadeIn={2.5} fadeOut={2.2} />
+    <Music file="doc-a" from={0} to={121.6} fadeIn={1.5} fadeOut={2.2} />
+    <Music file="doc-b" from={119.4} to={DURATION / FPS} fadeIn={2.2} fadeOut={1.8} trim={82} />
     <Audio src={staticFile("sfx/projector.mp3")} loop volume={0.018} />
     {CUES.map((c, i) => (
       <SfxCue key={i} cue={c} />

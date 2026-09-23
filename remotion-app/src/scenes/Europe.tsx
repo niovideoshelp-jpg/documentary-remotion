@@ -4,7 +4,8 @@ import { Camera, Layer } from "../components/Camera";
 import { PaperGround } from "../components/Paper";
 import { Cutout, roughRect } from "../components/Photo";
 import { Blueprint } from "../components/Blueprint";
-import { At, Display, Label, Rise } from "../components/Type";
+import { At, Label, Rise } from "../components/Type";
+import { KeyTitle } from "../components/AnimeText";
 import { DrawPath, Stage } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { WorldMap, arc, viewAt, type Highlight, type View } from "../map/WorldMap";
@@ -253,11 +254,7 @@ export const S07Map: React.FC = () => {
         )}
       </WorldMap>
       <At x={W / 2} y={H - 130}>
-        <Rise p={ramp(t, 71.6, 72.3)} q={ramp(t, 73.6, 74.1)}>
-          <Display size={120} color={C.offWhite}>
-            US$ <span style={{ color: "#f0b8a8" }}>billions</span>
-          </Display>
-        </Rise>
+        <KeyTitle text="US$ billions" t={t} at={71.55} size={120} neon="white" out={73.6} />
       </At>
       <At x={fx + 20} y={fy + 70} anchor="left">
         <Rise p={ramp(t, 68.2, 68.7)} q={ramp(t, 69.3, 69.8)}>
@@ -281,7 +278,7 @@ const ExportStamp: React.FC<{ p: number; x: number; y: number; rot: number }> = 
   const s = lerp(1.7, 1, ease.out(Math.min(1, p * 1.5)));
   return (
     <At x={x} y={y} rot={rot}>
-      <div style={{ transform: `scale(${s})`, opacity: Math.min(1, p * 3) * 0.9, border: `6px solid ${C.red}`, padding: "6px 22px 2px", fontFamily: F.display, fontSize: 70, color: C.red, letterSpacing: "0.06em", mixBlendMode: "multiply" }}>
+      <div style={{ transform: `scale(${s})`, opacity: Math.min(1, p * 3) * 0.9, border: `6px solid ${C.red}`, padding: "6px 22px 2px", fontFamily: F.display, fontSize: 70, color: C.red, letterSpacing: "0.06em" }}>
         EXPORT
       </div>
     </At>
@@ -303,11 +300,7 @@ export const S08Approaches: React.FC = () => {
   const sell = ramp(t, 78.0, 78.4);
   const verb = (w: string, at: number, x: number, color: string) => (
     <At x={x} y={930}>
-      <Rise p={ramp(t, at, at + 0.5)}>
-        <Display size={110} color={color}>
-          {w}
-        </Display>
-      </Rise>
+      <KeyTitle text={w} t={t} at={at} size={110} color={color} fill={color === C.red} neon={color === C.red ? "red" : undefined} />
     </At>
   );
   return (
@@ -350,10 +343,10 @@ export const S08Approaches: React.FC = () => {
 const GraphPaperLite: React.FC = () => (
   <Stage>
     {Array.from({ length: 44 }, (_, i) => (
-      <line key={"v" + i} x1={i * 48 - 100} y1={-200} x2={i * 48 - 100} y2={1300} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.22 : 0.09} />
+      <line key={"v" + i} x1={i * 48 - 100} y1={-200} x2={i * 48 - 100} y2={1300} stroke="#cfd6d9" strokeOpacity={i % 5 === 0 ? 0.09 : 0.04} />
     ))}
     {Array.from({ length: 30 }, (_, i) => (
-      <line key={"h" + i} x1={-200} y1={i * 48 - 150} x2={2200} y2={i * 48 - 150} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.22 : 0.09} />
+      <line key={"h" + i} x1={-200} y1={i * 48 - 150} x2={2200} y2={i * 48 - 150} stroke="#cfd6d9" strokeOpacity={i % 5 === 0 ? 0.09 : 0.04} />
     ))}
   </Stage>
 );

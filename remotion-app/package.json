@@ -6,12 +6,13 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
+    "@remotion/bundler": "4.0.527",
     "@remotion/cli": "4.0.527",
+    "@remotion/renderer": "4.0.527",
+    "animejs": "^4.5.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "remotion": "4.0.527",
-    "@remotion/renderer": "4.0.527",
-    "@remotion/bundler": "4.0.527"
+    "remotion": "4.0.527"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.527",

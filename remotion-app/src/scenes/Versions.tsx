@@ -4,6 +4,7 @@ import { Camera, Layer } from "../components/Camera";
 import { PaperGround } from "../components/Paper";
 import { Cutout, Photo } from "../components/Photo";
 import { At, Display, Label, Rise, Tape } from "../components/Type";
+import { CountUp, KeyTitle } from "../components/AnimeText";
 import { DrawPath, Stage, scribbleEllipse } from "../components/Draw";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { Blueprint, viewBox } from "../components/Blueprint";
@@ -104,18 +105,10 @@ export const S09Fair: React.FC = () => {
               <line x1={X0 + 15.27 * PX_M} y1={575} x2={X0 + 15.27 * PX_M} y2={930} stroke={C.red} strokeWidth={2} strokeDasharray="8 8" opacity={lenR * 0.8} />
             </Stage>
             <At x={X0 + 15.96 * PX_M + 14} y={150} anchor="left">
-              <Rise p={lenT}>
-                <Display size={58} color={C.red}>
-                  15.96 m
-                </Display>
-              </Rise>
+              <CountUp t={t} at={82.0} to={15.96} decimals={2} suffix=" m" size={58} color={C.red} />
             </At>
             <At x={X0 + 15.27 * PX_M + 14} y={950} anchor="left">
-              <Rise p={lenR}>
-                <Display size={58} color={C.red}>
-                  15.27 m
-                </Display>
-              </Rise>
+              <CountUp t={t} at={82.3} to={15.27} decimals={2} suffix=" m" size={58} color={C.red} />
             </At>
             <At x={X0} y={140} anchor="left">
               <Label size={26} color={C.inkSoft} weight={600} style={{ opacity: ramp(t, 81.0, 81.5) }}>
@@ -165,18 +158,10 @@ export const S10FGR4: React.FC = () => {
               </Rise>
             </At>
             <At x={1296} y={345} anchor="left">
-              <Rise p={ramp(t, 89.9, 90.6)}>
-                <Display size={140} color={C.offWhite}>
-                  Typhoon
-                </Display>
-              </Rise>
+              <KeyTitle text="Typhoon" t={t} at={89.9} size={140} />
             </At>
             <At x={1296} y={470} anchor="left">
-              <Rise p={ramp(t, 90.2, 90.9)}>
-                <Display size={140} color={C.redPrint}>
-                  FGR4
-                </Display>
-              </Rise>
+              <KeyTitle text="FGR4" t={t} at={90.15} size={140} color={C.redPrint} fill neon="red" />
             </At>
             <At x={1310} y={600} anchor="left">
               <Tape p={ramp(t, 93.0, 93.5)} rot={-2}>
@@ -233,11 +218,7 @@ const RadarPanel: React.FC<{ t: number; start: number; end: number; kind: "mech"
           <Layer depth={1.08}>
             <Cutout name={photo} x={470} y={560} w={kind === "mech" ? 640 : 470} rot={-3} opacity={ramp(t, start + 0.1, start + 0.6)} />
             <At x={470} y={870}>
-              <Rise p={ramp(t, titleAt, titleAt + 0.5)}>
-                <Display size={96} color={C.offWhite}>
-                  {title}
-                </Display>
-              </Rise>
+              <KeyTitle text={title} t={t} at={titleAt} size={96} neon="white" />
             </At>
             <At x={470} y={950}>
               <Rise p={ramp(t, subAt, subAt + 0.5)}>
@@ -287,11 +268,7 @@ export const S11RafaleC: React.FC = () => {
               </Rise>
             </At>
             <At x={604} y={350} anchor="right">
-              <Rise p={ramp(t, 104.3, 105.0)}>
-                <Display size={150} color={C.ink}>
-                  Rafale <span style={{ color: C.red }}>C</span>
-                </Display>
-              </Rise>
+              <KeyTitle text="Rafale C" t={t} at={104.3} size={150} />
             </At>
             <At x={600} y={500} anchor="right">
               <Tape p={ramp(t, 105.8, 106.3)} rot={-1.5}>
@@ -304,11 +281,7 @@ export const S11RafaleC: React.FC = () => {
               </Tape>
             </At>
             <At x={600} y={680} anchor="right">
-              <Rise p={ramp(t, 107.8, 108.4)}>
-                <Display size={120} color={C.red}>
-                  F3R
-                </Display>
-              </Rise>
+              <KeyTitle text="F3R" t={t} at={107.8} size={120} color={C.red} fill neon="red" />
             </At>
           </Layer>
         </Camera>
@@ -339,7 +312,7 @@ const Stamp: React.FC<{ text: string; p: number; x: number; y: number; rot: numb
           fontSize: 86,
           color: C.red,
           letterSpacing: "0.04em",
-          mixBlendMode: "multiply",
+          filter: "url(#ink)",
         }}
       >
         {text}
@@ -516,7 +489,7 @@ const Marker: React.FC<{ x: number; y: number; text: string; p: number; future?:
       />
       <At x={x} y={y + (above ? -62 : 62)}>
         <div style={{ opacity: p * (future ? 0.45 + hot * 0.55 : 1) * (1 - ghost * 0.55), transform: `scale(${1 + hot * 0.25})` }}>
-          <Display size={future ? 64 : 58} color={future && hot > 0 ? C.red : C.ink} style={{ fontFamily: F.condensed }}>
+          <Display size={future ? 64 : 58} color={future && hot > 0 ? C.red : C.ink} style={{ fontFamily: F.condensed, textShadow: future && hot > 0 ? `0 0 6px rgba(255,110,80,${0.5 * hot}), 0 0 20px rgba(230,70,45,${0.3 * hot})` : undefined }}>
             {text}
           </Display>
         </div>

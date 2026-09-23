@@ -3,7 +3,8 @@ import { AbsoluteFill, Img, staticFile } from "remotion";
 import { Camera, Layer } from "../components/Camera";
 import { PaperGround, PrintTexture, Vignette } from "../components/Paper";
 import { Cutout, Photo } from "../components/Photo";
-import { At, Display, Label, Rise, Tape } from "../components/Type";
+import { At, Label, Rise, Tape } from "../components/Type";
+import { KeyTitle, recede } from "../components/AnimeText";
 import { DrawPath, Stage } from "../components/Draw";
 import { TearReveal } from "../components/Transitions";
 import { Blueprint, Dimension, TitleBlock } from "../components/Blueprint";
@@ -37,7 +38,6 @@ export const S01Typhoon: React.FC = () => {
   const camS = keys(t, [[0, 1.0], [1.0, 1.03], [4.4, 1.08], [7.9, 1.26]], ease.soft);
   const camX = keys(t, [[0, 0], [4.4, 16], [7.9, 170]], ease.soft);
   const thrustOut = ramp(t, 4.7, 5.2);
-  const name = ramp(t, 1.82, 2.5);
   const g = sc / 0.5;
   return (
     <AbsoluteFill style={{ background: C.night }}>
@@ -57,11 +57,7 @@ export const S01Typhoon: React.FC = () => {
         </Layer>
         <Layer depth={0.72}>
           <At x={W / 2 - fly * 90} y={790}>
-            <Rise p={name}>
-              <Display size={300} color={C.offWhite} tracking={0.03}>
-                Typhoon
-              </Display>
-            </Rise>
+            <KeyTitle text="Typhoon" t={t} at={1.8} size={300} fill tracking={0.03} />
             <br />
             <Rise p={ramp(t, 2.1, 2.6)}>
               <Label size={34} color="#cfc6b3" weight={600} style={{ letterSpacing: "0.5em", marginTop: 4 }}>
@@ -90,7 +86,7 @@ export const S01Typhoon: React.FC = () => {
           </Stage>
         </Layer>
       </Camera>
-      <At x={330} y={H - 170}>
+      <At x={1600} y={H - 120}>
         <Rise p={ramp(t, 5.75, 6.3)} q={ramp(t, 7.0, 7.4)}>
           <Tape p={1} dark>
             Air combat
@@ -111,10 +107,10 @@ export const S01Typhoon: React.FC = () => {
 export const GraphPaper: React.FC = () => (
   <Stage>
     {Array.from({ length: 60 }, (_, i) => (
-      <line key={"v" + i} x1={i * 48 - 480} y1={-1300} x2={i * 48 - 480} y2={2500} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.26 : 0.11} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
+      <line key={"v" + i} x1={i * 48 - 480} y1={-1300} x2={i * 48 - 480} y2={2500} stroke="#cfd6d9" strokeOpacity={i % 5 === 0 ? 0.1 : 0.045} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
     ))}
     {Array.from({ length: 80 }, (_, i) => (
-      <line key={"h" + i} x1={-600} y1={i * 48 - 1296} x2={2600} y2={i * 48 - 1296} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.26 : 0.11} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
+      <line key={"h" + i} x1={-600} y1={i * 48 - 1296} x2={2600} y2={i * 48 - 1296} stroke="#cfd6d9" strokeOpacity={i % 5 === 0 ? 0.1 : 0.045} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
     ))}
   </Stage>
 );
@@ -127,10 +123,10 @@ const ScrollingGrid: React.FC<{ ox: number; oy: number }> = ({ ox, oy }) => {
     <Stage>
       <g transform={`translate(${mx - 240}, ${my - 240})`}>
         {Array.from({ length: 50 }, (_, i) => (
-          <line key={"v" + i} x1={i * 48} y1={-100} x2={i * 48} y2={1500} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.26 : 0.11} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
+          <line key={"v" + i} x1={i * 48} y1={-100} x2={i * 48} y2={1500} stroke="#cfd6d9" strokeOpacity={i % 5 === 0 ? 0.1 : 0.045} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
         ))}
         {Array.from({ length: 34 }, (_, i) => (
-          <line key={"h" + i} x1={-100} y1={i * 48} x2={2400} y2={i * 48} stroke="#6f8ea3" strokeOpacity={i % 5 === 0 ? 0.26 : 0.11} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
+          <line key={"h" + i} x1={-100} y1={i * 48} x2={2400} y2={i * 48} stroke="#cfd6d9" strokeOpacity={i % 5 === 0 ? 0.1 : 0.045} strokeWidth={i % 5 === 0 ? 1.4 : 1} />
         ))}
       </g>
     </Stage>
@@ -196,14 +192,16 @@ export const S02Mission: React.FC = () => {
           </Layer>
           {/* the evidence: RAF QRA Typhoon alongside a Russian Tu-95 (MOD, OGL) */}
           <Layer depth={1.06}>
-            <Photo src="src-photos/typhoon-bear.jpg" x={lerp(470, 330, ramp(t, 11.2, 11.9, ease.in))} y={250} w={470} h={335} rot={-3} reveal={ramp(t, 9.4, 10.0)} revealFrom="bottom" seed="bear" opacity={1 - ramp(t, 11.3, 11.9)} />
-            <At x={470} y={450}>
-              <Rise p={ramp(t, 9.7, 10.2)} q={ramp(t, 11.2, 11.6)}>
-                <Tape p={1} rot={-2}>
-                  Intercept
-                </Tape>
-              </Rise>
-            </At>
+            <AbsoluteFill style={{ ...recede(ramp(t, 11.2, 11.9, ease.inOut), 6, 0.5, 0.1), transformOrigin: "470px 300px" }}>
+              <Photo src="src-photos/typhoon-bear.jpg" x={470} y={250} w={470} h={335} rot={-3} reveal={ramp(t, 9.4, 10.0)} revealFrom="bottom" seed="bear" />
+              <At x={470} y={450}>
+                <Rise p={ramp(t, 9.7, 10.2)}>
+                  <Tape p={1} rot={-2}>
+                    Intercept
+                  </Tape>
+                </Rise>
+              </At>
+            </AbsoluteFill>
           </Layer>
           {/* speed: air streaming past the drawing */}
           <Layer depth={1.02}>
@@ -295,12 +293,14 @@ export const S03Ground: React.FC = () => {
             </At>
           </Layer>
           <Layer depth={1.06}>
-            <Photo src="src-photos/typhoon-pair.jpg" x={1360} y={300} w={420} h={300} rot={3} reveal={air} revealFrom="top" seed="pair" opacity={1 - drop * 0.9} />
-            <At x={1360} y={490}>
-              <Rise p={ramp(t, 18.6, 19.1)} q={drop}>
-                <Tape p={1}>Air combat</Tape>
-              </Rise>
-            </At>
+            <AbsoluteFill style={{ ...recede(drop, 6, 0.45, 0.12), transformOrigin: "1360px 300px" }}>
+              <Photo src="src-photos/typhoon-pair.jpg" x={1360} y={300} w={420} h={300} rot={3} reveal={air} revealFrom="top" seed="pair" />
+              <At x={1360} y={490}>
+                <Rise p={ramp(t, 18.6, 19.1)}>
+                  <Tape p={1}>Air combat</Tape>
+                </Rise>
+              </At>
+            </AbsoluteFill>
             {/* RAF Typhoon releasing a Paveway (MOD, OGL) — kept at 1:1 so the bomb position is exact */}
             <Photo src="src-photos/typhoon-drop.jpg" x={photo.x} y={photo.y} w={photo.w} h={photo.h} rot={0} reveal={drop} revealFrom="top" seed="drop" />
             <Stage>

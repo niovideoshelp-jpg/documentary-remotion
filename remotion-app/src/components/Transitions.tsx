@@ -1,27 +1,14 @@
 import React from "react";
-import { AbsoluteFill, random } from "remotion";
+import { AbsoluteFill } from "remotion";
 import { W, H } from "../lib/theme";
 import { ease, ramp } from "../lib/time";
 
 type Dir = "ltr" | "rtl" | "ttb" | "btt";
 
-const tearProfile = (seed: string, n: number) => {
-  const a = random(seed) * 6.28;
-  const b = random(seed + "b") * 6.28;
-  return Array.from({ length: n + 1 }, (_, i) => {
-    const u = i / n;
-    return (
-      Math.sin(u * 7.1 + a) * 26 +
-      Math.sin(u * 23.3 + b) * 9 +
-      (random(`${seed}-${i}`) - 0.5) * 12 +
-      (random(`${seed}f${i}`) > 0.93 ? (random(`${seed}g${i}`) - 0.5) * 22 : 0)
-    );
-  });
-};
-
 /**
- * The previous picture is torn away along a ragged edge, revealing `children`.
- * The torn paper core shows as a thin light fibre band with a soft shadow.
+ * Soft directional wipe: the incoming scene is revealed behind a wide feathered edge,
+ * sliding a few pixels and resolving from a slight defocus. (Replaces the paper tear;
+ * the name is kept so scenes need no changes.)
  */
 export const TearReveal: React.FC<{
   t: number;
@@ -31,56 +18,32 @@ export const TearReveal: React.FC<{
   seed?: string;
   slope?: number;
   children: React.ReactNode;
-}> = ({ t, start, dur = 0.9, dir = "ltr", seed = "tear", slope = 0.12, children }) => {
-  const p = ramp(t, start, start + dur, ease.inOut);
+}> = ({ t, start, dur = 0.9, dir = "ltr", children }) => {
+  const p = ramp(t, start, start + dur * 1.1, ease.inOut);
   if (p <= 0) return null;
   if (p >= 1) return <AbsoluteFill>{children}</AbsoluteFill>;
-  const horizontal = dir === "ltr" || dir === "rtl";
-  const len = horizontal ? H : W;
-  const span = horizontal ? W : H;
-  const n = 60;
-  const prof = tearProfile(seed, n);
-  const edge = -260 + p * (span + 520);
-  const pts = prof.map((o, i) => {
-    const u = (i / n) * len;
-    const along = edge + o + (u - len / 2) * slope;
-    return { u, v: dir === "rtl" || dir === "btt" ? span - along : along, o };
-  });
-  const toXY = (u: number, v: number) => (horizontal ? `${v.toFixed(1)},${u.toFixed(1)}` : `${u.toFixed(1)},${v.toFixed(1)}`);
-  const back = dir === "rtl" || dir === "btt" ? span + 400 : -400;
-  const clip = [toXY(0, back), ...pts.map((q) => toXY(q.u, q.v)), toXY(len, back)].join(" ");
-  const sign = dir === "rtl" || dir === "btt" ? -1 : 1;
-  const fibre = [
-    ...pts.map((q) => toXY(q.u, q.v)),
-    ...pts
-      .slice()
-      .reverse()
-      .map((q, i) => toXY(q.u, q.v + sign * (7 + random(`${seed}w${i}`) * 9))),
-  ].join(" ");
-  const id = `tear-${seed}`;
+  const feather = 28;
+  const pos = -feather + p * (100 + feather);
+  const angle = { ltr: 90, rtl: 270, ttb: 180, btt: 0 }[dir];
+  const mask = `linear-gradient(${angle}deg, #000 ${pos}%, rgba(0,0,0,0) ${pos + feather}%)`;
+  const push = (1 - ease.out(p)) * 70;
+  const tx = dir === "ltr" ? -push : dir === "rtl" ? push : 0;
+  const ty = dir === "ttb" ? -push : dir === "btt" ? push : 0;
   return (
-    <AbsoluteFill>
-      <svg width={0} height={0} style={{ position: "absolute" }}>
-        <defs>
-          <clipPath id={id} clipPathUnits="userSpaceOnUse">
-            <polygon points={clip} />
-          </clipPath>
-        </defs>
-      </svg>
-      <AbsoluteFill style={{ clipPath: `url(#${id})` }}>{children}</AbsoluteFill>
-      <svg width={W} height={H} style={{ position: "absolute", inset: 0, overflow: "visible" }}>
-        <defs>
-          <filter id={id + "s"} x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx={-sign * 6} dy={3} stdDeviation={6} floodColor="#000" floodOpacity={0.45} />
-          </filter>
-        </defs>
-        <polygon points={fibre} fill="#f2ede1" filter={`url(#${id}s)`} />
-      </svg>
+    <AbsoluteFill
+      style={{
+        maskImage: mask,
+        WebkitMaskImage: mask,
+        transform: `translate(${tx}px, ${ty}px) scale(${1 + (1 - p) * 0.02})`,
+        filter: `blur(${(1 - p) * 7}px)`,
+      }}
+    >
+      {children}
     </AbsoluteFill>
   );
 };
 
-/** Soft organic mask reveal growing from a point (ink blot / liquid spread). */
+/** Radial rack-focus reveal from a point: soft iris, slight scale settle, blur resolving. */
 export const BlotReveal: React.FC<{
   t: number;
   start: number;
@@ -89,23 +52,25 @@ export const BlotReveal: React.FC<{
   cy: number;
   seed?: string;
   children: React.ReactNode;
-}> = ({ t, start, dur = 1, cx, cy, seed = "blot", children }) => {
-  const p = ramp(t, start, start + dur, ease.inOut);
+}> = ({ t, start, dur = 1, cx, cy, children }) => {
+  const p = ramp(t, start, start + dur * 1.1, ease.inOut);
   if (p <= 0) return null;
   if (p >= 1) return <AbsoluteFill>{children}</AbsoluteFill>;
-  const R = p * Math.hypot(W, H) * 1.05;
-  const n = 72;
-  const pts = Array.from({ length: n }, (_, i) => {
-    const a = (i / n) * Math.PI * 2;
-    const r =
-      R *
-      (1 +
-        0.09 * Math.sin(a * 3 + random(seed) * 6 + p * 2) +
-        0.05 * Math.sin(a * 7 + random(seed + "b") * 6 - p * 3) +
-        0.03 * Math.sin(a * 13 + p * 5));
-    return `${(cx + Math.cos(a) * r).toFixed(1)}px ${(cy + Math.sin(a) * r).toFixed(1)}px`;
-  });
-  return <AbsoluteFill style={{ clipPath: `polygon(${pts.join(",")})` }}>{children}</AbsoluteFill>;
+  const R = p * Math.hypot(W, H) * 1.1;
+  const mask = `radial-gradient(circle at ${cx}px ${cy}px, #000 ${Math.max(0, R - 380)}px, rgba(0,0,0,0) ${R}px)`;
+  return (
+    <AbsoluteFill
+      style={{
+        maskImage: mask,
+        WebkitMaskImage: mask,
+        transform: `scale(${1.05 - 0.05 * ease.out(p)})`,
+        transformOrigin: `${cx}px ${cy}px`,
+        filter: `blur(${(1 - p) * 9}px)`,
+      }}
+    >
+      {children}
+    </AbsoluteFill>
+  );
 };
 
 /** Fast lateral push between scenes with a touch of directional smear. */

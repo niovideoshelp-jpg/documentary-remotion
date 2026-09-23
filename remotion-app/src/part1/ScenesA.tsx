@@ -277,9 +277,9 @@ const MARKS = [
 ];
 export const P07Service: React.FC = () => {
   const t = useT();
-  const axis = ramp(t, 59.4, 60.8, ease.inOut);
-  const fx = keys(t, [[59.3, YX(2002.6)], [60.9, YX(2004.2)], [63.4, YX(2004.4)], [64.4, YX(2005.7)], [68.6, YX(2005.6)], [69.8, YX(2004.4)], [71.4, YX(2004.4)]], ease.inOut);
-  const s = keys(t, [[59.3, 1.12], [61.5, 1.0], [64.0, 1.0], [64.8, 1.04], [68.6, 1.04], [69.8, 0.9], [71.4, 0.88]], ease.inOut);
+  const axis = ramp(t, 59.3, 60.3, ease.out);
+  const fx = keys(t, [[59.3, YX(2003.0)], [60.9, YX(2004.2)], [63.4, YX(2004.4)], [64.4, YX(2005.7)], [68.6, YX(2005.6)], [69.8, YX(2004.7)], [71.4, YX(2004.7)]], ease.inOut);
+  const s = keys(t, [[59.3, 0.86], [61.5, 1.0], [64.0, 1.0], [64.8, 1.04], [68.6, 1.04], [69.8, 0.8], [71.4, 0.78]], ease.inOut);
   const D = 290;
   return (
     <BlotReveal t={t} start={59.3} dur={0.8} cx={W / 2} cy={H / 2}>

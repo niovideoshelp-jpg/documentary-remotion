@@ -34,10 +34,10 @@ const CANOPY: [number, number, number, number][] = [
 ];
 // chin intake: x, half-width, bottom z, top z (rectangular duct under the forward fuselage)
 const INTAKE: [number, number, number, number][] = [
-  [4.3, 0.72, -1.18, -0.42],
-  [3.0, 0.78, -1.12, -0.5],
-  [1.2, 0.82, -1.0, -0.58],
-  [-0.4, 0.84, -0.82, -0.6],
+  [4.1, 0.66, -1.02, -0.42],
+  [3.0, 0.72, -0.98, -0.48],
+  [1.2, 0.78, -0.9, -0.56],
+  [-0.4, 0.8, -0.76, -0.6],
 ];
 
 const GREY: [number, number, number] = [196, 200, 203];
@@ -73,7 +73,7 @@ const box = (st: [number, number, number, number][]): Poly[] => {
   const r = st.map(sq);
   const out: Poly[] = [];
   for (let s = 0; s < r.length - 1; s++) for (let i = 0; i < 4; i++) out.push({ pts: [r[s][i], r[s][(i + 1) % 4], r[s + 1][(i + 1) % 4], r[s + 1][i]], fill: GREY });
-  out.push({ pts: r[0], fill: [12, 12, 12], kind: "hole" }); // intake mouth: the front of the aircraft
+  out.push({ pts: r[0], fill: [52, 56, 60], kind: "hole" }); // intake mouth: the front of the aircraft
   return out;
 };
 const mirror = (pts: V[]): V[] => pts.map(([x, y, z]) => [x, -y, z] as V);

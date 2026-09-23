@@ -128,10 +128,10 @@ export const P18NoTest: React.FC = () => {
  * arrives at it — nothing is transmitted. */
 export const P19Pirate: React.FC = () => {
   const t = useT();
-  const cam = useJetCamera(t, 217.4, { yaw: 128, pitch: 17, zoom: 0.92, focus: 0 }, [
-    { at: 0, to: { yaw: 58, pitch: 14 }, dur: 3.6, ease: "inOutSine" },
-    { at: 3.7, to: { yaw: 42, pitch: 9, zoom: 2.9, focus: 1 }, dur: 1.7, ease: "inOutQuart" },
-    { at: 5.5, to: { yaw: 30, pitch: 7 }, dur: 7.2, ease: "linear" },
+  const cam = useJetCamera(t, 217.4, { yaw: 132, pitch: 30, zoom: 0.9, focus: 0 }, [
+    { at: 0, to: { yaw: 56, pitch: 27 }, dur: 3.6, ease: "inOutSine" },
+    { at: 3.7, to: { yaw: 44, pitch: 15, zoom: 2.7, focus: 1 }, dur: 1.7, ease: "inOutQuart" },
+    { at: 5.5, to: { yaw: 34, pitch: 12 }, dur: 7.2, ease: "linear" },
   ]);
   const CX = 820;
   const CY = 600;

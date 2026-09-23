@@ -67,3 +67,25 @@ Technical drawings (animated stroke by stroke from the original vector geometry,
 Figures shown on the plates: Typhoon length 15.96 m, span 10.95 m, height 5.28 m, 2 × Eurojet EJ200; Rafale length 15.27 m, span 10.90 m, height 5.34 m, 14 hardpoints (manufacturer data).
 
 Audio: music (two cues, Google Lyria 3 Pro) and sound effects (ElevenLabs SFX) generated for this edit through the owner's Magnific account (`public/music`, `public/sfx`).
+
+## Part 1 additions
+
+Photos (Wikimedia Commons, `public/src-photos`):
+- ej200.jpg — Eurojet EJ200 for Eurofighter Typhoon PAS 2013 01 free.jpg — Julian Herzog (Website) — CC BY 4.0.
+- ej200-ab.jpg — Afterburner Eurojet EJ200 turbofan engine for Eurofighter Typhoon ILA Berlin 2016 01.jpg — Julian Herzog (Website) — CC BY 4.0.
+- m88.jpg — Snecma M88-4E afterburning turbofan engine for Dassault Rafale PAS 2013 01.jpg — Julian Herzog (Website) — CC BY 4.0.
+- typhoon-su27.jpg — Russian SU-27 Flanker with RAF Typhoon MOD 45157730.jpg — Royal Air Force (RAF) — OGL 2.
+- e3.jpg — E-3 Sentry Airborne Warning and Control System (AWACS) conducts a mission.jpg — Senior Airman Roslyn Ward — Public domain.
+- typhoon-shader.jpg — Royal Air Force Typhoon-Op SHADER sortie MOD 45168162.jpg — Cpl Steve Buckley RAF — OGL v1.0.
+
+Video clips (cut in CI by `scripts/media.py` → `public/video/p1`, sources on Wikimedia Commons):
+- rf-* — "RAF Typhoon Flight Over the UK" — UK Ministry of Defence — OGL v3.
+- pv-fly — Paveway IV footage — UK Ministry of Defence — CC BY 4.0.
+- rr-* — "908th EARS B-Roll" (Rafale refuelling) — Joshua Williams, U.S. Air Force — Public domain.
+- aw-* — E-3 Sentry, Airman Magazine — U.S. Air Force — Public domain.
+
+Generated: flow/clouds.jpg — Google Flow (Nano Banana 2), generated for this edit through the owner's account.
+Part 1 has no music and no jet-engine effects; the effects are the ElevenLabs set above.
+- src-photos/cdg-2019.jpg — French aircraft carrier Charles de Gaulle (R91) underway in the Red Sea on 15 April 2019 (190415-N-IL409-0017).JPG — U.S. Navy — Public domain.
+- src-photos/cdg-2016.jpg — French aircraft carrier Charles de Gaulle (R91) underway in the Mediterranean Sea on 25 October 2016.JPG — U.S. Navy — Public domain.
+- src-photos/rafale-india-takeoff.jpg (two-seat Rafale RB005, used for "B") — see table above.

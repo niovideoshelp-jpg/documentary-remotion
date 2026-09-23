@@ -32,7 +32,7 @@ export const P10QRA: React.FC = () => {
         <ClipFull src="rf-takeoff" t={t} from={91.4} to={97.0} clipDur={6} />
         {t >= 96.8 && (
           <BlotReveal t={t} start={96.8} dur={0.6} cx={W / 2} cy={H / 2}>
-            <ClipFull src="rf-climb" t={t} from={96.8} to={103.6} clipDur={6} />
+            <ClipFull src="rf-lowlevel" t={t} from={96.8} to={103.6} clipDur={6} />
           </BlotReveal>
         )}
         <At x={W / 2} y={H - 150}>
@@ -81,16 +81,19 @@ export const P11Factors: React.FC = () => {
         <Camera s={keys(t, [[105.1, 1.06], [113.6, 1.0]], ease.soft)}>
           <Layer>
             {cells.map((c, i) => {
-              const p = ramp(t, c.at - 0.15, c.at + 0.45);
+              const p = ramp(t, 105.5 + i * 0.12, 106.0 + i * 0.12);
+              const fill = ramp(t, c.at - 0.15, c.at + 0.4);
               const dim = cells[i + 1] ? ramp(t, cells[i + 1].at, cells[i + 1].at + 0.4) * 0.5 * (1 - ramp(t, 111.7, 112.2)) : 0;
               return (
-                <Tile key={c.label} x={c.x} y={c.y} w={720} h={380} p={p} label={c.label} dim={dim}>
+                <Tile key={c.label} x={c.x} y={c.y} w={720} h={380} p={p} label={fill > 0.3 ? c.label : ""} dim={dim}>
+                  <AbsoluteFill style={{ opacity: fill, transform: `scale(${1.08 - 0.08 * ease.out(fill)})` }}>
                   {i === 0 && clock(ramp(t, c.at, 113.6, (x) => x))}
                   {i === 1 && (
                     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: F.display, fontSize: 170, color: C.ink, filter: "url(#ink)" }}>24/7</div>
                   )}
-                  {i === 2 && <ClipFull src="rf-climb" t={t} from={109.1} to={113.6} clipDur={6} />}
+                  {i === 2 && <ClipFull src="rf-climb" t={t} from={109.1} to={114.1} clipDur={6} />}
                   {i === 3 && <Img src={staticFile("src-photos/typhoon-su27.jpg")} style={{ width: "100%", height: "100%", objectFit: "cover", filter: "contrast(1.05) saturate(0.8)" }} />}
+                  </AbsoluteFill>
                 </Tile>
               );
             })}
@@ -106,13 +109,23 @@ export const P12Engines: React.FC = () => {
   const t = useT();
   const bars = ramp(t, 134.3, 135.2);
   const photosBack = ramp(t, 134.2, 134.9) * 0.75;
+  const board = ramp(t, 117.6, 118.2, ease.inOut);
   return (
     <TearReveal t={t} start={113.5} dur={0.7} dir="rtl">
+      {board < 1 && <ClipFull src="pv-fly" t={t} from={113.5} to={118.4} clipDur={6} push={0.08} />}
+      {board < 1 && (
+        <At x={W / 2} y={H - 150}>
+          <div style={{ opacity: 1 - board }}>
+            <KeyTitle text="Engines" t={t} at={114.4} size={120} neon="white" />
+          </div>
+        </At>
+      )}
+      <AbsoluteFill style={{ opacity: board }}>
       <PaperGround>
-        <Camera s={keys(t, [[113.5, 1.05], [127.5, 1.0], [134.2, 1.02], [138.9, 1.0]], ease.soft)} x={keys(t, [[113.5, -60], [126.8, -60], [128.4, 60], [134.2, 0]], ease.inOut)}>
+        <Camera s={keys(t, [[117.6, 1.05], [127.5, 1.0], [134.2, 1.02], [138.9, 1.0]], ease.soft)} x={keys(t, [[113.5, -60], [126.8, -60], [128.4, 60], [134.2, 0]], ease.inOut)}>
           <Layer>
             <At x={W / 2} y={120}>
-              <KeyTitle text="Engines" t={t} at={114.4} size={96} out={133.9} />
+              <KeyTitle text="Engines" t={t} at={117.7} size={96} out={133.9} />
             </At>
             <AbsoluteFill style={{ ...recede(photosBack, 6, 0.55, 0.08), transformOrigin: "960px 520px" }}>
               <Photo src="src-photos/ej200-ab.jpg" x={560} y={470} w={720} h={480} rot={-2} reveal={ramp(t, 118.2, 118.9)} revealFrom="left" seed="ej" />
@@ -144,6 +157,7 @@ export const P12Engines: React.FC = () => {
           </Layer>
         </Camera>
       </PaperGround>
+      </AbsoluteFill>
     </TearReveal>
   );
 };
@@ -233,17 +247,27 @@ export const P14CleanLoaded: React.FC = () => {
 export const P15Radar: React.FC = () => {
   const t = useT();
   const adv = ramp(t, 178.5, 179.3);
+  const board = ramp(t, 161.3, 161.9, ease.inOut);
   return (
     <TearReveal t={t} start={157.3} dur={0.7} dir="ttb">
+      {board < 1 && <ClipFull src="rr-approach" t={t} from={157.3} to={162.0} clipDur={6} push={0.1} />}
+      {board < 1 && (
+        <At x={W / 2} y={H - 150}>
+          <div style={{ opacity: 1 - board }}>
+            <KeyTitle text="Sensors" t={t} at={158.0} size={120} neon="white" />
+          </div>
+        </At>
+      )}
+      <AbsoluteFill style={{ opacity: board }}>
       <PaperGround dark>
-        <Camera s={keys(t, [[157.3, 1.05], [162, 1.0], [178.4, 1.0], [181, 1.06]], ease.soft)} x={keys(t, [[162, 0], [163.4, -230], [169.9, -230], [171, 230], [176.5, 230], [178.4, 0]], ease.inOut)}>
+        <Camera s={keys(t, [[161.3, 1.05], [162.5, 1.0], [178.4, 1.0], [181, 1.06]], ease.soft)} x={keys(t, [[162, 0], [163.4, -110], [169.9, -110], [171, 110], [176.5, 110], [178.4, 0]], ease.inOut)}>
           <Layer>
             <At x={W / 2} y={150}>
               <KeyTitle text="Radar" t={t} at={161.9} size={130} neon="white" out={163.3} />
             </At>
             {/* Rafale F3R: AESA (left) */}
             <AbsoluteFill style={{ opacity: ramp(t, 163.0, 163.6), ...recede(ramp(t, 170.2, 170.8) * 0.6 * (1 - ramp(t, 176.5, 177.2)), 4, 0.5, 0.04), transformOrigin: "560px 560px" }}>
-              <Cutout name="rbe2" x={300} y={560} w={320} rot={-3} />
+              <Cutout name="rbe2" x={340} y={560} w={340} rot={-3} />
               <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
                 <ElectronicScan x={640} y={560} scale={0.9} time={t} p={ramp(t, 166.2, 166.8)} />
               </svg>
@@ -281,60 +305,107 @@ export const P15Radar: React.FC = () => {
           </Layer>
         </Camera>
       </PaperGround>
+      </AbsoluteFill>
     </TearReveal>
   );
 };
 
-/* P16 181.0–194.2 AESA: beam flexibility for search + track; but no fixed detection range. */
+/* P16 181.0–194.2 AESA: one fixed array steers its beam electronically, interleaving search and
+ * tracking; but that does not give a fixed detection distance. */
+const ARRAY = { x: 380, y: 560, r: 175 };
+const MODULES = (() => {
+  const out: { x: number; y: number }[] = [];
+  for (let gy = -ARRAY.r; gy <= ARRAY.r; gy += 22) for (let gx = -ARRAY.r; gx <= ARRAY.r; gx += 22) if (Math.hypot(gx, gy) < ARRAY.r - 12) out.push({ x: gx, y: gy });
+  return out;
+})();
+const beamPath = (angle: number, len: number, half = 3) => {
+  const a1 = ((angle - half) * Math.PI) / 180;
+  const a2 = ((angle + half) * Math.PI) / 180;
+  const { x, y } = ARRAY;
+  return `M${x},${y} L${x + Math.cos(a1) * len},${y + Math.sin(a1) * len} L${x + Math.cos(a2) * len},${y + Math.sin(a2) * len} Z`;
+};
+const Target: React.FC<{ x: number; y: number; p: number; lock: number }> = ({ x, y, p, lock }) =>
+  p <= 0 ? null : (
+    <g opacity={p} transform={`translate(${x},${y})`}>
+      {/* a small aircraft glyph heading left, towards the radar */}
+      <path d="M-22,0 L10,-4 L14,-18 L20,-18 L20,-3 L26,-2 L26,2 L20,3 L20,18 L14,18 L10,4 Z" fill={C.offWhite} />
+      <g opacity={lock} stroke={C.red} strokeWidth={3} fill="none">
+        <path d="M-40,-28 L-40,-40 L-28,-40 M28,-40 L40,-40 L40,-28 M40,28 L40,40 L28,40 M-28,40 L-40,40 L-40,28" />
+      </g>
+    </g>
+  );
 export const P16Flexible: React.FC = () => {
   const t = useT();
+  const on = ramp(t, 181.3, 182.0);
+  const tracks = ramp(t, 186.8, 187.4);
   const noRange = ramp(t, 189.7, 190.4);
-  // interleaved: a search fan sweeping plus a beam locked on a track
-  const search = -40 + ((t * 70) % 80);
-  const tx = 1500 + Math.sin(t * 0.8) * 60;
-  const ty = 380 + Math.cos(t * 0.6) * 50;
-  const trackAngle = (Math.atan2(ty - 560, tx - 420) * 180) / Math.PI;
-  const trackOn = Math.floor(t * 4) % 2 === 0;
-  const beam = (angle: number, len: number, color: string, op: number) => {
-    const a1 = ((angle - 3) * Math.PI) / 180;
-    const a2 = ((angle + 3) * Math.PI) / 180;
-    return <path d={`M420,560 L${420 + Math.cos(a1) * len},${560 + Math.sin(a1) * len} L${420 + Math.cos(a2) * len},${560 + Math.sin(a2) * len} Z`} fill={color} opacity={op} />;
-  };
+  // search: a smooth sweep; tracking: two beams taking turns on two targets (time-shared)
+  const search = -6 + 26 * Math.sin((t - 181) * 1.25);
+  const t1 = { x: 1450 + Math.sin(t * 0.7) * 50, y: 330 + Math.cos(t * 0.5) * 40 };
+  const t2 = { x: 1620 + Math.cos(t * 0.6) * 40, y: 760 + Math.sin(t * 0.8) * 40 };
+  const ang = (p: { x: number; y: number }) => (Math.atan2(p.y - ARRAY.y, p.x - ARRAY.x) * 180) / Math.PI;
+  const share = Math.sin(t * 5);
+  const b1 = tracks * (0.15 + 0.55 * Math.max(0, share));
+  const b2 = tracks * (0.15 + 0.55 * Math.max(0, -share));
+  // the steering angle drives a phase gradient across the fixed array face
+  const steer = (tracks > 0 && Math.abs(share) > 0.3 ? (share > 0 ? ang(t1) : ang(t2)) : search) * (Math.PI / 180);
+  const range = 900 + Math.sin(t * 1.7) * 170 + Math.sin(t * 0.9 + 1) * 90;
   return (
-    <BlotReveal t={t} start={181.0} dur={0.7} cx={420} cy={560}>
+    <BlotReveal t={t} start={181.0} dur={0.7} cx={ARRAY.x} cy={ARRAY.y}>
       <PaperGround dark>
         <Camera s={keys(t, [[181, 1.08], [189.6, 1.0], [194.2, 1.04]], ease.soft)}>
           <Layer>
             <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
-              <g opacity={ramp(t, 181.3, 181.9) * (1 - noRange * 0.6)}>
-                {beam(search, 1300, "#f4d9b8", 0.35)}
-                {trackOn && beam(trackAngle, Math.hypot(tx - 420, ty - 560), "#ff8a70", 0.6)}
-                <rect x={404} y={470} width={16} height={180} fill="#3b4147" stroke="#f3eee2" strokeWidth={2} />
-                <circle cx={tx} cy={ty} r={10} fill={C.red} opacity={ramp(t, 186.8, 187.3)} />
-                <rect x={tx - 26} y={ty - 26} width={52} height={52} fill="none" stroke={C.red} strokeWidth={3} opacity={ramp(t, 187.2, 187.6)} />
+              <g opacity={on * (1 - noRange * 0.45)}>
+                <path d={beamPath(search, 1500, 5)} fill="#f4d9b8" opacity={0.28 * (1 - tracks * 0.35)} />
+                {tracks > 0 && <path d={beamPath(ang(t1), Math.hypot(t1.x - ARRAY.x, t1.y - ARRAY.y), 2)} fill="#ff8a70" opacity={b1} />}
+                {tracks > 0 && <path d={beamPath(ang(t2), Math.hypot(t2.x - ARRAY.x, t2.y - ARRAY.y), 2)} fill="#ff8a70" opacity={b2} />}
               </g>
-              {/* no fixed detection range: the range ring will not settle */}
-              {noRange > 0 &&
-                [0, 1, 2].map((i) => {
-                  const r = 520 + Math.sin(t * 2.1 + i * 2) * 160;
-                  return <circle key={i} cx={420} cy={560} r={r} fill="none" stroke={C.offWhite} strokeWidth={2} strokeDasharray="14 12" opacity={noRange * 0.5} />;
+              {/* the array does not move: each module's phase steers the beam */}
+              <g opacity={on}>
+                <circle cx={ARRAY.x} cy={ARRAY.y} r={ARRAY.r} fill="#22272b" stroke={C.offWhite} strokeWidth={3} />
+                {MODULES.map((m, i) => {
+                  const ph = (m.x * Math.cos(steer) + m.y * Math.sin(steer)) * 0.045 - t * 9;
+                  const v = 0.25 + 0.75 * Math.max(0, Math.cos(ph));
+                  return <rect key={i} x={ARRAY.x + m.x - 8} y={ARRAY.y + m.y - 8} width={16} height={16} fill={`rgba(244,217,184,${v * 0.85})`} />;
                 })}
+              </g>
+              <Target x={t1.x} y={t1.y} p={ramp(t, 186.8, 187.3)} lock={ramp(t, 187.3, 187.7) * (0.4 + Math.max(0, share) * 0.6)} />
+              <Target x={t2.x} y={t2.y} p={ramp(t, 187.0, 187.5)} lock={ramp(t, 187.5, 187.9) * (0.4 + Math.max(0, -share) * 0.6)} />
+              {/* no fixed detection range: the edge of detection will not settle */}
+              {noRange > 0 && (
+                <path
+                  d={`M${ARRAY.x + Math.cos(-0.6) * range},${ARRAY.y + Math.sin(-0.6) * range} A${range},${range} 0 0 1 ${ARRAY.x + Math.cos(0.6) * range},${ARRAY.y + Math.sin(0.6) * range}`}
+                  fill="none"
+                  stroke={C.offWhite}
+                  strokeWidth={3}
+                  strokeDasharray="16 12"
+                  opacity={noRange * 0.7}
+                />
+              )}
             </svg>
-            <At x={1300} y={820}>
+            <At x={ARRAY.x} y={ARRAY.y + ARRAY.r + 60}>
+              <Rise p={ramp(t, 182.3, 182.8)}>
+                <Label size={26} color={C.inkSoft} weight={600} style={{ letterSpacing: "0.2em" }}>
+                  Fixed array · steered electronically
+                </Label>
+              </Rise>
+            </At>
+            <At x={1180} y={940}>
               <div style={{ display: "flex", gap: 24 }}>
-                <Tape p={ramp(t, 188.1, 188.6)} size={34}>
+                <Tape p={ramp(t, 188.1, 188.6)} size={36}>
                   Search
                 </Tape>
-                <Tape p={ramp(t, 188.8, 189.3)} size={34} dark>
+                <Tape p={ramp(t, 188.8, 189.3)} size={36} dark>
                   Track
                 </Tape>
               </div>
             </At>
-            <At x={W / 2} y={170}>
-              <KeyTitle text="Flexibility" t={t} at={184.1} size={96} out={189.5} />
+            <At x={W / 2 + 180} y={150}>
+              <KeyTitle text="Flexibility" t={t} at={184.1} size={100} out={189.5} />
             </At>
-            <At x={W / 2} y={170}>
-              <KeyTitle text="No fixed detection range" t={t} at={191.9} size={86} neon="white" />
+            <At x={W / 2 + 180} y={150}>
+              <KeyTitle text="No fixed detection range" t={t} at={191.6} size={86} neon="white" />
             </At>
           </Layer>
         </Camera>
@@ -342,4 +413,3 @@ export const P16Flexible: React.FC = () => {
     </BlotReveal>
   );
 };
-

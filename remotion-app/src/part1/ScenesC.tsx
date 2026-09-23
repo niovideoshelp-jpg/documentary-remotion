@@ -26,27 +26,29 @@ const Static: React.FC = () => {
 export const P17WhoFirst: React.FC = () => {
   const t = useT();
   const cells = [
-    { at: 198.3, label: "Position", x: 330, y: 380 },
-    { at: 199.1, label: "Altitude", x: 960, y: 380 },
-    { at: 200.3, label: "Radar signature", x: 1590, y: 380 },
-    { at: 201.9, label: "Electronic interference", x: 330, y: 800 },
-    { at: 203.7, label: "Radar mode", x: 960, y: 800 },
-    { at: 204.5, label: "Other platforms", x: 1590, y: 800 },
+    { at: 198.3, label: "Position", x: 360, y: 400 },
+    { at: 199.1, label: "Altitude", x: 960, y: 400 },
+    { at: 200.3, label: "Radar signature", x: 1560, y: 400 },
+    { at: 201.9, label: "Electronic interference", x: 360, y: 790 },
+    { at: 203.7, label: "Radar mode", x: 960, y: 790 },
+    { at: 204.5, label: "Other platforms", x: 1560, y: 790 },
   ];
   return (
     <TearReveal t={t} start={194.1} dur={0.7} dir="ltr">
       <PaperGround dark>
         <Camera s={keys(t, [[194.1, 1.12], [197.8, 1.0], [207.5, 1.03]], ease.soft)}>
           <Layer>
-            <At x={W / 2} y={120}>
-              <KeyTitle text="Who detects whom first?" t={t} at={194.3} size={78} neon="white" />
+            <At x={W / 2} y={keys(t, [[194.1, 520], [197.3, 520], [198.1, 120]], ease.inOut)}>
+              <div style={{ transform: `scale(${keys(t, [[194.1, 1.7], [197.3, 1.55], [198.1, 1]], ease.inOut)})` }}>
+                <KeyTitle text="Who detects whom first?" t={t} at={194.3} size={78} neon="white" />
+              </div>
             </At>
             {cells.map((c, i) => {
               const p = ramp(t, c.at - 0.15, c.at + 0.4);
               const s = springIn(t, c.at - 0.15, 0.8);
               return (
                 <div key={c.label} style={{ position: "absolute", inset: 0, transform: `scale(${0.9 + s * 0.1})`, transformOrigin: `${c.x}px ${c.y}px` }}>
-                  <Tile x={c.x} y={c.y} w={560} h={330} p={p} label={c.label}>
+                  <Tile x={c.x} y={c.y} w={540} h={340} p={p} label={c.label}>
                     {i === 0 && (
                       <svg viewBox="0 0 560 330" style={{ width: "100%", height: "100%" }}>
                         <circle cx={200} cy={170} r={10} fill={C.red} />
@@ -195,8 +197,22 @@ export const P20Meteor: React.FC = () => {
       <PaperGround dark>
         <Camera s={keys(t, [[229.9, 1.06], [244, 1.0], [249, 1.03]], ease.soft)}>
           <Layer>
+            <AbsoluteFill style={{ opacity: ramp(t, 230.3, 230.8) * (1 - ramp(t, 235.0, 235.6)), transform: `scale(${1 + ramp(t, 235.0, 235.6) * 0.06})` }}>
+              <At x={W / 2} y={150}>
+                <KeyTitle text="Long-range air-to-air" t={t} at={230.7} size={90} />
+              </At>
+              <Blueprint view="typhoonTop" x={560} y={560} width={680} p={ramp(t, 230.5, 232.6, ease.linear)} color={C.ink} lineWidth={1.3} />
+              <Blueprint view="rafaleTop" x={1360} y={560} width={620} p={ramp(t, 231.0, 233.1, ease.linear)} color={C.ink} lineWidth={1.3} />
+              <At x={W / 2} y={880}>
+                <Rise p={ramp(t, 233.3, 233.8)}>
+                  <Tape p={1} size={36} dark>
+                    One shared capability
+                  </Tape>
+                </Rise>
+              </At>
+            </AbsoluteFill>
             <AbsoluteFill style={{ ...recede(both * 0.85, 6, 0.6, 0.06), transformOrigin: "960px 540px" }}>
-              <Cutout name="meteor" x={400} y={380} w={560} rot={-4} opacity={ramp(t, 235.6, 236.0)} scale={0.85 + springIn(t, 235.6) * 0.15} />
+              <Cutout name="meteor" x={400} y={380} w={620} rot={-4} opacity={ramp(t, 235.6, 236.0)} scale={0.85 + springIn(t, 235.6) * 0.15} />
               <At x={400} y={560}>
                 <KeyTitle text="Meteor" t={t} at={235.7} size={120} neon="white" />
               </At>
@@ -253,7 +269,8 @@ export const P20Meteor: React.FC = () => {
 export const P21Difference: React.FC = () => {
   const t = useT();
   const left = ramp(t, 252.3, 253.0, ease.inOut);
-  const right = ramp(t, 257.8, 258.5, ease.inOut);
+  const right = ramp(t, 252.6, 253.3, ease.inOut);
+  const focus = ramp(t, 257.8, 258.5, ease.inOut);
   return (
     <TearReveal t={t} start={248.9} dur={0.7} dir="ltr">
       <PaperGround dark>
@@ -261,7 +278,9 @@ export const P21Difference: React.FC = () => {
           <KeyTitle text="The clearer difference" t={t} at={249.3} size={100} out={252.1} />
         </At>
         <AbsoluteFill style={{ clipPath: `inset(0 ${100 - left * 50}% 0 0)` }}>
-          <ClipFull src="rf-formation" t={t} from={252.2} to={264.2} clipDur={7} />
+          <AbsoluteFill style={{ filter: `blur(${focus * 3}px) brightness(${1 - focus * 0.35})` }}>
+            <ClipFull src="rf-formation" t={t} from={252.2} to={264.2} clipDur={7} />
+          </AbsoluteFill>
           <At x={W / 4} y={H - 170}>
             <KeyTitle text="Interception" t={t} at={255.5} size={76} />
           </At>
@@ -278,14 +297,19 @@ export const P21Difference: React.FC = () => {
         </AbsoluteFill>
         {right > 0 && (
           <AbsoluteFill style={{ clipPath: `inset(0 0 0 ${100 - right * 50}%)` }}>
-            <AbsoluteFill style={{ left: "25%" }}>
-              <ClipFull src="rr-bank" t={t} from={257.7} to={264.2} clipDur={4} />
+            <AbsoluteFill style={{ left: "25%", filter: `blur(${(1 - focus) * 6}px) brightness(${0.45 + focus * 0.55})` }}>
+              {t < 258.6 && <ClipFull src="rr-approach" t={t} from={252.5} to={258.6} clipDur={6} />}
+              {t >= 258.0 && (
+                <AbsoluteFill style={{ opacity: ramp(t, 258.0, 258.6) }}>
+                  <ClipFull src="rr-bank" t={t} from={258.0} to={264.2} clipDur={4} />
+                </AbsoluteFill>
+              )}
             </AbsoluteFill>
             <At x={W * 0.75} y={H - 170}>
               <KeyTitle text="Radar architecture" t={t} at={262.6} size={76} neon="red" />
             </At>
             <At x={W * 0.75} y={120}>
-              <Label size={30} color={C.offWhite} weight={600} style={{ letterSpacing: "0.4em" }}>
+              <Label size={30} color={C.offWhite} weight={600} style={{ letterSpacing: "0.4em", opacity: focus }}>
                 Rafale F3R
               </Label>
             </At>
@@ -300,7 +324,7 @@ export const P21Difference: React.FC = () => {
 /* P22 264.0–end: none of it works in isolation — the wider network. */
 const NODES = [
   { at: 268.5, label: "External sensors", x: 380, y: 250, clip: "aw-flyover" },
-  { at: 270.5, label: "Electronic warfare", x: 1540, y: 250, clip: "aw-scope" },
+  { at: 270.5, label: "Electronic warfare", x: 1540, y: 250, clip: "" },
   { at: 272.3, label: "Other aircraft", x: 300, y: 820, clip: "rf-formation" },
   { at: 274.2, label: "Information to the pilot", x: 1620, y: 820, clip: "aw-screens" },
   { at: 276.4, label: "Weapons carried", x: 960, y: 900, clip: "" },
@@ -317,8 +341,8 @@ export const P22Network: React.FC = () => {
             <At x={W / 2} y={140}>
               <KeyTitle text="Not in isolation" t={t} at={266.3} size={90} out={268.3} />
             </At>
-            <Blueprint view="typhoonTop" x={hub.x - 170} y={hub.y} width={300} p={ramp(t, 264.3, 265.6, ease.linear)} color={C.ink} lineWidth={1.1} />
-            <Blueprint view="rafaleTop" x={hub.x + 170} y={hub.y} width={280} p={ramp(t, 264.5, 265.8, ease.linear)} color={C.ink} lineWidth={1.1} />
+            <Blueprint view="typhoonTop" x={hub.x - 210} y={hub.y} width={400} p={ramp(t, 264.3, 265.6, ease.linear)} color={C.ink} lineWidth={1.2} />
+            <Blueprint view="rafaleTop" x={hub.x + 210} y={hub.y} width={370} p={ramp(t, 264.5, 265.8, ease.linear)} color={C.ink} lineWidth={1.2} />
             <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }} width={1} height={1}>
               {NODES.map((n) => {
                 const p = ramp(t, n.at - 0.2, n.at + 0.5);
@@ -337,6 +361,21 @@ export const P22Network: React.FC = () => {
                 return (
                   <React.Fragment key={n.label}>
                     <ClipPrint src={n.clip} t={t} from={n.at - 0.2} to={281} x={n.x} y={n.y - 30} w={400} h={225} rot={(n.x - 960) / 400} reveal={p} clipDur={6} />
+                    <At x={n.x} y={n.y + 120}>
+                      <Rise p={ramp(t, n.at + 0.2, n.at + 0.7)}>
+                        <Tape p={1} size={28}>
+                          {n.label}
+                        </Tape>
+                      </Rise>
+                    </At>
+                  </React.Fragment>
+                );
+              if (n.label === "Electronic warfare")
+                return (
+                  <React.Fragment key={n.label}>
+                    <div style={{ position: "absolute", left: n.x - 200, top: n.y - 30 - 112, width: 400, height: 225, opacity: p, transform: `rotate(${(n.x - 960) / 400}deg) scale(${0.94 + 0.06 * ease.out(p)})`, border: "12px solid #e9dfca", boxShadow: "0 10px 16px rgba(0,0,0,0.5)", overflow: "hidden", background: "#111" }}>
+                      <Static />
+                    </div>
                     <At x={n.x} y={n.y + 120}>
                       <Rise p={ramp(t, n.at + 0.2, n.at + 0.7)}>
                         <Tape p={1} size={28}>

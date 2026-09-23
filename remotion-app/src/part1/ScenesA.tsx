@@ -10,7 +10,7 @@ import { CountUp, KeyTitle, recede, springIn } from "../components/AnimeText";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
 import { C, W, H } from "../lib/theme";
 import { ease, keys, ramp, useT } from "../lib/time";
-import { Balance, Check, Strike } from "./kit";
+import { Balance, Check, ClipFull, Strike } from "./kit";
 
 /* P01 0–8.4 "Back in the 1980s, France, the UK, Germany, Italy and Spain were discussing
  * the development of a new European fighter." Five countries light up as they are named. */
@@ -53,10 +53,20 @@ export const P02Agreement: React.FC = () => {
       <PaperGround>
         <Camera s={keys(t, [[8.3, 1.06], [15.5, 1.0]], ease.soft)}>
           <Layer>
-            <At x={W / 2} y={170}>
-              <KeyTitle text="Agreed on one thing" t={t} at={8.7} size={84} />
+            {/* the statement holds centre stage, then makes room for the two mission types */}
+            <At x={W / 2} y={keys(t, [[8.3, 520], [11.5, 520], [12.2, 170]], ease.inOut)}>
+              <div style={{ transform: `scale(${keys(t, [[8.3, 1.75], [11.5, 1.6], [12.2, 1]], ease.inOut)})` }}>
+                <KeyTitle text="Agreed on one thing" t={t} at={8.7} size={84} />
+              </div>
             </At>
-            <Cutout name="meteor" x={600} y={540} w={620} rot={-6} opacity={ramp(t, 12.2, 12.5)} scale={0.8 + a * 0.2} />
+            <At x={W / 2} y={640}>
+              <div style={{ opacity: ramp(t, 10.5, 10.9) * (1 - ramp(t, 11.5, 11.9)) }}>
+                <Label size={34} color={C.inkSoft} weight={600} style={{ letterSpacing: "0.3em" }}>
+                  One aircraft · two roles
+                </Label>
+              </div>
+            </At>
+            <Cutout name="meteor" x={580} y={540} w={760} rot={-6} opacity={ramp(t, 12.2, 12.5)} scale={0.8 + a * 0.2} />
             <At x={600} y={760}>
               <Rise p={ramp(t, 12.3, 12.8)}>
                 <Tape p={1} size={40}>
@@ -65,7 +75,7 @@ export const P02Agreement: React.FC = () => {
               </Rise>
             </At>
             <Check x={880} y={420} p={ramp(t, 12.7, 13.1)} />
-            <Cutout name="paveway" x={1330} y={540} w={560} rot={4} opacity={ramp(t, 13.6, 13.9)} scale={0.8 + b * 0.2} />
+            <Cutout name="paveway" x={1340} y={530} w={700} rot={4} opacity={ramp(t, 13.6, 13.9)} scale={0.8 + b * 0.2} />
             <At x={1330} y={790}>
               <Rise p={ramp(t, 13.7, 14.2)}>
                 <Tape p={1} size={40} dark>
@@ -89,9 +99,9 @@ export const P03Priorities: React.FC = () => {
   const fourTilt = keys(t, [[25.5, 0], [30.6, -16]], ease.inOut);
   const four = ramp(t, 25.5, 26.3);
   const frIn = ramp(t, 19.8, 20.5);
-  const pan = (label: string, color: string, dark?: boolean) => (
-    <Tape p={1} size={30} dark={dark} rot={0}>
-      <span style={{ color }}>{label}</span>
+  const pan = (label: string, _color: string, dark?: boolean) => (
+    <Tape p={1} size={36} dark={dark} rot={0}>
+      {label}
     </Tape>
   );
   return (
@@ -179,9 +189,10 @@ export const P05Carrier: React.FC = () => {
   return (
     <BlotReveal t={t} start={38.1} dur={0.8} cx={W / 2} cy={H * 0.62}>
       <AbsoluteFill style={{ background: C.night }}>
-        <Img src={staticFile("src-photos/carrier-wide.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", transform: `scale(${s})`, filter: "contrast(1.05) saturate(0.8) sepia(0.1)" }} />
+        {/* Charles de Gaulle (R91): aerial three-quarter, then broadside with a Rafale M launching */}
+        <Img src={staticFile("src-photos/cdg-2019.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", transform: `scale(${s}) translateX(${keys(t, [[38.1, 30], [41.5, -20]], ease.soft)}px)`, filter: "contrast(1.05) saturate(0.8) sepia(0.1)" }} />
         <AbsoluteFill style={{ opacity: deck }}>
-          <Img src={staticFile("src-photos/rafale-deck.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", transform: `scale(${keys(t, [[41, 1.2], [45.6, 1.06]], ease.soft)})`, filter: "contrast(1.05) saturate(0.82) sepia(0.08)" }} />
+          <Img src={staticFile("src-photos/cdg-2016.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", objectPosition: "60% 62%", transform: `scale(${keys(t, [[41, 1.5], [45.6, 1.32]], ease.soft)})`, transformOrigin: "62% 62%", filter: "contrast(1.08) saturate(0.82) sepia(0.08)" }} />
         </AbsoluteFill>
         <PrintTexture opacity={0.25} />
         <Vignette strength={0.55} />
@@ -198,19 +209,23 @@ export const P05Carrier: React.FC = () => {
 
 /* P06 45.5–59.4 the Rafale family: C, B, M */
 const FAMILY = [
-  { key: "C", at: 50.1, src: "photos/rafale-landing.jpg", tag: "Single-seat · land", x: 420 },
-  { key: "B", at: 53.9, src: "src-photos/rafale-india.jpg", tag: "Two-seat", x: 960 },
-  { key: "M", at: 55.5, src: "src-photos/rafale-m-flight.jpg", tag: "Carrier", x: 1500 },
+  { key: "C", at: 50.1, src: "photos/rafale-landing.jpg", tag: "Single-seat · land", x: 380 },
+  { key: "B", at: 53.9, src: "src-photos/rafale-india-takeoff.jpg", tag: "Two-seat", x: 960 },
+  { key: "M", at: 55.5, src: "src-photos/rafale-m-flight.jpg", tag: "Carrier", x: 1540 },
 ];
 export const P06Family: React.FC = () => {
   const t = useT();
+  const board = ramp(t, 49.5, 50.1, ease.inOut);
   return (
     <TearReveal t={t} start={45.5} dur={0.7} dir="ltr">
+      {/* real Rafale in flight while the narration names the family */}
+      {board < 1 && <ClipFull src="rr-bank" t={t} from={45.5} to={50.2} clipDur={4} push={0.08} />}
+      <AbsoluteFill style={{ opacity: board }}>
       <PaperGround>
-        <Camera s={keys(t, [[45.5, 1.08], [49.8, 1.0], [59.4, 1.03]], ease.soft)} x={keys(t, [[49.8, -120], [53.6, 0], [55.5, 110], [59.4, 0]], ease.inOut)}>
+        <Camera s={keys(t, [[49.5, 1.04], [51, 1.0], [59.4, 1.03]], ease.soft)} x={keys(t, [[49.8, -100], [53.6, 0], [55.5, 90], [59.4, 0]], ease.inOut)}>
           <Layer>
-            <At x={W / 2} y={160}>
-              <KeyTitle text="The Rafale family" t={t} at={47.9} size={96} />
+            <At x={W / 2} y={150}>
+              <KeyTitle text="The Rafale family" t={t} at={49.5} size={96} />
             </At>
             {FAMILY.map((f, i) => {
               const r = ramp(t, f.at - 0.15, f.at + 0.45);
@@ -218,15 +233,15 @@ export const P06Family: React.FC = () => {
               const back = next ? ramp(t, next.at, next.at + 0.5) * (1 - ramp(t, 57.2, 57.8)) * 0.6 : 0;
               return (
                 <AbsoluteFill key={f.key} style={{ ...recede(back, 4, 0.4, 0.05), transformOrigin: `${f.x}px 560px` }}>
-                  <Photo src={f.src} x={f.x} y={560} w={500} h={333} rot={[-3, 1.5, 3][i]} reveal={r} revealFrom="bottom" seed={"fam" + f.key} zoom={1.15} />
-                  <At x={f.x - 190} y={330}>
+                  <Photo src={f.src} x={f.x} y={580} w={560} h={373} rot={[-3, 1.5, 3][i]} reveal={r} revealFrom="bottom" seed={"fam" + f.key} zoom={1.15} />
+                  <At x={f.x - 215} y={340}>
                     <div style={{ opacity: r }}>
                       <KeyTitle text={f.key} t={t} at={f.at} size={140} color={C.red} fill neon="red" />
                     </div>
                   </At>
-                  <At x={f.x} y={780}>
+                  <At x={f.x} y={825}>
                     <Rise p={ramp(t, f.at + 0.3, f.at + 0.8)}>
-                      <Tape p={1} size={32} dark={i === 1}>
+                      <Tape p={1} size={34} dark={i === 1}>
                         {f.tag}
                       </Tape>
                     </Rise>
@@ -237,6 +252,14 @@ export const P06Family: React.FC = () => {
           </Layer>
         </Camera>
       </PaperGround>
+      </AbsoluteFill>
+      {board < 1 && (
+        <At x={W / 2} y={H - 150}>
+          <div style={{ opacity: 1 - board }}>
+            <KeyTitle text="The Rafale family" t={t} at={47.9} size={100} neon="white" />
+          </div>
+        </At>
+      )}
     </TearReveal>
   );
 };
@@ -247,9 +270,9 @@ export const P07Service: React.FC = () => {
   const t = useT();
   const axis = ramp(t, 59.5, 60.4, ease.inOut);
   const marks = [
-    { year: 2004, at: 62.1, src: "src-photos/rafale-m-flight.jpg", tag: "Rafale · French Navy", up: true },
-    { year: 2006, at: 64.7, src: "photos/rafale-landing.jpg", tag: "Rafale · French Air Force", up: false },
-    { year: 2003, at: 70.1, src: "src-photos/typhoon-front.jpg", tag: "Typhoon · RAF", up: true },
+    { year: 2004, at: 61.2, src: "src-photos/rafale-m-flight.jpg", tag: "Rafale · French Navy", up: true },
+    { year: 2006, at: 64.2, src: "photos/rafale-landing.jpg", tag: "Rafale · French Air Force", up: false },
+    { year: 2003, at: 69.6, src: "src-photos/typhoon-front.jpg", tag: "Typhoon · RAF", up: true },
   ];
   return (
     <BlotReveal t={t} start={59.3} dur={0.8} cx={W / 2} cy={H / 2}>
@@ -270,15 +293,15 @@ export const P07Service: React.FC = () => {
             {marks.map((m, i) => {
               const r = ramp(t, m.at - 0.2, m.at + 0.4);
               const x = X_OF(m.year);
-              const y = m.up ? 330 : 800;
+              const y = m.up ? 300 : 810;
               return (
                 <React.Fragment key={m.year}>
                   <svg style={{ position: "absolute", left: 0, top: 0, overflow: "visible", opacity: r }} width={1} height={1}>
                     <circle cx={x} cy={560} r={14 * springIn(t, m.at - 0.2, 0.7)} fill={C.red} />
                     <line x1={x} y1={m.up ? 545 : 575} x2={x} y2={m.up ? 470 : 650} stroke={C.red} strokeWidth={3} />
                   </svg>
-                  <Photo src={m.src} x={x} y={y} w={330} h={220} rot={[-3, 2, 3][i]} reveal={r} revealFrom={m.up ? "bottom" : "top"} seed={"svc" + m.year} zoom={1.1} />
-                  <At x={x} y={m.up ? 180 : 950}>
+                  <Photo src={m.src} x={x} y={y} w={420} h={280} rot={[-3, 2, 3][i]} reveal={r} revealFrom={m.up ? "bottom" : "top"} seed={"svc" + m.year} zoom={1.1} />
+                  <At x={x} y={m.up ? 128 : 990}>
                     <Rise p={ramp(t, m.at + 0.1, m.at + 0.6)}>
                       <Tape p={1} size={28} dark={i === 2}>
                         {m.tag}
@@ -287,7 +310,7 @@ export const P07Service: React.FC = () => {
                   </At>
                   <At x={x} y={m.up ? 505 : 620}>
                     <div style={{ opacity: r }}>
-                      <CountUp t={t} at={m.at} to={m.year} size={64} color={C.red} dur={0.7} />
+                      <CountUp t={t} at={m.at} to={m.year} size={72} color={C.red} dur={0.7} />
                     </div>
                   </At>
                 </React.Fragment>

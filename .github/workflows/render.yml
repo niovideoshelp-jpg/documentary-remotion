@@ -50,7 +50,7 @@ jobs:
           rm out/pub/render.log
           # master: one fixed gain to -14 LUFS (linear: the voice/SFX balance of the mix is kept;
           # dynamic loudnorm would lift the pauses and push the effects up), peak limiter only
-          I=$(ffmpeg -hide_banner -i out/intro.mp4 -vn -af ebur128 -f null - 2>&1 | grep -A2 "Integrated loudness" | grep -oE "I: +-?[0-9.]+" | grep -oE "-?[0-9.]+$")
+          I=$(ffmpeg -hide_banner -i out/intro.mp4 -vn -af ebur128 -f null - 2>&1 | grep -A2 "Integrated loudness" | grep -oE "I: +-?[0-9.]+" | grep -oE -e "-?[0-9.]+$")
           G=$(python3 -c "print(round(-14 - ($I), 2))")
           echo "integrated $I LUFS, gain $G dB"
           ffmpeg -y -loglevel error -i out/intro.mp4 -c:v copy -af "volume=${G}dB,alimiter=limit=0.84:attack=3:release=60:level=false" -ar 48000 -c:a aac -b:a 320k out/master.mp4

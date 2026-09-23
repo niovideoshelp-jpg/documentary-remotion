@@ -41,13 +41,17 @@ jobs:
         if: contains(github.event.head_commit.message, '[stills') || inputs.mode == 'stills'
         run: |
           if [ -f "scripts/stills-$NAME.txt" ]; then export STILL_TIMES="$(cat scripts/stills-$NAME.txt)"; fi
-          set -o pipefail
           mkdir -p out/review
-          node scripts/stills.mjs 2>&1 | tee out/stills.log | grep -v "^still " || { cd out/review; tail -150 ../stills.log > FAILED.log; git init -q -b review && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Stills FAILED ${GITHUB_SHA::7}" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" review; exit 1; }
+          ok=1
+          node scripts/stills.mjs > out/review/stills.log 2>&1 || ok=0
+          echo "exit ok=$ok" >> out/review/stills.log
+          tail -40 out/review/stills.log
           cd out/review
-          git init -q -b review && git add -A
-          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Review frames for ${GITHUB_SHA::7}"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" review
+          git init -q -b review
+          git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Review frames for ${GITHUB_SHA::7} ok=$ok"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" review 2>&1 | tail -5
+          [ "$ok" = 1 ]
       - name: Full render
         if: contains(github.event.head_commit.message, '[render') || inputs.mode == 'render'
         run: |

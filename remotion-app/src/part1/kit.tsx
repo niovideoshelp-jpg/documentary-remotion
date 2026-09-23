@@ -25,7 +25,7 @@ export const Clip: React.FC<{ src: string; from: number; to: number; clipDur?: n
   return (
     <Sequence from={Math.round(from * FPS)} durationInFrames={Math.max(1, Math.round(span * FPS))} layout="none">
       <OffthreadVideo
-        src={staticFile(`video/p1/${src}.mp4`)}
+        src={staticFile(`video/${src.includes("/") ? src : "p1/" + src}.mp4`)}
         muted
         startFrom={Math.round(trim * FPS)}
         playbackRate={rate}

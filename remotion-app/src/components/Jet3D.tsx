@@ -77,6 +77,18 @@ const box = (st: [number, number, number, number][]): Poly[] => {
   return out;
 };
 const mirror = (pts: V[]): V[] => pts.map(([x, y, z]) => [x, -y, z] as V);
+const pod = (y: number): Poly[] => {
+  const st: [number, number, number, number][] = [
+    [-3.5, 0.06, -0.36, -0.24],
+    [-4.1, 0.16, -0.46, -0.1],
+    [-6.4, 0.16, -0.46, -0.1],
+    [-6.8, 0.08, -0.36, -0.2],
+  ];
+  return loft(st, GREY, 8).map((q) => ({ ...q, pts: q.pts.map(([x, yy, z]) => [x, yy + y, z] as V) }));
+};
+export type { V };
+/** Where the RAF Typhoon's towed decoy leaves the airframe: rear of the starboard wingtip pod. */
+export const DECOY_EXIT: V = [-6.8, 5.47, -0.28];
 
 export const PIRATE_POS: V = [5.9, -0.5, 0.66]; // port side, ahead of the windscreen
 
@@ -116,6 +128,94 @@ const MODEL: Poly[] = (() => {
     { pts: fin, fill: GREY },
     ...nozzle(0.46),
     ...nozzle(-0.46),
+    // DASS wingtip pods (the starboard one houses the towed decoy on RAF aircraft)
+    ...pod(5.47),
+    ...pod(-5.47),
+  ];
+})();
+
+/* Dassault Rafale (length 15.27 m, span 10.90 m): close-coupled canards on the intake
+ * shoulders, two side intakes, a taller fin, fixed refuelling probe to starboard. */
+const R_BODY: [number, number, number, number][] = [
+  [7.6, 0.02, 0.24, 0.3],
+  [6.8, 0.28, 0.0, 0.55],
+  [5.8, 0.45, -0.24, 0.8],
+  [4.6, 0.55, -0.38, 0.95],
+  [3.4, 0.6, -0.42, 1.02],
+  [2.2, 0.72, -0.48, 0.95],
+  [0.5, 1.02, -0.58, 0.86],
+  [-2.0, 1.08, -0.58, 0.8],
+  [-4.5, 1.0, -0.54, 0.74],
+  [-6.8, 0.86, -0.46, 0.62],
+];
+const R_CANOPY: [number, number, number, number][] = [
+  [5.2, 0.04, 0.78, 0.84],
+  [4.4, 0.34, 0.78, 1.24],
+  [3.2, 0.4, 0.88, 1.38],
+  [2.0, 0.3, 0.84, 1.14],
+  [1.2, 0.06, 0.8, 0.86],
+];
+export const MODEL_R: Poly[] = (() => {
+  const intake = (side: number): Poly[] => {
+    const st: [number, number, number, number][] = [
+      [3.0, 0.34, -0.62, 0.08],
+      [1.8, 0.36, -0.6, 0.12],
+      [0.0, 0.3, -0.56, 0.06],
+    ];
+    const sq = ([x, hw, zb, zt]: [number, number, number, number]): V[] => [
+      [x, side * (0.78 - hw), zb],
+      [x, side * (0.78 + hw), zb],
+      [x, side * (0.78 + hw), zt],
+      [x, side * (0.78 - hw), zt],
+    ];
+    const r = st.map(sq);
+    const out: Poly[] = [];
+    for (let k = 0; k < r.length - 1; k++) for (let i = 0; i < 4; i++) out.push({ pts: [r[k][i], r[k][(i + 1) % 4], r[k + 1][(i + 1) % 4], r[k + 1][i]], fill: GREY });
+    out.push({ pts: r[0], fill: [52, 56, 60], kind: "hole" });
+    return out;
+  };
+  const wing: V[] = [
+    [1.0, 1.15, -0.24],
+    [-5.2, 5.45, -0.24],
+    [-6.2, 5.45, -0.24],
+    [-6.9, 1.05, -0.24],
+  ];
+  const canard: V[] = [
+    [2.55, 1.05, 0.2],
+    [1.55, 2.55, 0.2],
+    [0.95, 2.55, 0.2],
+    [1.15, 1.05, 0.2],
+  ];
+  const fin: V[] = [
+    [-2.4, 0, 0.78],
+    [-5.8, 0, 4.5],
+    [-6.7, 0, 4.5],
+    [-7.1, 0, 0.62],
+  ];
+  const probe: V[] = [
+    [5.0, 0.42, 0.9],
+    [6.9, 0.42, 1.08],
+    [6.9, 0.42, 1.16],
+    [5.0, 0.42, 1.02],
+  ];
+  const nozzle = (y: number): Poly[] => {
+    const r = ring(-6.8, 0.4, -0.34, 0.46, 10).map(([x, yy, z]) => [x, yy + y, z] as V);
+    const back = r.map(([, yy, z]) => [-7.25, yy, z] as V);
+    return [...r.map((q, i) => ({ pts: [q, r[(i + 1) % 10], back[(i + 1) % 10], back[i]], fill: DARK })), { pts: back, fill: [18, 18, 18], kind: "hole" as const }];
+  };
+  return [
+    ...loft(R_BODY, GREY),
+    ...loft(R_CANOPY, [70, 86, 98], 10, "glass"),
+    ...intake(1),
+    ...intake(-1),
+    { pts: wing, fill: GREY },
+    { pts: mirror(wing), fill: GREY },
+    { pts: canard, fill: GREY },
+    { pts: mirror(canard), fill: GREY },
+    { pts: fin, fill: GREY },
+    { pts: probe, fill: DARK },
+    ...nozzle(0.44),
+    ...nozzle(-0.44),
   ];
 })();
 
@@ -156,14 +256,26 @@ export const project = (p: V, cam: JetCam, cx: number, cy: number, scale: number
   return { x: cx + a.sx - f.sx * cam.focus, y: cy + a.sy - f.sy * cam.focus, depth: a.depth };
 };
 
-export const Jet3D: React.FC<{ cam: JetCam; cx: number; cy: number; scale: number; sensorGlow?: number; opacity?: number }> = ({ cam, cx, cy, scale, sensorGlow = 0, opacity = 1 }) => {
+export const Jet3D: React.FC<{
+  cam: JetCam;
+  cx: number;
+  cy: number;
+  scale: number;
+  sensorGlow?: number;
+  opacity?: number;
+  model?: "typhoon" | "rafale";
+  sensor?: boolean;
+  focusPt?: V;
+  overlay?: (P: (p: V) => { x: number; y: number; depth: number }) => React.ReactNode;
+}> = ({ cam, cx, cy, scale, sensorGlow = 0, opacity = 1, model = "typhoon", sensor = true, focusPt = PIRATE_POS, overlay }) => {
+  const P = (p: V) => project(p, cam, cx, cy, scale, focusPt);
   const L = (() => {
     const v = [0.55, -0.45, 0.7];
     const m = Math.hypot(...v);
     return v.map((c) => c / m);
   })();
-  const polys = MODEL.map((poly) => {
-    const pr = poly.pts.map((p) => project(p, cam, cx, cy, scale));
+  const polys = (model === "rafale" ? MODEL_R : MODEL).map((poly) => {
+    const pr = poly.pts.map(P);
     // world-space normal, rotated with the camera, for simple two-sided shading
     const [a, b, c] = poly.pts;
     const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
@@ -184,7 +296,7 @@ export const Jet3D: React.FC<{ cam: JetCam; cx: number; cy: number; scale: numbe
     const depth = pr.reduce((s, q) => s + q.depth, 0) / pr.length;
     return { d: pr.map((q, i) => `${i ? "L" : "M"}${q.x.toFixed(1)},${q.y.toFixed(1)}`).join("") + "Z", fill: `rgb(${r},${g},${bb})`, depth, kind: poly.kind };
   }).sort((p, q) => q.depth - p.depth);
-  const s = project(PIRATE_POS, cam, cx, cy, scale);
+  const s = P(PIRATE_POS);
   const sr = Math.max(5, 0.16 * scale * cam.zoom);
   return (
     <svg width={1920} height={1080} style={{ position: "absolute", left: 0, top: 0, overflow: "visible", opacity }}>
@@ -201,8 +313,13 @@ export const Jet3D: React.FC<{ cam: JetCam; cx: number; cy: number; scale: numbe
         ))}
       </g>
       {/* PIRATE sensor head */}
-      <circle cx={s.x} cy={s.y} r={sr * (1.6 + sensorGlow * 2.2)} fill="url(#ir-glow)" opacity={0.25 + sensorGlow * 0.75} />
-      <circle cx={s.x} cy={s.y} r={sr} fill="#2a2f33" stroke="#ffb27a" strokeWidth={1.5 + sensorGlow * 2} />
+      {sensor && model === "typhoon" && (
+        <>
+          <circle cx={s.x} cy={s.y} r={sr * (1.6 + sensorGlow * 2.2)} fill="url(#ir-glow)" opacity={0.25 + sensorGlow * 0.75} />
+          <circle cx={s.x} cy={s.y} r={sr} fill="#2a2f33" stroke="#ffb27a" strokeWidth={1.5 + sensorGlow * 2} />
+        </>
+      )}
+      {overlay?.(P)}
     </svg>
   );
 };

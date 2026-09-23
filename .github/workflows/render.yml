@@ -25,8 +25,8 @@ jobs:
       run:
         working-directory: remotion-app
     env:
-      COMP: ${{ contains(github.event.head_commit.message, ':part1]') && 'TyphoonVsRafalePart1' || 'TyphoonVsRafaleIntro' }}
-      NAME: ${{ contains(github.event.head_commit.message, ':part1]') && 'typhoon-rafale-part1' || 'typhoon-rafale-intro' }}
+      COMP: ${{ contains(github.event.head_commit.message, ':part1]') && 'TyphoonVsRafalePart1' || contains(github.event.head_commit.message, ':part2]') && 'TyphoonVsRafalePart2' || 'TyphoonVsRafaleIntro' }}
+      NAME: ${{ contains(github.event.head_commit.message, ':part1]') && 'typhoon-rafale-part1' || contains(github.event.head_commit.message, ':part2]') && 'typhoon-rafale-part2' || 'typhoon-rafale-intro' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

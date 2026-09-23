@@ -6,7 +6,7 @@ import { Cutout, Photo } from "../components/Photo";
 import { At, Label, Rise, Tape } from "../components/Type";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { Blueprint } from "../components/Blueprint";
-import { CountUp, KeyTitle, recede, springIn } from "../components/AnimeText";
+import { KeyTitle, recede, springIn } from "../components/AnimeText";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
 import { C, W, H } from "../lib/theme";
 import { ease, keys, ramp, useT } from "../lib/time";
@@ -168,7 +168,7 @@ export const P04Leaves: React.FC = () => {
     <TearReveal t={t} start={31.9} dur={0.7} dir="rtl">
       <WorldMap t={t} view={viewAt(lon, lat, z)} highlights={SPLIT} />
       <At x={W / 2} y={H - 170}>
-        <CountUp t={t} at={32.6} to={1985} size={170} neon="white" dur={0.9} />
+        <KeyTitle text="1985" t={t} at={32.6} size={170} fill neon="white" />
       </At>
       <At x={W / 2} y={140}>
         <Rise p={ramp(t, 36.7, 37.2)}>
@@ -310,7 +310,7 @@ export const P07Service: React.FC = () => {
                   </At>
                   <At x={x} y={m.up ? 505 : 620}>
                     <div style={{ opacity: r }}>
-                      <CountUp t={t} at={m.at} to={m.year} size={72} color={C.red} dur={0.7} />
+                      <KeyTitle text={String(m.year)} t={t} at={m.at} size={72} color={C.red} fill />
                     </div>
                   </At>
                 </React.Fragment>

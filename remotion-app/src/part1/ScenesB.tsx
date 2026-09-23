@@ -81,7 +81,7 @@ export const P11Factors: React.FC = () => {
         <Camera s={keys(t, [[105.1, 1.06], [113.6, 1.0]], ease.soft)}>
           <Layer>
             {cells.map((c, i) => {
-              const p = ramp(t, 105.5 + i * 0.12, 106.0 + i * 0.12);
+              const p = ramp(t, 106.0 + i * 0.12, 106.5 + i * 0.12);
               const fill = ramp(t, c.at - 0.15, c.at + 0.4);
               const dim = cells[i + 1] ? ramp(t, cells[i + 1].at, cells[i + 1].at + 0.4) * 0.5 * (1 - ramp(t, 111.7, 112.2)) : 0;
               return (

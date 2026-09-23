@@ -1,90 +1,11 @@
 {
- "every": 4,
+ "every": 3,
  "videos": {
-  "raf-flight": "https://upload.wikimedia.org/wikipedia/commons/e/e7/RAF_Typhoon_Flight_Over_the_UK.webm",
-  "paveway": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Royal_Air_Force_Typhoon_dropping_a_Paveway_IV_precision_guided_bomb.webm",
-  "rafale-refuel": "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/bc/908th_EARS_refuels_Arm%C3%A9e_de_l%27Air_Rafales_%28B-Roll%29.webm/908th_EARS_refuels_Arm%C3%A9e_de_l%27Air_Rafales_%28B-Roll%29.webm.1080p.vp9.webm",
-  "awacs": "https://upload.wikimedia.org/wikipedia/commons/1/13/E-3_Sentry_AWACS_-_Airman_Magazine.webm"
+  "trident": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a4/Atlantic_Trident_2017_-_Ready_to_fight.webm/Atlantic_Trident_2017_-_Ready_to_fight.webm.1080p.vp9.webm",
+  "trident-t2": "https://upload.wikimedia.org/wikipedia/commons/transcoded/3/3d/Atlantic_Trident_2017_-_Teaser_2.webm/Atlantic_Trident_2017_-_Teaser_2.webm.1080p.vp9.webm",
+  "dod": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a3/DOD_108365186.webm/DOD_108365186.webm.1080p.vp9.webm",
+  "paveway": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Royal_Air_Force_Typhoon_dropping_a_Paveway_IV_precision_guided_bomb.webm"
  },
- "clips": [
-  {
-   "key": "rf-takeoff",
-   "src": "raf-flight",
-   "start": 6,
-   "dur": 6
-  },
-  {
-   "key": "rf-climb",
-   "src": "raf-flight",
-   "start": 24,
-   "dur": 6
-  },
-  {
-   "key": "rf-lowlevel",
-   "src": "raf-flight",
-   "start": 200,
-   "dur": 6
-  },
-  {
-   "key": "rf-bank",
-   "src": "raf-flight",
-   "start": 248,
-   "dur": 5
-  },
-  {
-   "key": "rf-formation",
-   "src": "raf-flight",
-   "start": 626,
-   "dur": 7
-  },
-  {
-   "key": "rr-approach",
-   "src": "rafale-refuel",
-   "start": 57,
-   "dur": 6
-  },
-  {
-   "key": "rr-loaded",
-   "src": "rafale-refuel",
-   "start": 147,
-   "dur": 7
-  },
-  {
-   "key": "rr-bank",
-   "src": "rafale-refuel",
-   "start": 127.5,
-   "dur": 4
-  },
-  {
-   "key": "pv-fly",
-   "src": "paveway",
-   "start": 3.5,
-   "dur": 6
-  },
-  {
-   "key": "aw-flyover",
-   "src": "awacs",
-   "start": 0,
-   "dur": 7
-  },
-  {
-   "key": "aw-screens",
-   "src": "awacs",
-   "start": 23,
-   "dur": 5
-  },
-  {
-   "key": "aw-network",
-   "src": "awacs",
-   "start": 51,
-   "dur": 5
-  },
-  {
-   "key": "aw-scope",
-   "src": "awacs",
-   "start": 39,
-   "dur": 4
-  }
- ],
- "sheets": false
+ "clips": [],
+ "sheets": true
 }

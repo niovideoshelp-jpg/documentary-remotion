@@ -41,7 +41,9 @@ jobs:
         if: contains(github.event.head_commit.message, '[stills') || inputs.mode == 'stills'
         run: |
           if [ -f "scripts/stills-$NAME.txt" ]; then export STILL_TIMES="$(cat scripts/stills-$NAME.txt)"; fi
-          node scripts/stills.mjs
+          set -o pipefail
+          mkdir -p out/review
+          node scripts/stills.mjs 2>&1 | tee out/stills.log | grep -v "^still " || { cd out/review; tail -150 ../stills.log > FAILED.log; git init -q -b review && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Stills FAILED ${GITHUB_SHA::7}" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" review; exit 1; }
           cd out/review
           git init -q -b review && git add -A
           git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Review frames for ${GITHUB_SHA::7}"

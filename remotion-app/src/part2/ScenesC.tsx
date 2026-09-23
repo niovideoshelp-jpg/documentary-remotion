@@ -240,14 +240,14 @@ export const Q17Naval: React.FC = () => {
             <Camera s={keys(t, [[214.7, 1.06], [226.9, 1.0]], ease.soft)}>
               <Layer>
                 <AbsoluteFill style={{ opacity: 1 - need * 0.8, filter: need > 0 ? `blur(${need * 4}px)` : undefined }}>
-                  <Jet3D cam={{ yaw: 90, pitch: 88, zoom: 0.4 + 0.6 * springIn(t, 214.9, 1.0), focus: 0 }} cx={560} cy={470} scale={36} model="rafale" sensor={false} />
+                  <Jet3D cam={{ yaw: 62 + 6 * Math.sin(t * 0.4), pitch: 30, zoom: 0.4 + 0.6 * springIn(t, 214.9, 1.0), focus: 0 }} cx={560} cy={480} scale={34} model="rafale" sensor={false} />
                   <At x={560} y={760}>
                     <Label size={34} color={C.ink} weight={700} style={{ letterSpacing: "0.32em", opacity: ramp(t, 215.3, 215.7) }}>
                       Rafale M
                     </Label>
                   </At>
                   <Check x={820} y={260} p={ramp(t, 215.4, 215.8)} size={80} />
-                  <Jet3D cam={{ yaw: 90, pitch: 88, zoom: 0.4 + 0.6 * springIn(t, 215.3, 1.0), focus: 0 }} cx={1360} cy={470} scale={36} model="typhoon" sensor={false} />
+                  <Jet3D cam={{ yaw: 62 + 6 * Math.sin(t * 0.4 + 1), pitch: 30, zoom: 0.4 + 0.6 * springIn(t, 215.3, 1.0), focus: 0 }} cx={1360} cy={480} scale={34} model="typhoon" sensor={false} />
                   <At x={1360} y={760}>
                     <Label size={34} color={C.ink} weight={700} style={{ letterSpacing: "0.32em", opacity: ramp(t, 215.7, 216.1) }}>
                       Typhoon
@@ -310,7 +310,9 @@ export const Q18Land: React.FC = () => {
         </AbsoluteFill>
         <AbsoluteFill style={{ clipPath: "inset(0 0 0 50%)" }}>
           <AbsoluteFill style={{ left: "25%", filter: `blur(${(1 - ramp(t, 233.0, 233.6)) * 6}px) brightness(${0.45 + 0.55 * ramp(t, 233.0, 233.6)})` }}>
-            <ClipFull src="p2/tr-typhoon-to" t={t} from={227.0} to={235.2} clipDur={4.5} trim={0.6} />
+            {/* RAF Typhoon FGR4 on the ramp at RAF Leuchars (MOD) */}
+            <Img src={staticFile("src-photos/typhoon-leuchars.jpg")} style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 55%", transform: `scale(${1.12 + ramp(t, 227, 235.2, (x) => x) * 0.08})`, filter: "contrast(1.05) saturate(0.82) sepia(0.08)" }} />
+            <AbsoluteFill style={{ background: "linear-gradient(0deg, rgba(6,6,6,0.65) 0%, rgba(6,6,6,0) 40%)" }} />
           </AbsoluteFill>
           <At x={W * 0.75} y={H - 170}>
             <KeyTitle text="Typhoon" t={t} at={233.8} size={100} neon="white" />

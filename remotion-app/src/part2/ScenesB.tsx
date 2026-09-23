@@ -76,7 +76,7 @@ export const Q08TyphoonKit: React.FC = () => {
             <Blueprint view="typhoonUnder" x={560} y={500} width={820} p={ramp(t, 92.2, 94.2, ease.linear)} redP={ramp(t, 95.0, 97.8, ease.linear)} lineWidth={2} label="Typhoon FGR4" />
             <Card t={t} at={95.0} src="src-photos/typhoon-paveway.jpg" name="Paveway IV" x={1440} y={210} w={560} h={250} rot={-2} />
             <Card t={t} at={96.4} src="src-photos/brimstone.jpg" name="Brimstone" x={1440} y={520} w={560} h={250} pos="50% 60%" zoom={1.25} rot={1.5} dark />
-            <Card t={t} at={97.5} src="src-photos/stormshadow.jpg" name="Storm Shadow" x={1440} y={830} w={560} h={250} pos="50% 4%" zoom={1.7} rot={-1} />
+            <Card t={t} at={97.5} src="src-photos/stormshadow-side.jpg" name="Storm Shadow" x={1440} y={830} w={560} h={250} pos="45% 40%" zoom={1.15} rot={-1} />
           </Layer>
         </Camera>
       </PaperGround>
@@ -102,7 +102,7 @@ export const Q09RafaleKit: React.FC = () => {
             </AbsoluteFill>
             <Card t={t} at={102.4} src="src-photos/rafale-weaponry.jpg" name="Guided bombs" x={1130} y={300} w={440} h={270} pos="62% 72%" zoom={1.5} rot={-2} />
             <Card t={t} at={103.9} src="src-photos/aasm.jpg" name="AASM" x={1610} y={300} w={440} h={270} pos="50% 82%" zoom={1.35} rot={1.5} dark />
-            <Card t={t} at={105.6} src="src-photos/stormshadow.jpg" name="SCALP" x={1130} y={690} w={440} h={270} pos="50% 4%" zoom={1.7} rot={1} dark />
+            <Card t={t} at={105.6} src="src-photos/stormshadow-side.jpg" name="SCALP" x={1130} y={690} w={440} h={270} pos="45% 40%" zoom={1.15} rot={1} dark />
             <Card t={t} at={106.8} src="src-photos/talios.jpg" name="Talios" x={1610} y={690} w={440} h={270} pos="90% 90%" zoom={2.6} rot={-1.5} />
             <At x={1610} y={930}>
               <div style={{ display: "flex", gap: 16 }}>
@@ -424,7 +424,7 @@ export const Q13StandOff: React.FC = () => {
               <KeyTitle text="Long-range strike" t={t} at={153.3} size={120} out={157.3} />
             </At>
             <AbsoluteFill style={{ opacity: photo }}>
-              <Photo src="src-photos/stormshadow.jpg" x={W / 2} y={500} w={1000} h={420} zoom={1.8} objectPosition="50% 2%" reveal={ramp(t, 157.6, 158.3)} revealFrom="bottom" seed="ss" />
+              <Photo src="src-photos/stormshadow-side.jpg" x={W / 2} y={500} w={1100} h={440} zoom={1.08} objectPosition="45% 40%" reveal={ramp(t, 157.6, 158.3)} revealFrom="bottom" seed="ss" />
               <At x={W / 2} y={200}>
                 <KeyTitle text="Storm Shadow" t={t} at={157.9} size={86} />
               </At>

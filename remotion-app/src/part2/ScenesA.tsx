@@ -167,13 +167,13 @@ export const Q03Dass: React.FC = () => {
   const t = useT();
   const cam = useJetCamera(t, 24.8, { yaw: 64, pitch: 22, zoom: 0.84, focus: 0 }, [
     { at: 0, to: { yaw: 36, pitch: 24 }, dur: 9.2, ease: "linear" },
-    { at: 9.4, to: { yaw: -138, pitch: 16, zoom: 0.95, focus: 1 }, dur: 2.4, ease: "inOutCubic" },
+    { at: 9.4, to: { yaw: -112, pitch: 14, zoom: 0.9, focus: 1 }, dur: 2.4, ease: "inOutCubic" },
   ]);
   const CX = 860;
   const CY = 590;
   const SC = 58;
   const emitter: [number, number] = [2050, 80];
-  const L = 16 * ease.inOut(ramp(t, 35.4, 37.6));
+  const L = 13 * ease.inOut(ramp(t, 35.4, 37.6));
   const cable = (s: number): V => [DECOY_EXIT[0] - L * s, DECOY_EXIT[1] + 0.5 * s * (L / 16), DECOY_EXIT[2] - 1.1 * Math.sin((s * Math.PI) / 2) * (L / 16)];
   const toDecoy = ramp(t, 37.5, 38.2, ease.inOut);
   return (
@@ -186,7 +186,7 @@ export const Q03Dass: React.FC = () => {
           scale={SC}
           model="typhoon"
           sensor={false}
-          focusPt={[-11, 4.2, -0.8]}
+          focusPt={[-10, 3.4, -0.6]}
           overlay={(P) => {
             const c = P([0, 0, 0]);
             const pods = [P([-5, 5.47, -0.3]), P([-5, -5.47, -0.3])];

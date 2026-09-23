@@ -3,9 +3,45 @@
  "videos": {
   "trident": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a4/Atlantic_Trident_2017_-_Ready_to_fight.webm/Atlantic_Trident_2017_-_Ready_to_fight.webm.1080p.vp9.webm",
   "trident-t2": "https://upload.wikimedia.org/wikipedia/commons/transcoded/3/3d/Atlantic_Trident_2017_-_Teaser_2.webm/Atlantic_Trident_2017_-_Teaser_2.webm.1080p.vp9.webm",
-  "dod": "https://upload.wikimedia.org/wikipedia/commons/transcoded/a/a3/DOD_108365186.webm/DOD_108365186.webm.1080p.vp9.webm",
   "paveway": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Royal_Air_Force_Typhoon_dropping_a_Paveway_IV_precision_guided_bomb.webm"
  },
- "clips": [],
- "sheets": true
+ "clips": [
+  {
+   "key": "t2-rafale-ab",
+   "src": "trident-t2",
+   "start": 2.6,
+   "dur": 3
+  },
+  {
+   "key": "t2-rafale-f22",
+   "src": "trident-t2",
+   "start": 11.4,
+   "dur": 3
+  },
+  {
+   "key": "tr-typhoon-to",
+   "src": "trident",
+   "start": 53.2,
+   "dur": 4.5
+  },
+  {
+   "key": "tr-typhoon-taxi",
+   "src": "trident",
+   "start": 70.6,
+   "dur": 4.5
+  },
+  {
+   "key": "pv-impact",
+   "src": "paveway",
+   "start": 8.6,
+   "dur": 9
+  },
+  {
+   "key": "pv-typhoon",
+   "src": "paveway",
+   "start": 5.4,
+   "dur": 3.2
+  }
+ ],
+ "sheets": false
 }

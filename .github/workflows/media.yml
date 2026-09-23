@@ -1,0 +1,21 @@
+name: Media
+# "[media]" in a commit message: download videos, build contact sheets, cut clips (scripts/media.json).
+on:
+  push:
+    branches: [rebuild]
+permissions:
+  contents: write
+jobs:
+  media:
+    if: contains(github.event.head_commit.message, '[media]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y -qq ffmpeg fonts-dejavu-core > /dev/null
+      - run: python3 scripts/media.py
+      - name: Publish to branch media
+        run: |
+          cd out && git init -q -b media && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Media for ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" media

@@ -21,7 +21,7 @@ export const SCENES: { id: string; from: number; to: number; C: React.FC }[] = [
   { id: "04 Rafale", from: 24.2, to: 36.1, C: S04Rafale },
   { id: "05 Missions + carrier", from: 35.25, to: 45.9, C: S05Missions },
   { id: "06 European rivals", from: 44.95, to: 58.9, C: S06Rivals },
-  { id: "07 Europe map + exports", from: 57.9, to: 74.8, C: S07Map },
+  { id: "07 Europe map + exports", from: 57.9, to: 75.6, C: S07Map },
   { id: "08 Approaches", from: 73.8, to: 80.9, C: S08Approaches },
   { id: "09 Fair comparison", from: 79.95, to: 87.85, C: S09Fair },
   { id: "10 Typhoon FGR4", from: 86.9, to: 103.1, C: S10FGR4 },

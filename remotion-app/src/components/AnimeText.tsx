@@ -55,8 +55,11 @@ export const KeyTitle: React.FC<{
   const ms = (t - at) * 1000;
   const letters = [...text];
   const ref = useSeekedTimeline((tl, root) => {
-    const lettersEls = root.querySelectorAll<HTMLElement>(".kt-l");
-    tl.add(lettersEls, { opacity: [0, 1], translateY: ["70%", "0%"], rotate: [6, 0], duration: 750, delay: stagger(42), ease: "outExpo" }, 0);
+    // outline, fill and glow share one letter structure, so every layer moves as one
+    for (const cls of [".kt-l", ".kt-f", ".kt-g"]) {
+      const els = root.querySelectorAll<HTMLElement>(cls);
+      if (els.length) tl.add(els, { opacity: [0, 1], translateY: ["70%", "0%"], rotate: [6, 0], duration: 750, delay: stagger(42), ease: "outExpo" }, 0);
+    }
     const fillEl = root.querySelector<HTMLElement>(".kt-fill");
     if (fillEl) tl.add(fillEl, { width: ["0%", "100%"], duration: 700, ease: "inOutQuart" }, 380 + letters.length * 20);
     const glowEl = root.querySelector<HTMLElement>(".kt-glow");
@@ -84,12 +87,22 @@ export const KeyTitle: React.FC<{
       </div>
       {fill && (
         <div className="kt-fill" style={{ position: "absolute", left: 0, top: 0, bottom: 0, overflow: "hidden" }}>
-          <div style={{ ...base, color, filter: "url(#ink)" }}>{text}</div>
+          <div style={{ ...base, color, filter: "url(#ink)" }}>
+            {letters.map((ch, i) => (
+              <span key={i} className="kt-f" style={{ display: "inline-block", whiteSpace: "pre" }}>
+                {ch}
+              </span>
+            ))}
+          </div>
         </div>
       )}
       {neon && (
         <div className="kt-glow" style={{ position: "absolute", left: 0, top: 0, ...base, color: "transparent", textShadow: glowShadow(neon), pointerEvents: "none" }}>
-          {text}
+          {letters.map((ch, i) => (
+            <span key={i} className="kt-g" style={{ display: "inline-block", whiteSpace: "pre" }}>
+              {ch}
+            </span>
+          ))}
         </div>
       )}
     </div>

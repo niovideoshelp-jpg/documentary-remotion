@@ -295,7 +295,7 @@ export const S08Approaches: React.FC = () => {
   const t = useT();
   const camS = keys(t, [[73.8, 1.12], [76.0, 1.02], [80.9, 1.08]], ease.soft);
   const camY = keys(t, [[73.8, -30], [80.9, 20]], ease.soft);
-  const develop = ramp(t, 74.3, 76.6, ease.linear);
+  const develop = ramp(t, 74.35, 76.6, ease.linear);
   const upgrade = ramp(t, 77.2, 77.9);
   const sell = ramp(t, 78.0, 78.4);
   const verb = (w: string, at: number, x: number, color: string) => (
@@ -304,7 +304,7 @@ export const S08Approaches: React.FC = () => {
     </At>
   );
   return (
-    <BlotReveal t={t} start={73.8} dur={0.9} cx={W / 2} cy={H / 2} seed="s08">
+    <BlotReveal t={t} start={74.3} dur={0.9} cx={W / 2} cy={H / 2} seed="s08">
       <PaperGround>
         <Camera s={camS} y={camY}>
           <Layer depth={0.95}>

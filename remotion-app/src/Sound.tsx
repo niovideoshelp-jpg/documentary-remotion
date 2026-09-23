@@ -20,21 +20,19 @@ const PEAK: Record<string, number> = {
 
 // [visual event time, file, gain, start-mode duration (textures only)]
 type Cue = [at: number, file: string, vol: number, dur?: number];
-const SFX_GAIN = 0.25;
-// engine noise and impacts carry far more energy than paper/pencil sounds: pull them further down
-const HEAVY: Record<string, number> = { "jet-flyby": 0.3, afterburner: 0.3, carrier: 0.35, bomb: 0.4, "boom-1": 0.5, "boom-2": 0.5 };
+const SFX_GAIN = 0.5;
 
 const CUES: Cue[] = [
   // S01 Typhoon: lift, title, fly-off
-  [1.3, "slide-1", 0.22], [2.05, "boom-1", 0.22], [6.1, "jet-flyby", 0.28],
+  [1.3, "slide-1", 0.22], [2.05, "boom-1", 0.22], 
   // S02 plate + flight
-  [7.52, "whoosh-3", 0.2], [7.25, "pencil", 0.16, 1.8], [9.35, "whoosh-1", 0.2], [9.7, "slide-2", 0.2], [10.9, "whoosh-2", 0.18], [12.0, "jet-flyby", 0.2], [12.8, "whoosh-3", 0.16],
+  [7.52, "whoosh-3", 0.2], [7.25, "pencil", 0.16, 1.8], [9.35, "whoosh-1", 0.2], [9.7, "slide-2", 0.2], [10.9, "whoosh-2", 0.18], [12.8, "whoosh-3", 0.16],
   // S03 tilt, underside, drop
   [15.25, "whoosh-3", 0.2], [15.3, "pencil", 0.15, 2.0], [17.95, "slide-3", 0.2], [20.4, "pencil", 0.15, 1.4], [21.25, "slide-1", 0.2], [22.65, "bomb", 0.28], [24.5, "whip-1", 0.28],
   // S04 Rafale
-  [24.4, "afterburner", 0.26, 3.6], [26.5, "boom-2", 0.22], [28.75, "whoosh-1", 0.2], [28.6, "pencil", 0.16, 3.6], [33.15, "stamp-1", 0.3],
+  [26.5, "boom-2", 0.22], [28.75, "whoosh-1", 0.2], [28.6, "pencil", 0.16, 3.6], [33.15, "stamp-1", 0.3],
   // S05 missions + carrier
-  [35.69, "whoosh-2", 0.2], [35.4, "pencil", 0.14, 1.0], [36.25, "slide-3", 0.18], [37.7, "slide-2", 0.18], [39.0, "slide-1", 0.18], [40.95, "whoosh-2", 0.2], [40.6, "carrier", 0.26, 3.4],
+  [35.69, "whoosh-2", 0.2], [35.4, "pencil", 0.14, 1.0], [36.25, "slide-3", 0.18], [37.7, "slide-2", 0.18], [39.0, "slide-1", 0.18], [40.95, "whoosh-2", 0.2], 
   // S06 rivals
   [45.45, "whoosh-1", 0.2], [46.2, "whoosh-3", 0.16], [47.0, "whoosh-1", 0.16], [53.75, "slide-3", 0.2], [56.7, "split", 0.32],
   // S07 map
@@ -60,11 +58,11 @@ const CUES: Cue[] = [
   // S15 deal
   [161.15, "whoosh-3", 0.18], [163.4, "whoosh-1", 0.14], [166.0, "whoosh-2", 0.14], [167.0, "liquid-2", 0.2], [168.4, "marker-1", 0.16],
   // S16 sources + close
-  [170.2, "whoosh-3", 0.16], [170.3, "docs", 0.22], [177.45, "marker-2", 0.16], [179.9, "marker-1", 0.16], [181.05, "whoosh-2", 0.2], [182.6, "jet-flyby", 0.2],
+  [170.2, "whoosh-3", 0.16], [170.3, "docs", 0.22], [177.45, "marker-2", 0.16], [179.9, "marker-1", 0.16], [181.05, "whoosh-2", 0.2], 
 ];
 
 const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, v, dur] }) => {
-  const vol = v * SFX_GAIN * (HEAVY[file] ?? 1);
+  const vol = v * SFX_GAIN;
   const start = dur ? at : at - (PEAK[file] ?? 0);
   const frame = Math.round(start * FPS);
   // a cue that would start before 0 is trimmed instead of shifted
@@ -83,8 +81,7 @@ const SfxCue: React.FC<{ cue: Cue }> = ({ cue: [at, file, v, dur] }) => {
 
 export const Soundtrack: React.FC = () => (
   <>
-    <Audio src={staticFile("audio/intro.mp3")} />
-    {/* no music bed: the owner adds their own score */}
+    <Audio src={staticFile("audio/intro.mp3")} />    <Audio src={staticFile("sfx/projector.mp3")} loop volume={0.018} />
     {CUES.map((c, i) => (
       <SfxCue key={i} cue={c} />
     ))}

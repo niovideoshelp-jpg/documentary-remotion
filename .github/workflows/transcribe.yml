@@ -1,0 +1,41 @@
+name: Transcribe
+# Word-level transcript of a narration file, on CI (never on the edit machine).
+# Push a commit containing "[transcribe:<file>]" (file in remotion-app/public/audio).
+on:
+  push:
+    branches: [rebuild]
+permissions:
+  contents: write
+jobs:
+  transcribe:
+    if: contains(github.event.head_commit.message, '[transcribe:')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install --quiet faster-whisper
+      - name: Transcribe
+        env:
+          MSG: ${{ github.event.head_commit.message }}
+        run: |
+          FILE=$(echo "$MSG" | grep -oE "\[transcribe:[^]]+\]" | sed -E 's/\[transcribe:(.*)\]/\1/')
+          python - "$FILE" <<'PY'
+          import json, sys
+          from faster_whisper import WhisperModel
+          name = sys.argv[1]
+          model = WhisperModel("medium.en", device="cpu", compute_type="int8", cpu_threads=4)
+          segs, info = model.transcribe(f"remotion-app/public/audio/{name}", beam_size=5, word_timestamps=True, vad_filter=False, language="en")
+          out = {"language": info.language, "duration": info.duration, "segments": []}
+          for s in segs:
+              out["segments"].append({"start": s.start, "end": s.end, "text": s.text, "words": [{"start": w.start, "end": w.end, "text": w.word} for w in s.words or []]})
+          stem = name.rsplit(".", 1)[0]
+          json.dump(out, open(f"/tmp/{stem}.json", "w"), indent=1)
+          open(f"/tmp/{stem}.txt", "w").write("\n".join(f"{s['start']:.2f} - {s['end']:.2f}: {s['text'].strip()}" for s in out["segments"]))
+          PY
+          mkdir -p /tmp/pub && cp /tmp/*.json /tmp/*.txt /tmp/pub/
+          cd /tmp/pub && git init -q -b transcripts && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Transcript $FILE"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" transcripts

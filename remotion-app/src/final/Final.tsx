@@ -138,7 +138,7 @@ const T02: React.FC = () => {
 
 /* T03 51.8–92.0 inside Europe: production spread across the partners — each makes specific parts. */
 const SITES = [
-  { name: "Warton", lon: -2.88, lat: 53.74, part: "front fuselage", at: 62.3, dx: 40, dy: -60 },
+  { name: "Warton", lon: -2.88, lat: 53.74, part: "front fuselage", at: 62.3, dx: 40, dy: 50 },
   { name: "Manching", lon: 11.53, lat: 48.72, part: "centre fuselage", at: 62.8, dx: 40, dy: -50 },
   { name: "Turin", lon: 7.65, lat: 45.19, part: "left wing", at: 63.3, dx: 40, dy: 50 },
   { name: "Getafe", lon: -3.72, lat: 40.3, part: "right wing", at: 63.8, dx: 40, dy: -80 },
@@ -197,7 +197,7 @@ const T03: React.FC = () => {
       })}
       <AbsoluteFill style={{ opacity: 1 - board }}>
         {tapes.map((k, i) => (
-          <IconCard key={k.text} name={k.icon} x={1180 + (i % 2) * 280} y={560 + Math.floor(i / 2) * 280} w={250} h={250} p={ramp(t, k.at - 0.25, k.at + 0.8)} label={k.text} />
+          <IconCard key={k.text} name={k.icon} x={260 + (i % 2) * 270} y={420 + Math.floor(i / 2) * 270} w={240} h={240} p={ramp(t, k.at - 0.25, k.at + 0.8)} label={k.text} />
         ))}
       </AbsoluteFill>
       {board > 0 && (
@@ -346,9 +346,9 @@ const T07: React.FC = () => {
         <Camera s={keys(t, [[138.7, 1.06], [158.6, 1.0]], ease.soft)}>
           <Layer>
             <AbsoluteFill style={{ opacity: 1 - ask }}>
-              <HandNote x={W / 2} y={420} p={ramp(t, 139.2, 140.4)} size={90} anchor="center">
-                just my own reading
-              </HandNote>
+              <At x={W / 2} y={420}>
+                <KeyTitle text="Just my own reading" t={t} at={139.2} size={110} neon="white" />
+              </At>
               <HandNote x={W / 2} y={580} p={ramp(t, 140.6, 141.8)} size={60} anchor="center" color="#ffd3c8">
                 not a military analyst
               </HandNote>
@@ -370,9 +370,9 @@ const T07: React.FC = () => {
                   </At>
                 </React.Fragment>
               ))}
-              <HandNote x={W / 2} y={170} p={ramp(t, 147.6, 148.8)} size={80} anchor="center" color="#ffd3c8">
-                which one would you choose?
-              </HandNote>
+              <At x={W / 2} y={150}>
+                <KeyTitle text="Which one would you choose?" t={t} at={147.6} size={86} neon="white" />
+              </At>
               <HandNote x={W / 2} y={470} p={ramp(t, 152.8, 153.5)} size={140} anchor="center" rot={0}>
                 ?
               </HandNote>

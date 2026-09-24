@@ -48,12 +48,7 @@ export const Exploded: React.FC<{
         const on = pt.at !== undefined ? ramp(t, pt.at, pt.at + 0.5) : 1;
         return (
           <AbsoluteFill key={pt.key} style={{ transform: `translate(${pt.dx * e}px, ${pt.dy * e}px)` }}>
-            {pt.tint && (
-              <svg width={1920} height={1080} style={{ position: "absolute", left: 0, top: 0 }}>
-                <polygon points={pts.map((q) => q.join(",")).join(" ")} fill={pt.tint} opacity={0.24 * on * e} />
-              </svg>
-            )}
-            <AbsoluteFill style={{ clipPath: clip }}>
+            <AbsoluteFill style={{ clipPath: clip, filter: pt.tint && on * e > 0.5 ? `drop-shadow(0 0 7px ${pt.tint}88)` : undefined }}>
               <Blueprint view={view} x={x} y={y} width={width} p={draw} lineWidth={lineWidth} color={pt.tint && on * e > 0.5 ? pt.tint : C.ink} />
             </AbsoluteFill>
             {pt.label && (

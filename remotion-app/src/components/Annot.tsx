@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Img, staticFile } from "remotion";
 import { PrintTexture, Vignette } from "./Paper";
-import { DrawPath, handLine, handLineEndAngle, scribbleEllipse } from "./Draw";
+import { DrawPath, handLine } from "./Draw";
 import { C, F } from "../lib/theme";
 import { ease, ramp } from "../lib/time";
 
@@ -48,40 +48,43 @@ export const Ink: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </svg>
 );
 
-export const HandCircle: React.FC<{ cx: number; cy: number; rx: number; ry?: number; p: number; seed?: string; color?: string; width?: number }> = ({ cx, cy, rx, ry, p, seed = "c", color = MARKER_RED, width = 5 }) => (
-  <DrawPath d={scribbleEllipse(cx, cy, rx, ry ?? rx * 0.7, seed)} p={ease.inOut(Math.min(1, p))} color={color} width={width} />
-);
+/** Clean ellipse that draws round a subject (no scribble). */
+export const HandCircle: React.FC<{ cx: number; cy: number; rx: number; ry?: number; p: number; seed?: string; color?: string; width?: number }> = ({ cx, cy, rx, ry, p, color = MARKER_RED, width = 3.5 }) => {
+  if (p <= 0) return null;
+  const e = ease.inOut(Math.min(1, p));
+  return <ellipse cx={cx} cy={cy} rx={rx} ry={ry ?? rx * 0.7} fill="none" stroke={color} strokeWidth={width} pathLength={1} strokeDasharray={`${e} 2`} />;
+};
 
+/** Clean arrow: a gentle arc with a sharp head. */
 export const HandArrow: React.FC<{ x1: number; y1: number; x2: number; y2: number; p: number; bow?: number; seed?: string; color?: string; width?: number }> = ({
   x1,
   y1,
   x2,
   y2,
   p,
-  bow = 0.18,
-  seed = "a",
+  bow = 0.12,
   color = MARKER,
-  width = 4.5,
+  width = 3.5,
 }) => {
   if (p <= 0) return null;
-  const d = handLine(x1, y1, x2, y2, bow, seed);
-  const a = handLineEndAngle(x1, y1, x2, y2, bow, seed);
+  const mx = (x1 + x2) / 2 - (y2 - y1) * bow;
+  const my = (y1 + y2) / 2 + (x2 - x1) * bow;
+  const d = `M${x1},${y1} Q${mx},${my} ${x2},${y2}`;
+  const a = (Math.atan2(y2 - my, x2 - mx) * 180) / Math.PI;
   const head = ramp(p, 0.85, 1);
   return (
     <g>
       <DrawPath d={d} p={ease.inOut(Math.min(1, p / 0.9))} color={color} width={width} />
-      {head > 0 && (
-        <path d="M-22,-12 L0,0 L-22,12" transform={`translate(${x2},${y2}) rotate(${a}) scale(${head})`} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" strokeLinejoin="round" />
-      )}
+      {head > 0 && <path d="M-16,-9 L0,0 L-16,9" transform={`translate(${x2},${y2}) rotate(${a}) scale(${head})`} fill="none" stroke={color} strokeWidth={width} strokeLinecap="round" strokeLinejoin="round" />}
     </g>
   );
 };
 
-export const HandUnder: React.FC<{ x1: number; x2: number; y: number; p: number; color?: string; width?: number; seed?: string }> = ({ x1, x2, y, p, color = MARKER_RED, width = 6, seed = "u" }) => (
-  <DrawPath d={handLine(x1, y, x2, y - 4, 0.03, seed)} p={ease.out(Math.min(1, p))} color={color} width={width} />
+export const HandUnder: React.FC<{ x1: number; x2: number; y: number; p: number; color?: string; width?: number; seed?: string }> = ({ x1, x2, y, p, color = MARKER_RED, width = 5 }) => (
+  <DrawPath d={`M${x1},${y} L${x2},${y}`} p={ease.out(Math.min(1, p))} color={color} width={width} cap="butt" />
 );
 
-/** A handwritten note that writes itself on, left to right. */
+/** A caption in the series' condensed type: wipes on left to right, rises slightly. */
 export const HandNote: React.FC<{ x: number; y: number; p: number; children: React.ReactNode; size?: number; color?: string; rot?: number; anchor?: "left" | "center" | "right" }> = ({
   x,
   y,
@@ -89,10 +92,10 @@ export const HandNote: React.FC<{ x: number; y: number; p: number; children: Rea
   children,
   size = 54,
   color = MARKER,
-  rot = -3,
   anchor = "left",
 }) => {
   if (p <= 0) return null;
+  const e = ease.out(Math.min(1, p));
   const tx = anchor === "left" ? "0" : anchor === "center" ? "-50%" : "-100%";
   return (
     <div
@@ -100,14 +103,16 @@ export const HandNote: React.FC<{ x: number; y: number; p: number; children: Rea
         position: "absolute",
         left: x,
         top: y,
-        transform: `translate(${tx}, -50%) rotate(${rot}deg)`,
-        fontFamily: F.hand,
-        fontSize: size,
+        transform: `translate(${tx}, calc(-50% + ${(1 - e) * 14}px))`,
+        fontFamily: F.tape,
+        fontSize: Math.round(size * 0.62),
         lineHeight: 1.1,
+        letterSpacing: "0.08em",
+        textTransform: "uppercase",
         color,
         whiteSpace: "nowrap",
-        clipPath: `inset(-20% ${(1 - ease.inOut(Math.min(1, p))) * 100}% -20% -5%)`,
-        textShadow: "0 2px 3px rgba(0,0,0,0.75), 0 0 14px rgba(0,0,0,0.55)",
+        clipPath: `inset(-30% ${(1 - ease.inOut(Math.min(1, p))) * 100}% -30% -2%)`,
+        textShadow: "0 1px 2px rgba(0,0,0,0.85), 0 0 14px rgba(0,0,0,0.6)",
       }}
     >
       {children}

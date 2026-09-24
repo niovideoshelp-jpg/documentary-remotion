@@ -2,11 +2,13 @@ import React from "react";
 import { AbsoluteFill, Img, staticFile } from "remotion";
 import { Camera, Layer } from "../components/Camera";
 import { PaperGround, PrintTexture } from "../components/Paper";
-import { At, Label, Rise, Tape } from "../components/Type";
+import { At, Rise, Tape } from "../components/Type";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { KeyTitle } from "../components/AnimeText";
 import { HandArrow, HandCircle, HandNote, HandUnder, Ink, MARKER, MARKER_RED, PhotoStage } from "../components/Annot";
 import { PartShell, coverPt, type SceneDef } from "../components/Shell";
+import { DrawIcon, IconCard } from "../components/Icons";
+import { Exploded, type Part } from "../components/Exploded";
 import { WorldMap, viewAt } from "../map/WorldMap";
 import { PLACES, project } from "../map/projection";
 import type { Cue } from "../Sound";
@@ -31,15 +33,15 @@ const T01: React.FC = () => {
   const [rx, ry] = P(0.25, 0.535);
   const [ax, ay] = P(0.55, 0.52);
   const list = [
-    { at: 16.8, text: "AESA radar" },
-    { at: 18.4, text: "Meteor" },
-    { at: 19.2, text: "SPECTRA" },
-    { at: 20.4, text: "broad range of integrated weapons" },
-  ];
+    { at: 16.8, text: "AESA radar", icon: "aesa" },
+    { at: 18.4, text: "Meteor", icon: "missile" },
+    { at: 19.2, text: "SPECTRA", icon: "shield" },
+    { at: 20.4, text: "Integrated weapons", icon: "bomb" },
+  ] as const;
   const listOn = ramp(t, 13.4, 14.0);
   return (
     <AbsoluteFill>
-      <PhotoStage src="photos/rafale-landing.jpg" t={t} t0={0} t1={25.1} pos="58% 58%" z0={1.0} z1={1.1} dim={0.12 + listOn * 0.25}>
+      <PhotoStage src="photos/rafale-landing.jpg" t={t} t0={0} t1={25.1} pos="58% 58%" z0={1.0} z1={1.1} dim={0.12 + listOn * 0.4}>
         <HandNote x={120} y={170} p={ramp(t, 0.6, 1.8) * (1 - listOn)} size={52} color="#e8e1d2">
           within the limits of this comparison
         </HandNote>
@@ -57,12 +59,10 @@ const T01: React.FC = () => {
         <HandNote x={ax - 200} y={ay + 330} p={ramp(t, 10.7, 11.9) * (1 - listOn)} size={48}>
           not only for the aircraft itself
         </HandNote>
-        {list.map((k, i) => (
-          <HandNote key={k.text} x={1080} y={280 + i * 110} p={ramp(t, k.at, k.at + 0.8)} size={i === 3 ? 44 : 62} rot={-2 + (i % 2) * 2}>
-            ✓ {k.text}
-          </HandNote>
-        ))}
       </PhotoStage>
+      {list.map((k, i) => (
+        <IconCard key={k.text} name={k.icon} x={1180 + (i % 2) * 340} y={330 + Math.floor(i / 2) * 340} w={310} h={310} p={ramp(t, k.at - 0.25, k.at + 0.9)} label={k.text} />
+      ))}
       <At x={W / 2} y={H - 120}>
         <div style={{ opacity: listOn }}>
           <KeyTitle text="Rafale F3R" t={t} at={13.7} size={96} neon="white" out={22.3} />
@@ -143,16 +143,24 @@ const SITES = [
   { name: "Turin", lon: 7.65, lat: 45.19, part: "left wing", at: 63.3, dx: 40, dy: 50 },
   { name: "Getafe", lon: -3.72, lat: 40.3, part: "right wing", at: 63.8, dx: 40, dy: -80 },
 ];
+// Typhoon top view, nose left: port (left) wing is the lower half of the drawing
+const WORKSHARE: Part[] = [
+  { key: "front", poly: [[0, 0], [0.36, 0], [0.36, 1], [0, 1]], dx: -150, dy: 0, tint: "#8fb3d9", label: "United Kingdom", sub: "front fuselage · Warton", ly: -40, lx: -40, at: 85.6 },
+  { key: "centre", poly: [[0.36, 0.41], [0.72, 0.41], [0.72, 0.59], [0.36, 0.59]], dx: 0, dy: 0, tint: "#e0b04a", label: "Germany", sub: "centre fuselage · Manching", ly: 0, at: 85.85 },
+  { key: "right", poly: [[0.36, 0], [1, 0], [1, 0.41], [0.36, 0.41]], dx: 50, dy: -110, tint: "#e0624e", label: "Spain", sub: "right wing · Getafe", ly: -20, lx: 60, at: 86.1 },
+  { key: "left", poly: [[0.36, 0.59], [1, 0.59], [1, 1], [0.36, 1]], dx: 50, dy: 110, tint: "#7fbf8a", label: "Italy", sub: "left wing · Turin", ly: 20, lx: 60, at: 86.35 },
+  { key: "rear", poly: [[0.72, 0.41], [1, 0.41], [1, 0.59], [0.72, 0.59]], dx: 130, dy: 0 },
+];
 const T03: React.FC = () => {
   const t = useT();
   const view = viewAt(keys(t, [[51.8, 4], [91.8, 4.5]], ease.inOut), keys(t, [[51.8, 47.5], [91.8, 47.5]], ease.inOut), keys(t, [[51.8, 0.8], [62, 0.85], [91.8, 0.88]], ease.inOut));
-  const parts = ramp(t, 84.4, 85.0);
+  const board = ramp(t, 77.6, 78.2, ease.inOut);
   const tapes = [
-    { at: 66.9, text: "factories" },
-    { at: 67.9, text: "suppliers" },
-    { at: 68.8, text: "technical expertise" },
-    { at: 70.2, text: "thousands of jobs" },
-  ];
+    { at: 66.9, text: "Factories", icon: "factory" },
+    { at: 67.9, text: "Suppliers", icon: "gear" },
+    { at: 68.8, text: "Expertise", icon: "chip" },
+    { at: 70.2, text: "Jobs", icon: "people" },
+  ] as const;
   return (
     <BlotReveal t={t} start={51.8} dur={0.8} cx={W / 2} cy={H / 2}>
       <WorldMap
@@ -171,15 +179,12 @@ const T03: React.FC = () => {
       <At x={W / 2} y={110}>
         <KeyTitle text="Production shared" t={t} at={62.0} size={86} />
       </At>
-      <Ink>
+      <svg width={W} height={H} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
         {SITES.map((s) => {
           const [x, y] = toScreen(s.lon, s.lat, view);
-          const p = ramp(t, s.at, s.at + 0.5);
-          // a small hand-drawn factory: saw-tooth roof and a chimney
-          const d = `M${x - 24},${y + 14} L${x - 24},${y - 6} L${x - 12},${y - 16} L${x - 12},${y - 6} L${x},${y - 16} L${x},${y - 6} L${x + 12},${y - 16} L${x + 12},${y + 14} Z M${x + 16},${y + 14} L${x + 16},${y - 26} L${x + 24},${y - 26} L${x + 24},${y + 14}`;
-          return <path key={s.name} d={d} fill="none" stroke={MARKER} strokeWidth={3.5} strokeLinejoin="round" pathLength={1} strokeDasharray={`${ease.out(p)} 2`} />;
+          return <DrawIcon key={s.name} name="factory" x={x} y={y - 10} size={64} p={ramp(t, s.at, s.at + 0.8)} />;
         })}
-      </Ink>
+      </svg>
       {SITES.map((s) => {
         const [x, y] = toScreen(s.lon, s.lat, view);
         return (
@@ -187,31 +192,34 @@ const T03: React.FC = () => {
             <HandNote x={x + s.dx} y={y + s.dy} p={ramp(t, s.at + 0.2, s.at + 0.9)} size={46}>
               {s.name}
             </HandNote>
-            <HandNote x={x + s.dx} y={y + s.dy + 52} p={ramp(t, 85.6 + SITES.indexOf(s) * 0.25, 86.3 + SITES.indexOf(s) * 0.25) * parts} size={44} color="#ffd3c8">
-              {s.part}
-            </HandNote>
           </React.Fragment>
         );
       })}
-      <At x={1500} y={880}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "flex-start", opacity: 1 - parts }}>
-          {tapes.map((k, i) => (
-            <Tape key={k.text} p={ramp(t, k.at, k.at + 0.35)} size={32} dark={i % 2 === 1}>
-              {k.text}
-            </Tape>
-          ))}
-        </div>
-      </At>
-      <At x={1500} y={930}>
-        <Rise p={ramp(t, 83.4, 83.9) * (1 - parts)}>
-          <Label size={30} color="#ffb4a6" weight={700} style={{ letterSpacing: "0.2em" }}>
-            not every part everywhere
-          </Label>
-        </Rise>
-      </At>
-      <HandNote x={1360} y={960} p={ramp(t, 88.3, 89.6)} size={46}>
-        a larger industrial structure
-      </HandNote>
+      <AbsoluteFill style={{ opacity: 1 - board }}>
+        {tapes.map((k, i) => (
+          <IconCard key={k.text} name={k.icon} x={1180 + (i % 2) * 280} y={560 + Math.floor(i / 2) * 280} w={250} h={250} p={ramp(t, k.at - 0.25, k.at + 0.8)} label={k.text} />
+        ))}
+      </AbsoluteFill>
+      {board > 0 && (
+        <AbsoluteFill style={{ opacity: board }}>
+          <PaperGround dark>
+            <Exploded t={t} view="typhoonTop" x={W / 2} y={560} width={1060} draw={ramp(t, 77.9, 80.4, ease.linear)} explode={ramp(t, 84.4, 85.8)} parts={WORKSHARE} />
+            <At x={W / 2} y={110}>
+              <KeyTitle text="Each partner, specific parts" t={t} at={84.5} size={76} />
+            </At>
+            <At x={W / 2} y={110}>
+              <KeyTitle text="Not every part everywhere" t={t} at={79.0} size={76} out={84.2} />
+            </At>
+            <At x={W / 2} y={1000}>
+              <Rise p={ramp(t, 88.3, 88.8)}>
+                <Tape p={1} size={32} dark>
+                  A larger European industrial structure
+                </Tape>
+              </Rise>
+            </At>
+          </PaperGround>
+        </AbsoluteFill>
+      )}
     </BlotReveal>
   );
 };
@@ -311,7 +319,7 @@ const T06: React.FC = () => {
       </HandNote>
       {ticks.map((k, i) => (
         <HandNote key={k.text} x={W / 2 + 120} y={320 + i * 90} p={ramp(t, k.at, k.at + 0.8)} size={48}>
-          ✓ {k.text}
+          {k.text}
         </HandNote>
       ))}
       <At x={W / 4} y={H - 110}>

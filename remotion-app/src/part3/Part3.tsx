@@ -9,7 +9,8 @@ import { Blueprint } from "../components/Blueprint";
 import { DrawPath } from "../components/Draw";
 import { KeyTitle } from "../components/AnimeText";
 import { HandArrow, HandCircle, HandNote, HandUnder, Ink, MARKER, MARKER_RED, PhotoStage } from "../components/Annot";
-import { PartShell, coverPt, type SceneDef } from "../components/Shell";
+import { Arrow, DrawIcon, IconCard } from "../components/Icons";
+import { PartShell, type SceneDef } from "../components/Shell";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
 import { project } from "../map/projection";
 import type { Cue } from "../Sound";
@@ -27,15 +28,6 @@ const toScreen = (lon: number, lat: number, v: { cx: number; cy: number; z: numb
   const [x, y] = project(lon, lat);
   return [(x - v.cx) * v.z + W / 2, (y - v.cy) * v.z + H / 2];
 };
-
-// hand sketches (marker style)
-const DRONE = "M-70,0 L70,0 M-8,-80 L-8,80 M-70,0 L-92,-26 M-70,0 L-92,26 M70,0 L84,0";
-const FIGHTER = "M95,0 L25,-12 L-15,-78 L-38,-78 L-28,-14 L-70,-10 L-82,-34 L-94,-34 L-88,0 L-94,34 L-82,34 L-70,10 L-28,14 L-38,78 L-15,78 L25,12 Z";
-const Sketch: React.FC<{ d: string; x: number; y: number; s?: number; p: number; color?: string; rot?: number }> = ({ d, x, y, s = 1, p, color = MARKER, rot = 0 }) => (
-  <g transform={`translate(${x},${y}) rotate(${rot}) scale(${s})`}>
-    <DrawPath d={d} p={p} color={color} width={4.5 / s} />
-  </g>
-);
 
 /* R01 0–4.7 the Rafale in combat since 2007 */
 const R01: React.FC = () => {
@@ -156,8 +148,6 @@ const R04: React.FC = () => {
 const R05: React.FC = () => {
   const t = useT();
   const shot = ramp(t, 41.1, 41.7, ease.inOut);
-  // asraam-launch.jpg is 1920×1440; pos 50% 55%
-  const [mx, my] = coverPt(0.25, 0.668, 1920, 1440, 0.5, 0.55);
   const quote = ramp(t, 49.6, 50.2);
   return (
     <BlotReveal t={t} start={35.1} dur={0.8} cx={W / 2} cy={H / 2}>
@@ -171,26 +161,76 @@ const R05: React.FC = () => {
       </PhotoStage>
       {shot > 0 && (
         <AbsoluteFill style={{ opacity: shot }}>
-          <PhotoStage src="src-photos/asraam-launch.jpg" t={t} t0={41.1} t1={57.6} pos="50% 55%" z0={1.02} z1={1.1} dim={0.12 + quote * 0.3}>
-            <HandNote x={120} y={170} p={ramp(t, 41.6, 42.4)} size={70} color="#ffd3c8">
-              December 2021
-            </HandNote>
-            <Ink>
-              <HandCircle cx={mx} cy={my} rx={175} ry={46} p={ramp(t, 48.3, 49.0)} seed="asraam" />
-              {/* the target, sketched ahead of the missile */}
-              <Sketch d={DRONE} x={150} y={600} s={0.6} p={ramp(t, 46.0, 46.8)} color="#ffd3c8" />
-              <HandArrow x1={mx - 190} y1={my - 20} x2={230} y2={640} p={ramp(t, 48.6, 49.3)} seed="shot" color={MARKER_RED} bow={-0.15} />
-            </Ink>
-            <HandNote x={90} y={500} p={ramp(t, 46.2, 46.9)} size={46} color="#ffd3c8">
-              hostile drone
-            </HandNote>
-            <HandNote x={620} y={250} p={ramp(t, 47.1, 47.7)} size={52}>
-              over Syria
-            </HandNote>
-            <HandNote x={mx - 60} y={my + 90} p={ramp(t, 48.5, 49.2) * (1 - quote)} size={60} color="#ffd3c8">
-              ASRAAM
-            </HandNote>
-          </PhotoStage>
+          <PaperGround dark>
+            <Camera s={keys(t, [[41.1, 1.08], [48.2, 1.0], [49.4, 1.04], [57.6, 1.0]], ease.soft)}>
+              <Layer>
+                {(() => {
+                  // December 2021 over Syria: RAF Typhoon, ASRAAM, hostile drone
+                  const A = [1170, 600];
+                  const B = [420, 470];
+                  const Cc = [820, 720];
+                  const q = ramp(t, 48.2, 49.2, ease.inOut);
+                  const bez = (u: number) => [
+                    (1 - u) * (1 - u) * A[0] + 2 * (1 - u) * u * Cc[0] + u * u * B[0],
+                    (1 - u) * (1 - u) * A[1] + 2 * (1 - u) * u * Cc[1] + u * u * B[1],
+                  ];
+                  const [mx2, my2] = bez(q);
+                  const [nx2, ny2] = bez(Math.min(1, q + 0.02));
+                  const ang = (Math.atan2(ny2 - my2, nx2 - mx2) * 180) / Math.PI;
+                  const hit = ramp(t, 49.15, 49.9);
+                  const droneOut = ramp(t, 49.3, 50.2);
+                  return (
+                    <>
+                      <Blueprint view="typhoonTop" x={1400} y={540} width={520} p={ramp(t, 41.3, 43.0, ease.linear)} lineWidth={1.8} label="RAF Typhoon" />
+                      <svg width={W} height={H} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
+                        <g opacity={1 - droneOut} transform={`translate(0,${droneOut * 60}) rotate(${droneOut * 25} ${B[0]} ${B[1]})`}>
+                          <DrawIcon name="drone" x={B[0]} y={B[1]} size={170} p={ramp(t, 45.9, 46.8)} color="#ffd3c8" />
+                        </g>
+                        <DrawPath d={`M${A[0]},${A[1]} Q${Cc[0]},${Cc[1]} ${B[0]},${B[1]}`} p={q} color="rgba(235,227,210,0.7)" width={3} dash={12} />
+                        {q > 0 && q < 1 && (
+                          <g transform={`translate(${mx2},${my2}) rotate(${ang})`}>
+                            <DrawIcon name="missile" x={0} y={0} size={90} p={1} />
+                          </g>
+                        )}
+                        {hit > 0 &&
+                          Array.from({ length: 10 }, (_, i) => {
+                            const a = (i / 10) * Math.PI * 2;
+                            const r0 = 20 + hit * 40;
+                            const r1 = 40 + hit * 110;
+                            return <line key={i} x1={B[0] + Math.cos(a) * r0} y1={B[1] + Math.sin(a) * r0} x2={B[0] + Math.cos(a) * r1} y2={B[1] + Math.sin(a) * r1} stroke="#ffb27a" strokeWidth={5} strokeLinecap="round" opacity={1 - hit} />;
+                          })}
+                        {hit > 0 && <circle cx={B[0]} cy={B[1]} r={30 + hit * 120} fill="none" stroke="#ffd3c8" strokeWidth={3} opacity={1 - hit} />}
+                      </svg>
+                      <At x={B[0]} y={B[1] + 130}>
+                        <div style={{ opacity: ramp(t, 46.3, 46.8) * (1 - droneOut) }}>
+                          <Label size={30} color="#ffd3c8" weight={700} style={{ letterSpacing: "0.26em" }}>
+                            Hostile drone
+                          </Label>
+                        </div>
+                      </At>
+                      <At x={820} y={770}>
+                        <Rise p={ramp(t, 48.5, 49.0) * (1 - quote)}>
+                          <Tape p={1} size={34} dark>
+                            ASRAAM
+                          </Tape>
+                        </Rise>
+                      </At>
+                    </>
+                  );
+                })()}
+                <At x={W / 2} y={130}>
+                  <KeyTitle text="December 2021" t={t} at={41.7} size={96} neon="white" out={52.2} />
+                </At>
+                <At x={W / 2} y={230}>
+                  <Rise p={ramp(t, 47.2, 47.7) * (1 - quote)}>
+                    <Tape p={1} size={32}>
+                      Over Syria
+                    </Tape>
+                  </Rise>
+                </At>
+              </Layer>
+            </Camera>
+          </PaperGround>
           <AbsoluteFill style={{ opacity: quote }}>
             <At x={W / 2} y={H - 220}>
               <KeyTitle text="First operational air-to-air engagement" t={t} at={52.7} size={70} neon="white" />
@@ -217,43 +257,56 @@ const R06: React.FC = () => {
       <PaperGround dark>
         <Camera s={keys(t, [[57.3, 1.06], [66.5, 1.0], [74.6, 1.03]], ease.soft)}>
           <Layer>
-            <At x={W / 2} y={140}>
-              <KeyTitle text="Real-world use" t={t} at={58.0} size={96} out={65.4} />
-            </At>
-            <HandNote x={560} y={330} p={ramp(t, 61.2, 61.8)} size={58}>
-              ✓ the fighter
-            </HandNote>
-            <HandNote x={1060} y={330} p={ramp(t, 62.1, 62.7)} size={58}>
-              ✓ its weapons system
-            </HandNote>
-            <At x={W / 2} y={140}>
-              <KeyTitle text="Context" t={t} at={65.5} size={96} neon="white" />
-            </At>
-            {/* left: a drone; right: two modern fighters */}
-            <Ink>
-              <Sketch d={DRONE} x={720} y={620} s={0.8} p={ramp(t, 67.6, 68.3)} color="#ffd3c8" rot={180} />
-              <Sketch d={FIGHTER} x={1640} y={620} s={1.3} p={ramp(t, 70.0, 70.9)} color="#ffd3c8" rot={180} />
-              <HandArrow x1={1320} y1={760} x2={1500} y2={760} p={ramp(t, 71.9, 72.6)} seed="bal1" bow={0.05} />
-              <HandArrow x1={1500} y1={800} x2={1320} y2={800} p={ramp(t, 72.2, 72.9)} seed="bal2" bow={0.05} />
-            </Ink>
-            <Blueprint view="typhoonTop" x={380} y={620} width={330} p={ramp(t, 66.8, 67.9, ease.linear)} lineWidth={1.6} />
-            <AbsoluteFill style={{ opacity: ramp(t, 69.3, 69.7) }}>
-              <Blueprint view="typhoonTop" x={1200} y={620} width={330} p={ramp(t, 69.3, 70.4, ease.linear)} lineWidth={1.6} />
+            <AbsoluteFill style={{ opacity: 1 - ramp(t, 65.2, 65.7) }}>
+              <At x={W / 2} y={140}>
+                <KeyTitle text="Real-world use" t={t} at={58.0} size={96} />
+              </At>
+              <IconCard name="fighter" x={720} y={560} w={380} h={380} p={ramp(t, 60.9, 62.0)} label="The fighter" />
+              <IconCard name="missile" x={1200} y={560} w={380} h={380} p={ramp(t, 61.9, 63.0)} label="Its weapons system" />
             </AbsoluteFill>
-            <HandNote x={720} y={790} p={ramp(t, 67.9, 68.5)} size={46} color="#ffd3c8" anchor="center">
-              drone
-            </HandNote>
-            <HandNote x={1640} y={830} p={ramp(t, 70.5, 71.2)} size={46} color="#ffd3c8" anchor="center">
-              modern fighter
-            </HandNote>
-            <HandNote x={1420} y={900} p={ramp(t, 72.0, 72.8)} size={50} anchor="center">
-              balanced
-            </HandNote>
-            <Ink>
-              <DrawPath d="M905,595 L1015,595" p={ramp(t, 68.3, 68.5)} color={MARKER_RED} width={12} />
-              <DrawPath d="M905,645 L1015,645" p={ramp(t, 68.45, 68.65)} color={MARKER_RED} width={12} />
-              <DrawPath d="M1000,555 L920,690" p={ramp(t, 68.6, 68.9)} color={MARKER_RED} width={12} />
-            </Ink>
+            <AbsoluteFill style={{ opacity: ramp(t, 65.4, 65.9) }}>
+              <At x={W / 2} y={140}>
+                <KeyTitle text="Context" t={t} at={65.5} size={96} neon="white" />
+              </At>
+              <Blueprint view="typhoonTop" x={330} y={600} width={330} p={ramp(t, 66.8, 67.9, ease.linear)} lineWidth={1.6} />
+              <svg width={W} height={H} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
+                <g transform="translate(700,600) rotate(180) translate(-700,-600)">
+                  <DrawIcon name="drone" x={700} y={600} size={170} p={ramp(t, 67.6, 68.3)} color="#ffd3c8" />
+                </g>
+                <DrawPath d="M905,575 L1015,575" p={ramp(t, 68.3, 68.5)} color={C.red} width={12} />
+                <DrawPath d="M905,625 L1015,625" p={ramp(t, 68.45, 68.65)} color={C.red} width={12} />
+                <DrawPath d="M1000,535 L920,670" p={ramp(t, 68.6, 68.9)} color={C.red} width={12} />
+                <g transform="translate(1680,600) rotate(180) translate(-1680,-600)">
+                  <DrawIcon name="fighter" x={1680} y={600} size={260} p={ramp(t, 70.0, 70.9)} color="#ffd3c8" />
+                </g>
+                <Arrow x1={1370} y1={760} x2={1530} y2={760} p={ramp(t, 71.9, 72.5)} />
+                <Arrow x1={1530} y1={800} x2={1370} y2={800} p={ramp(t, 72.2, 72.8)} />
+              </svg>
+              <AbsoluteFill style={{ opacity: ramp(t, 69.3, 69.7) }}>
+                <Blueprint view="typhoonTop" x={1250} y={600} width={330} p={ramp(t, 69.3, 70.4, ease.linear)} lineWidth={1.6} />
+              </AbsoluteFill>
+              <At x={700} y={760}>
+                <Rise p={ramp(t, 67.9, 68.4)}>
+                  <Label size={30} color="#ffd3c8" weight={700} style={{ letterSpacing: "0.26em" }}>
+                    Drone
+                  </Label>
+                </Rise>
+              </At>
+              <At x={1680} y={760}>
+                <Rise p={ramp(t, 70.5, 71.0)}>
+                  <Label size={30} color="#ffd3c8" weight={700} style={{ letterSpacing: "0.26em" }}>
+                    Modern fighter
+                  </Label>
+                </Rise>
+              </At>
+              <At x={1450} y={880}>
+                <Rise p={ramp(t, 72.0, 72.5)}>
+                  <Tape p={1} size={34} dark>
+                    Balanced engagement
+                  </Tape>
+                </Rise>
+              </At>
+            </AbsoluteFill>
           </Layer>
         </Camera>
       </PaperGround>
@@ -304,17 +357,6 @@ const R07: React.FC = () => {
 };
 
 /* R08 88.5–109.9 both have fought; but experience isn't a tally of countries or weapons. */
-const Tally: React.FC<{ x: number; y: number; n: number; p: number }> = ({ x, y, n, p }) => (
-  <g>
-    {Array.from({ length: n }, (_, i) => {
-      const g = Math.floor(i / 5);
-      const k = i % 5;
-      const px = x + g * 110 + k * 18;
-      const d = k === 4 ? `M${px - 78},${y + 44} L${px + 6},${y - 44}` : `M${px},${y - 40} L${px + 3},${y + 40}`;
-      return <DrawPath key={i} d={d} p={ramp(p * n, i, i + 1)} color={MARKER} width={5} />;
-    })}
-  </g>
-);
 const R08: React.FC = () => {
   const t = useT();
   const shift = ramp(t, 101.8, 102.5, ease.inOut);
@@ -326,10 +368,14 @@ const R08: React.FC = () => {
             <AbsoluteFill style={{ opacity: 1 - shift * 0.8 }}>
               <Photo src="src-photos/rafale-mali.jpg" x={560} y={330} w={620} h={380} rot={-2} reveal={ramp(t, 88.8, 89.4)} revealFrom="left" seed="r8a" zoom={1.2} objectPosition="30% 50%" />
               <Photo src="src-photos/typhoon-libya.jpg" x={1360} y={330} w={620} h={380} rot={2} reveal={ramp(t, 89.1, 89.7)} revealFrom="right" seed="r8b" zoom={1.25} objectPosition="62% 50%" />
-              <Ink>
-                <Tally x={330} y={720} n={13} p={ramp(t, 98.0, 99.8, ease.linear)} />
-                <Tally x={1130} y={720} n={9} p={ramp(t, 100.5, 101.6, ease.linear)} />
-              </Ink>
+              <svg width={W} height={H} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
+                {Array.from({ length: 6 }, (_, k) => (
+                  <DrawIcon key={"m" + k} name="map" x={330 + k * 90} y={730} size={72} p={ramp(t, 98.0 + k * 0.25, 98.6 + k * 0.25)} />
+                ))}
+                {Array.from({ length: 7 }, (_, k) => (
+                  <DrawIcon key={"b" + k} name="bomb" x={1130 + k * 80} y={730} size={86} p={ramp(t, 100.4 + k * 0.14, 101.0 + k * 0.14)} />
+                ))}
+              </svg>
               <HandNote x={330} y={620} p={ramp(t, 99.0, 99.7)} size={42} color="#ffd3c8">
                 countries
               </HandNote>
@@ -338,14 +384,12 @@ const R08: React.FC = () => {
               </HandNote>
               <Strike x1={300} x2={1640} y={720} p={ramp(t, 101.6, 102.1)} width={12} />
             </AbsoluteFill>
-            {[
-              { at: 103.6, text: "the threat environment" },
-              { at: 104.8, text: "the mission" },
-              { at: 106.7, text: "the conditions" },
-            ].map((k, i) => (
-              <HandNote key={k.text} x={W / 2} y={380 + i * 160} p={ramp(t, k.at, k.at + 0.8) * shift} size={80} anchor="center" rot={-2 + i * 1.5}>
-                {k.text}
-              </HandNote>
+            {([
+              { at: 103.6, text: "Threat environment", icon: "radar" },
+              { at: 104.8, text: "The mission", icon: "target" },
+              { at: 106.7, text: "The conditions", icon: "cloud" },
+            ] as const).map((k, i) => (
+              <IconCard key={k.text} name={k.icon} x={560 + i * 400} y={580} w={360} h={360} p={shift > 0 ? ramp(t, k.at - 0.2, k.at + 0.9) : 0} label={k.text} />
             ))}
             <At x={W / 2} y={120}>
               <KeyTitle text="Combat experience" t={t} at={95.7} size={80} />
@@ -427,13 +471,6 @@ const R10: React.FC = () => {
     { at: 147.7, text: "Propaganda", x: 1150, y: 500, r: 4 },
     { at: 148.7, text: "Conflicting accounts", x: 900, y: 640, r: -2 },
   ];
-  const reasons = [
-    { at: 157.2, text: "pilot experience" },
-    { at: 158.7, text: "mission planning" },
-    { at: 159.8, text: "terrain" },
-    { at: 160.7, text: "tactics" },
-    { at: 161.3, text: "intelligence" },
-  ];
   const end = ramp(t, 163.5, 164.2);
   return (
     <TearReveal t={t} start={144.2} dur={0.7} dir="ltr">
@@ -457,19 +494,25 @@ const R10: React.FC = () => {
         </AbsoluteFill>
         {causes > 0 && (
           <AbsoluteFill style={{ opacity: causes }}>
-            <PhotoStage src="src-photos/rafale-vapor.jpg" t={t} t0={151.5} t1={164.2} pos="50% 50%" z0={1.1} z1={1.2} dim={0.45}>
-              <HandNote x={260} y={220} p={ramp(t, 153.8, 154.6)} size={70} color="#ffd3c8">
-                why?
-              </HandNote>
-              {reasons.map((r, i) => (
-                <HandNote key={r.text} x={1180} y={300 + i * 110} p={ramp(t, r.at, r.at + 0.6)} size={60} rot={-2 + (i % 2) * 2}>
-                  {r.text}
-                </HandNote>
-              ))}
-              <HandNote x={1180} y={300 + 5 * 110} p={ramp(t, 162.4, 163.2)} size={46} color="#e8e1d2">
-                …or other factors
-              </HandNote>
-            </PhotoStage>
+            <At x={W / 2} y={170}>
+              <KeyTitle text="Why was it lost?" t={t} at={153.6} size={96} neon="white" />
+            </At>
+            {([
+              { at: 157.2, text: "Pilot experience", icon: "helmet" },
+              { at: 158.7, text: "Mission planning", icon: "map" },
+              { at: 159.8, text: "Terrain", icon: "mountains" },
+              { at: 160.7, text: "Tactics", icon: "tactics" },
+              { at: 161.3, text: "Intelligence", icon: "eye" },
+            ] as const).map((r, i) => (
+              <IconCard key={r.text} name={r.icon} x={260 + i * 350} y={560} w={310} h={330} p={ramp(t, r.at - 0.2, r.at + 0.9)} label={r.text} />
+            ))}
+            <At x={W / 2} y={860}>
+              <Rise p={ramp(t, 162.4, 162.9)}>
+                <Tape p={1} size={32} dark>
+                  …or other factors
+                </Tape>
+              </Rise>
+            </At>
           </AbsoluteFill>
         )}
         <AbsoluteFill style={{ background: C.night, opacity: end }} />

@@ -6,8 +6,10 @@ import { At, Label, Rise, Tape } from "../components/Type";
 import { BlotReveal, TearReveal } from "../components/Transitions";
 import { DrawPath } from "../components/Draw";
 import { KeyTitle, springIn } from "../components/AnimeText";
-import { HandArrow, HandCircle, HandNote, HandUnder, Ink, MARKER, MARKER_RED, PhotoStage } from "../components/Annot";
-import { PartShell, coverPt, type SceneDef } from "../components/Shell";
+import { HandArrow, HandCircle, HandNote, HandUnder, Ink, MARKER, MARKER_RED } from "../components/Annot";
+import { PartShell, type SceneDef } from "../components/Shell";
+import { IconCard } from "../components/Icons";
+import { Exploded, type Part } from "../components/Exploded";
 import { WorldMap, viewAt, type Highlight } from "../map/WorldMap";
 import { PLACES, project } from "../map/projection";
 import type { Cue } from "../Sound";
@@ -185,13 +187,13 @@ const S04: React.FC = () => {
   const pack = ramp(t, 75.5, 76.1);
   const stamp = ramp(t, 84.4, 84.8);
   const list = [
-    { at: 78.3, text: "training" },
-    { at: 79.1, text: "spare parts" },
-    { at: 80.1, text: "infrastructure" },
-    { at: 81.0, text: "support" },
-    { at: 81.7, text: "engines" },
-    { at: 82.2, text: "weapons" },
-  ];
+    { at: 78.3, text: "Training", icon: "wings" },
+    { at: 79.1, text: "Spare parts", icon: "gear" },
+    { at: 80.1, text: "Infrastructure", icon: "hangar" },
+    { at: 81.0, text: "Support", icon: "wrench" },
+    { at: 81.7, text: "Engines", icon: "turbine" },
+    { at: 82.2, text: "Weapons", icon: "missile" },
+  ] as const;
   return (
     <TearReveal t={t} start={52.7} dur={0.7} dir="rtl">
       <WorldMap
@@ -235,13 +237,7 @@ const S04: React.FC = () => {
             what each contract includes
           </HandNote>
           {list.map((k, i) => (
-            <At key={k.text} x={560 + (i % 3) * 400} y={460 + Math.floor(i / 3) * 150}>
-              <Rise p={ramp(t, k.at, k.at + 0.4)}>
-                <Tape p={1} size={40} dark={i % 2 === 1}>
-                  {k.text}
-                </Tape>
-              </Rise>
-            </At>
+            <IconCard key={k.text} name={k.icon} x={205 + i * 302} y={540} w={272} h={290} p={ramp(t, k.at - 0.25, k.at + 0.8)} label={k.text} />
           ))}
           <At x={W / 2} y={880}>
             <div style={{ transform: `rotate(-6deg) scale(${1.6 - ease.out(Math.min(1, stamp * 1.4)) * 0.6})`, opacity: Math.min(1, stamp * 3) * 0.95, border: `7px solid ${C.red}`, padding: "8px 30px 0", fontFamily: F.display, fontSize: 80, color: C.red, background: "rgba(20,20,20,0.45)", filter: "url(#ink)" }}>NOT COMPARABLE</div>
@@ -397,44 +393,31 @@ const S06: React.FC = () => {
 /* S07 143.3–160.7 neither is fully independent: Indian-built fuselage sections, but no control of engine, radar, software. */
 const S07: React.FC = () => {
   const t = useT();
-  // rafale-india-takeoff.jpg 3000×2000, pos 55% 45%
-  const P = (u: number, v: number) => coverPt(u, v, 3000, 2000, 0.55, 0.45);
-  const [fx, fy] = P(0.55, 0.45);
-  const [nx, ny] = P(0.745, 0.3);
-  const [ex, ey] = P(0.35, 0.63);
-  const [cx, cy] = P(0.625, 0.315);
+  const explode = ramp(t, 146.8, 148.4);
+  const parts: Part[] = [
+    { key: "nose", poly: [[0, 0.3], [0.145, 0.3], [0.145, 1], [0, 1]], dx: -130, dy: 0, tint: "#8fb3d9", label: "Radar", sub: "France", ly: -170, at: 156.9 },
+    { key: "front", poly: [[0.145, 0], [0.4, 0], [0.4, 1], [0.145, 1]], dx: -55, dy: 0, tint: "#e0b04a", at: 150.3 },
+    { key: "centre", poly: [[0.4, 0], [0.64, 0], [0.64, 1], [0.4, 1]], dx: 0, dy: 0, tint: "#e0b04a", label: "Fuselage sections", sub: "Made in India", ly: 230, at: 150.3 },
+    { key: "rear", poly: [[0.64, 0], [1, 0], [1, 1], [0.64, 1]], dx: 90, dy: 0, tint: "#e0b04a", at: 150.3 },
+  ];
+  const locks = ramp(t, 155.8, 156.3);
   return (
     <BlotReveal t={t} start={143.3} dur={0.8} cx={W / 2} cy={H / 2}>
-      <PhotoStage src="src-photos/rafale-india-takeoff.jpg" t={t} t0={143.3} t1={160.7} pos="55% 45%" z0={1.0} z1={1.06} dim={0.18}>
-        <Ink>
-          <HandCircle cx={fx} cy={fy} rx={230} ry={90} p={ramp(t, 150.2, 151.0)} seed="fus" color={MARKER} />
-          <HandCircle cx={ex} cy={ey} rx={120} ry={70} p={ramp(t, 155.9, 156.5)} seed="eng" />
-          <HandCircle cx={nx} cy={ny} rx={90} ry={60} p={ramp(t, 156.7, 157.3)} seed="rad" />
-          <HandArrow x1={cx + 200} y1={cy - 170} x2={cx + 20} y2={cy - 30} p={ramp(t, 157.5, 158.1)} seed="sw" color={MARKER_RED} />
-        </Ink>
-        <HandNote x={fx - 60} y={fy + 150} p={ramp(t, 150.4, 151.4)} size={54}>
-          fuselage sections · India
-        </HandNote>
-        <HandNote x={ex - 140} y={ey + 100} p={ramp(t, 156.0, 156.7)} size={52} color="#ffd3c8">
-          ✗ engine
-        </HandNote>
-        <HandNote x={nx + 40} y={ny - 90} p={ramp(t, 156.8, 157.5)} size={52} color="#ffd3c8">
-          ✗ radar
-        </HandNote>
-        <HandNote x={cx + 210} y={cy - 200} p={ramp(t, 157.6, 158.3)} size={52} color="#ffd3c8">
-          ✗ software
-        </HandNote>
-      </PhotoStage>
-      <At x={W / 2} y={H - 140}>
-        <KeyTitle text="No complete independence" t={t} at={143.8} size={86} neon="white" out={148.8} />
-      </At>
-      <At x={W / 2} y={H - 110}>
-        <Rise p={ramp(t, 158.6, 159.1)}>
-          <Tape p={1} size={34} dark>
-            ✗ the entire program
-          </Tape>
-        </Rise>
-      </At>
+      <PaperGround dark>
+        <Camera s={keys(t, [[143.3, 1.06], [148.4, 1.0], [160.7, 1.02]], ease.soft)}>
+          <Layer>
+            <At x={W / 2} y={120}>
+              <KeyTitle text="No complete independence" t={t} at={143.8} size={84} neon="white" />
+            </At>
+            <Exploded t={t} view="rafaleSide" x={W / 2} y={440} width={1180} draw={ramp(t, 143.8, 146.4, ease.linear)} explode={explode} parts={parts} />
+            <AbsoluteFill style={{ opacity: locks }}>
+              <IconCard name="turbine" x={640} y={840} w={250} h={250} p={ramp(t, 156.0, 156.9)} label="Engine" accent="#8fb3d9" />
+              <IconCard name="chip" x={960} y={840} w={250} h={250} p={ramp(t, 157.5, 158.4)} label="Software" accent="#8fb3d9" />
+              <IconCard name="padlock" x={1280} y={840} w={250} h={250} p={ramp(t, 158.6, 159.5)} label="The program" accent="#8fb3d9" />
+            </AbsoluteFill>
+          </Layer>
+        </Camera>
+      </PaperGround>
     </BlotReveal>
   );
 };

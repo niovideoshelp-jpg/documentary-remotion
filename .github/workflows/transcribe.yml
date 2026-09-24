@@ -21,7 +21,8 @@ jobs:
         env:
           MSG: ${{ github.event.head_commit.message }}
         run: |
-          FILE=$(echo "$MSG" | grep -oE "\[transcribe:[^]]+\]" | sed -E 's/\[transcribe:(.*)\]/\1/')
+          FILES=$(echo "$MSG" | grep -oE "\[transcribe:[^]]+\]" | sed -E 's/\[transcribe:(.*)\]/\1/')
+          for FILE in $FILES; do
           python - "$FILE" <<'PY'
           import json, sys
           from faster_whisper import WhisperModel
@@ -35,7 +36,8 @@ jobs:
           json.dump(out, open(f"/tmp/{stem}.json", "w"), indent=1)
           open(f"/tmp/{stem}.txt", "w").write("\n".join(f"{s['start']:.2f} - {s['end']:.2f}: {s['text'].strip()}" for s in out["segments"]))
           PY
+          done
           mkdir -p /tmp/pub && cp /tmp/*.json /tmp/*.txt /tmp/pub/
           cd /tmp/pub && git init -q -b transcripts && git add -A
-          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Transcript $FILE"
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Transcript $(echo $FILES)"
           git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" transcripts

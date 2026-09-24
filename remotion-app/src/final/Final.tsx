@@ -125,7 +125,7 @@ const T02: React.FC = () => {
             return <HandArrow key={k} x1={bx} y1={by} x2={x + (bx - x) * 0.12} y2={y + (by - y) * 0.12} p={ramp(t, 49.4 + i * 0.3, 50.2 + i * 0.3)} seed={"p" + k} color={MARKER_RED} bow={0.12} />;
           })}
         </Ink>
-        <HandNote x={bx + 40} y={by - 90} p={ramp(t, 48.2, 49.2)} size={50} color="#ffd3c8">
+        <HandNote x={bx + 50} y={by + 70} p={ramp(t, 48.2, 49.2)} size={50} color="#ffd3c8">
           one partner’s decision
         </HandNote>
         <At x={W / 2} y={110}>
@@ -141,11 +141,11 @@ const SITES = [
   { name: "Warton", lon: -2.88, lat: 53.74, part: "front fuselage", at: 62.3, dx: 40, dy: -60 },
   { name: "Manching", lon: 11.53, lat: 48.72, part: "centre fuselage", at: 62.8, dx: 40, dy: -50 },
   { name: "Turin", lon: 7.65, lat: 45.19, part: "left wing", at: 63.3, dx: 40, dy: 50 },
-  { name: "Getafe", lon: -3.72, lat: 40.3, part: "right wing", at: 63.8, dx: 40, dy: 40 },
+  { name: "Getafe", lon: -3.72, lat: 40.3, part: "right wing", at: 63.8, dx: 40, dy: -80 },
 ];
 const T03: React.FC = () => {
   const t = useT();
-  const view = viewAt(keys(t, [[51.8, 4], [91.8, 4.5]], ease.inOut), keys(t, [[51.8, 47], [91.8, 47]], ease.inOut), keys(t, [[51.8, 1.0], [62, 1.12], [91.8, 1.16]], ease.inOut));
+  const view = viewAt(keys(t, [[51.8, 4], [91.8, 4.5]], ease.inOut), keys(t, [[51.8, 47.5], [91.8, 47.5]], ease.inOut), keys(t, [[51.8, 0.8], [62, 0.85], [91.8, 0.88]], ease.inOut));
   const parts = ramp(t, 84.4, 85.0);
   const tapes = [
     { at: 66.9, text: "factories" },
@@ -179,7 +179,6 @@ const T03: React.FC = () => {
           const d = `M${x - 24},${y + 14} L${x - 24},${y - 6} L${x - 12},${y - 16} L${x - 12},${y - 6} L${x},${y - 16} L${x},${y - 6} L${x + 12},${y - 16} L${x + 12},${y + 14} Z M${x + 16},${y + 14} L${x + 16},${y - 26} L${x + 24},${y - 26} L${x + 24},${y + 14}`;
           return <path key={s.name} d={d} fill="none" stroke={MARKER} strokeWidth={3.5} strokeLinejoin="round" pathLength={1} strokeDasharray={`${ease.out(p)} 2`} />;
         })}
-        <HandCircle cx={900} cy={520} rx={560} ry={400} p={ramp(t, 74.1, 75.3)} seed="eu" color={MARKER} width={4} />
       </Ink>
       {SITES.map((s) => {
         const [x, y] = toScreen(s.lon, s.lat, view);
@@ -188,7 +187,7 @@ const T03: React.FC = () => {
             <HandNote x={x + s.dx} y={y + s.dy} p={ramp(t, s.at + 0.2, s.at + 0.9)} size={46}>
               {s.name}
             </HandNote>
-            <HandNote x={x + s.dx} y={y + s.dy + 52} p={ramp(t, 85.6 + SITES.indexOf(s) * 0.25, 86.3 + SITES.indexOf(s) * 0.25) * parts} size={38} color="#ffd3c8">
+            <HandNote x={x + s.dx} y={y + s.dy + 52} p={ramp(t, 85.6 + SITES.indexOf(s) * 0.25, 86.3 + SITES.indexOf(s) * 0.25) * parts} size={44} color="#ffd3c8">
               {s.part}
             </HandNote>
           </React.Fragment>
@@ -351,8 +350,8 @@ const T07: React.FC = () => {
             </AbsoluteFill>
             <AbsoluteFill style={{ opacity: ask }}>
               {[
-                { src: "photos/rafale-landing.jpg", pos: "58% 58%", x: 560, name: "Rafale", at: 150.5 },
-                { src: "src-photos/typhoon-leuchars.jpg", pos: "50% 55%", x: 1360, name: "Typhoon", at: 151.3 },
+                { src: "photos/rafale-landing.jpg", pos: "58% 58%", x: 560, name: "Rafale", at: 148.9 },
+                { src: "src-photos/typhoon-leuchars.jpg", pos: "50% 55%", x: 1360, name: "Typhoon", at: 149.4 },
               ].map((k) => (
                 <React.Fragment key={k.name}>
                   <div style={{ position: "absolute", left: k.x - 320, top: 250, width: 640, height: 400, overflow: "hidden", border: "10px solid #f3eee2", boxShadow: "0 20px 40px rgba(0,0,0,0.55)", opacity: ramp(t, k.at - 0.4, k.at), transform: `rotate(${k.x < W / 2 ? -2 : 2}deg)` }}>

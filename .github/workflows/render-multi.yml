@@ -1,0 +1,48 @@
+name: Render parts
+# Push to `rebuild` with "[render-parts]" in the commit message -> Parts 3, 4 and Final render
+# in parallel; each lands on its own branch (render-part3, render-part4, render-final) as 90 MB
+# pieces plus a SHA256, joined locally with cat.
+on:
+  push:
+    branches: [rebuild]
+permissions:
+  contents: write
+jobs:
+  render:
+    if: contains(github.event.head_commit.message, '[render-parts]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { comp: TyphoonVsRafalePart3, name: typhoon-rafale-part3, branch: render-part3 }
+          - { comp: TyphoonVsRafalePart4, name: typhoon-rafale-part4, branch: render-part4 }
+          - { comp: TyphoonVsRafaleFinal, name: typhoon-rafale-final, branch: render-final }
+    defaults:
+      run:
+        working-directory: remotion-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: remotion-app/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npx tsc --noEmit
+      - run: sudo apt-get install -y -qq ffmpeg > /dev/null
+      - name: Render
+        run: |
+          set -o pipefail
+          mkdir -p out/pub
+          npx remotion render ${{ matrix.comp }} out/video.mp4 --codec=h264 --crf=19 --concurrency=4 --audio-bitrate=320k 2>&1 | tee out/render.log | grep -vE "Rendered|Encoded" || { cd out/pub; tail -200 ../render.log > FAILED.log; git init -q -b ${{ matrix.branch }} && git add -A && git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render FAILED ${GITHUB_SHA::7}" && git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" HEAD:${{ matrix.branch }}; exit 1; }
+          # master: narration-led mix to YouTube loudness (-14 LUFS, -1.5 dBTP)
+          ffmpeg -y -loglevel error -i out/video.mp4 -c:v copy -af loudnorm=I=-14:TP=-1.5:LRA=11 -ar 48000 -c:a aac -b:a 320k out/master.mp4
+          mv out/master.mp4 out/video.mp4
+          split -b 90m -d out/video.mp4 out/pub/${{ matrix.name }}.mp4.part
+          (cd out && sha256sum video.mp4 > pub/SHA256)
+          cd out/pub
+          git init -q -b ${{ matrix.branch }} && git add -A
+          git -c user.name=ci -c user.email=ci@users.noreply.github.com commit -qm "Render ${GITHUB_SHA::7}"
+          for n in 1 2 3; do git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" HEAD:${{ matrix.branch }} && break; sleep 5; [ $n = 3 ] && exit 1; done

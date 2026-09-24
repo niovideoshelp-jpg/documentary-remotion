@@ -109,3 +109,16 @@ Video clips (cut in CI by `scripts/media.py` → `public/video/p2`, sources on W
 - tr-typhoon-taxi — "Atlantic Trident 2017 - Ready to fight" — U.S. Air Force — Public domain.
 
 3D models (Typhoon, Rafale) are low-poly reconstructions built for this edit from published dimensions; towed decoy, flares, jamming and threat tracks are illustrative animations, not recorded data.
+
+## Parts 3, 4, Final additions
+
+Photos (Wikimedia Commons, `public/src-photos`):
+- rafale-mali.jpg — Rafale Mali 16 février 2012.jpg — Master Sgt. LeeAnn Sunn — Public domain.
+- typhoon-libya.jpg — RAF Typhoon Aircraft Takes off for Operations over Libya MOD 45152566.jpg — Cpl Babs Robinson — OGL v1.0.
+- typhoon-akrotiri.jpg — Typhoon at RAF Akrotiri MOD 45166134.jpg — SAC PHIL DYE — OGL v1.0.
+- rafale-qatar.jpg — QA217 - Dassault Rafale - Qatar Air Force (47734694781).jpg — Dylan Agbagni (CC0) from Bordeaux, France — CC0.
+- typhoon-qatar.jpg — 2024, F-2000A Typhoon, Fairford, QA420, Qatar - 0107 (53999188959).jpg — Jim van de Burgt from Wijk bij Duurstede, Netherlands — CC0.
+- eurofighter-spain.jpg — C.16-57 Eurofighter Ejército del Aire LEN.jpg — Bene Riobó — CC BY-SA 4.0.
+- rafale-afghan.jpg — Rafale 070412-N-8157C-552.JPEG — DoD photo by: MC1 DENNY CANTRELL — Public domain.
+
+Hand-drawn annotations (circles, arrows, notes) are drawn over the photos in the edit; the photos themselves are unaltered. Eurofighter work-share sites and parts (Warton, Manching, Turin, Getafe) and contract figures are as stated in the narration and public reporting.

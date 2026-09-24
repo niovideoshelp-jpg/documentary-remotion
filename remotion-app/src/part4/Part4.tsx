@@ -213,19 +213,19 @@ const S04: React.FC = () => {
         <HandNote x={sx - 60} y={sy + 230} p={ramp(t, 56.8, 57.8)} size={60} color="#ffd3c8">
           a little over €2 bn
         </HandNote>
-        <HandNote x={bx - 40} y={by - 200} p={ramp(t, 62.6, 63.8)} size={52}>
+        <HandNote x={bx - 70} y={by - 60} p={ramp(t, 62.6, 63.8)} size={52} anchor="right">
           2024 · 12 Rafales
         </HandNote>
-        <HandNote x={bx - 40} y={by - 120} p={ramp(t, 61.0, 62.1)} size={60} color="#ffd3c8">
+        <HandNote x={bx - 70} y={by + 20} p={ramp(t, 61.0, 62.1)} size={60} color="#ffd3c8" anchor="right">
           ~$2.7 bn
         </HandNote>
-        <HandNote x={W / 2} y={H - 110} p={ramp(t, 66.0, 67.0) * (1 - ramp(t, 68.3, 68.7))} size={56} anchor="center">
+        <HandNote x={W / 2} y={230} p={ramp(t, 66.0, 67.0) * (1 - ramp(t, 68.3, 68.7))} size={56} anchor="center">
           Rafale much more expensive?
         </HandNote>
         <HandNote x={sx - 60} y={sy + 310} p={ramp(t, 69.2, 70.4)} size={42} color="#e8e1d2">
           already flies & builds it
         </HandNote>
-        <HandNote x={bx - 40} y={by - 40} p={ramp(t, 73.5, 74.6)} size={42} color="#e8e1d2">
+        <HandNote x={bx - 70} y={by + 95} p={ramp(t, 73.5, 74.6)} size={42} color="#e8e1d2" anchor="right">
           a completely new aircraft
         </HandNote>
       </AbsoluteFill>
@@ -255,7 +255,7 @@ const S04: React.FC = () => {
 /* S05 90.6–113.2 independence: four partner governments; Germany and the Saudi sale. */
 const S05: React.FC = () => {
   const t = useT();
-  const view = viewAt(keys(t, [[90.6, 6], [105.5, 8], [107.5, 26], [113.2, 27]], ease.inOut), keys(t, [[90.6, 47], [105.5, 47], [107.5, 38], [113.2, 38]], ease.inOut), keys(t, [[90.6, 1.0], [105.5, 1.08], [107.5, 0.62], [113.2, 0.65]], ease.inOut));
+  const view = viewAt(keys(t, [[90.6, 6], [105.5, 8], [107.5, 28], [113.2, 29]], ease.inOut), keys(t, [[90.6, 47], [105.5, 47], [107.5, 38], [113.2, 38]], ease.inOut), keys(t, [[90.6, 1.0], [105.5, 1.08], [107.5, 0.5], [113.2, 0.52]], ease.inOut));
   const caps: [string, number][] = [
     ["london", 97.2],
     ["berlin", 98.3],
@@ -303,7 +303,7 @@ const S05: React.FC = () => {
       <HandNote x={W / 2 + 200} y={300} p={ramp(t, 103.5, 104.4) * (1 - ramp(t, 105.8, 106.3))} size={56} color="#ffd3c8">
         several governments decide
       </HandNote>
-      <HandNote x={bx + 40} y={by - 70} p={ramp(t, 110.5, 111.4)} size={48} color="#ffd3c8">
+      <HandNote x={(bx + rx) / 2 + 40} y={(by + ry) / 2} p={ramp(t, 110.5, 111.4)} size={48} color="#ffd3c8">
         Germany’s position
       </HandNote>
     </BlotReveal>
@@ -336,7 +336,7 @@ const S06: React.FC = () => {
         ]}
       />
       <At x={W / 2} y={110}>
-        <KeyTitle text="The Rafale is different" t={t} at={113.2} size={80} out={121.6} />
+        <KeyTitle text="The Rafale is different" t={t} at={113.2} size={80} out={118.6} />
       </At>
       <AbsoluteFill style={{ opacity: 1 - four }}>
         <HandNote x={px + 120} y={py - 160} p={ramp(t, 119.2, 119.9)} size={60}>
@@ -401,7 +401,7 @@ const S07: React.FC = () => {
   const P = (u: number, v: number) => coverPt(u, v, 3000, 2000, 0.55, 0.45);
   const [fx, fy] = P(0.55, 0.45);
   const [nx, ny] = P(0.745, 0.3);
-  const [ex, ey] = P(0.36, 0.525);
+  const [ex, ey] = P(0.35, 0.63);
   const [cx, cy] = P(0.625, 0.315);
   return (
     <BlotReveal t={t} start={143.3} dur={0.8} cx={W / 2} cy={H / 2}>
@@ -478,10 +478,10 @@ const S08: React.FC = () => {
             <HandNote x={X(2023) + 30} y={425} p={ramp(t, 166.6, 167.6)} size={42} color="#ffd3c8">
               qualified 2023 · in service
             </HandNote>
-            <HandNote x={X(2027)} y={690} p={ramp(t, 171.6, 173.4)} size={52}>
+            <HandNote x={X(2030.4)} y={690} p={ramp(t, 171.6, 173.4)} size={52} anchor="right">
               Typhoon · ECRS Mk2 radar
             </HandNote>
-            <HandNote x={X(2027)} y={770} p={ramp(t, 176.4, 177.6)} size={42} color="#e8e1d2">
+            <HandNote x={X(2030.4)} y={770} p={ramp(t, 176.4, 177.6)} size={42} color="#e8e1d2" anchor="right">
               later in the decade
             </HandNote>
             <HandNote x={X(2026)} y={820} p={ramp(t, 180.2, 180.9)} size={48} color="#ffc0b2" anchor="center">
@@ -516,7 +516,7 @@ const S09: React.FC = () => {
       <PaperGround>
         <Camera s={keys(t, [[187.4, 1.06], [207.7, 1.0]], ease.soft)}>
           <Layer>
-            <AbsoluteFill style={{ opacity: 1 - autonomy * 0.75 }}>
+            <AbsoluteFill style={{ opacity: 1 - autonomy }}>
               {rows.map((r, i) => (
                 <React.Fragment key={r.k}>
                   <At x={420} y={290 + i * 180} anchor="left">

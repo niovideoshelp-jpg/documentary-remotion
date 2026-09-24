@@ -42,7 +42,7 @@ const R01: React.FC = () => {
   const t = useT();
   return (
     <AbsoluteFill>
-      <ClipFull src="p2/t2-rafale-ab" t={t} from={0} to={4.8} clipDur={3.0} trim={1.0} push={0.07} />
+      <ClipFull src="rr-bank" t={t} from={0} to={4.8} clipDur={4.0} trim={1.9} push={0.07} />
       <At x={W / 2} y={H - 170}>
         <KeyTitle text="In combat since 2007" t={t} at={2.4} size={100} neon="white" />
       </At>
@@ -79,7 +79,7 @@ const R03: React.FC = () => {
   const t = useT();
   return (
     <BlotReveal t={t} start={12.0} dur={0.8} cx={W / 2} cy={H / 2}>
-      <PhotoStage src="src-photos/rafale-mali.jpg" t={t} t0={12} t1={23.8} pos="30% 50%" z0={1.08} z1={1.18} dim={0.35}>
+      <PhotoStage src="src-photos/rafale-mali.jpg" t={t} t0={12} t1={23.8} pos="30% 50%" z0={1.08} z1={1.18} dim={0.02}>
         {STANDARDS.map((s, i) => (
           <HandNote key={s} x={1420} y={260 + i * 130} p={ramp(t, 16.6 + i * 0.5, 17.1 + i * 0.5)} size={84} rot={-2 + i}>
             {s}
@@ -187,7 +187,7 @@ const R05: React.FC = () => {
             <HandNote x={620} y={250} p={ramp(t, 47.1, 47.7)} size={52}>
               over Syria
             </HandNote>
-            <HandNote x={mx - 60} y={my + 90} p={ramp(t, 48.5, 49.2)} size={60} color="#ffd3c8">
+            <HandNote x={mx - 60} y={my + 90} p={ramp(t, 48.5, 49.2) * (1 - quote)} size={60} color="#ffd3c8">
               ASRAAM
             </HandNote>
           </PhotoStage>
@@ -212,14 +212,13 @@ const R05: React.FC = () => {
 /* R06 57.3–74.6 significant (fighter + weapon, used for real), but a drone is not a balanced fight. */
 const R06: React.FC = () => {
   const t = useT();
-  const neq = ramp(t, 68.3, 68.9);
   return (
     <TearReveal t={t} start={57.3} dur={0.7} dir="ltr">
       <PaperGround dark>
         <Camera s={keys(t, [[57.3, 1.06], [66.5, 1.0], [74.6, 1.03]], ease.soft)}>
           <Layer>
             <At x={W / 2} y={140}>
-              <KeyTitle text="Real-world use" t={t} at={59.7} size={96} out={65.4} />
+              <KeyTitle text="Real-world use" t={t} at={58.0} size={96} out={65.4} />
             </At>
             <HandNote x={560} y={330} p={ramp(t, 61.2, 61.8)} size={58}>
               ✓ the fighter
@@ -232,14 +231,12 @@ const R06: React.FC = () => {
             </At>
             {/* left: a drone; right: two modern fighters */}
             <Ink>
-              <g opacity={ramp(t, 66.7, 67.0)}>
-                <Blueprint view="typhoonTop" x={340} y={620} width={330} p={ramp(t, 66.8, 67.9, ease.linear)} lineWidth={1.6} />
-              </g>
               <Sketch d={DRONE} x={720} y={620} s={0.8} p={ramp(t, 67.6, 68.3)} color="#ffd3c8" rot={180} />
               <Sketch d={FIGHTER} x={1640} y={620} s={1.3} p={ramp(t, 70.0, 70.9)} color="#ffd3c8" rot={180} />
               <HandArrow x1={1320} y1={760} x2={1500} y2={760} p={ramp(t, 71.9, 72.6)} seed="bal1" bow={0.05} />
               <HandArrow x1={1500} y1={800} x2={1320} y2={800} p={ramp(t, 72.2, 72.9)} seed="bal2" bow={0.05} />
             </Ink>
+            <Blueprint view="typhoonTop" x={380} y={620} width={330} p={ramp(t, 66.8, 67.9, ease.linear)} lineWidth={1.6} />
             <AbsoluteFill style={{ opacity: ramp(t, 69.3, 69.7) }}>
               <Blueprint view="typhoonTop" x={1200} y={620} width={330} p={ramp(t, 69.3, 70.4, ease.linear)} lineWidth={1.6} />
             </AbsoluteFill>
@@ -252,9 +249,11 @@ const R06: React.FC = () => {
             <HandNote x={1420} y={900} p={ramp(t, 72.0, 72.8)} size={50} anchor="center">
               balanced
             </HandNote>
-            <At x={960} y={620}>
-              <div style={{ fontFamily: F.display, fontSize: 200, color: C.red, opacity: neq, transform: `scale(${0.7 + 0.3 * ease.out(neq)})`, filter: "url(#ink)" }}>≠</div>
-            </At>
+            <Ink>
+              <DrawPath d="M905,595 L1015,595" p={ramp(t, 68.3, 68.5)} color={MARKER_RED} width={12} />
+              <DrawPath d="M905,645 L1015,645" p={ramp(t, 68.45, 68.65)} color={MARKER_RED} width={12} />
+              <DrawPath d="M1000,555 L920,690" p={ramp(t, 68.6, 68.9)} color={MARKER_RED} width={12} />
+            </Ink>
           </Layer>
         </Camera>
       </PaperGround>
@@ -266,7 +265,7 @@ const R06: React.FC = () => {
 const R07: React.FC = () => {
   const t = useT();
   const map = ramp(t, 77.5, 78.1, ease.inOut);
-  const view = viewAt(keys(t, [[77.5, 42], [80, 44.0]], ease.inOut), keys(t, [[77.5, 34], [80, 35.6]], ease.inOut), keys(t, [[77.5, 1.4], [80.5, 3.2], [88.8, 3.4]], ease.inOut));
+  const view = viewAt(keys(t, [[77.5, 42], [80, 44.6]], ease.inOut), keys(t, [[77.5, 33], [80, 34.6]], ease.inOut), keys(t, [[77.5, 1.2], [80.5, 1.9], [88.8, 2.0]], ease.inOut));
   const [ex, ey] = toScreen(44.01, 36.19, view);
   return (
     <BlotReveal t={t} start={74.3} dur={0.8} cx={W / 2} cy={H / 2}>
@@ -281,10 +280,10 @@ const R07: React.FC = () => {
           <Ink>
             <HandCircle cx={ex} cy={ey} rx={70} ry={52} p={ramp(t, 86.6, 87.3)} seed="erbil" color={MARKER} />
           </Ink>
-          <HandNote x={ex + 90} y={ey - 30} p={ramp(t, 86.8, 87.5)} size={64}>
+          <HandNote x={ex + 80} y={ey - 60} p={ramp(t, 86.8, 87.5)} size={64}>
             Erbil
           </HandNote>
-          <HandNote x={ex - 40} y={ey + 120} p={ramp(t, 84.5, 85.4)} size={44} color="#ffd3c8" anchor="right">
+          <HandNote x={ex + 80} y={ey + 50} p={ramp(t, 84.5, 85.4)} size={44} color="#ffd3c8">
             cave complex used by ISIS
           </HandNote>
           <At x={W / 2} y={120}>
@@ -407,10 +406,10 @@ const R09: React.FC = () => {
           <Ink>
             <HandUnder x1={880} x2={1300} y={640} p={ramp(t, 133.8, 134.5)} seed="one" />
           </Ink>
-          <HandNote x={1100} y={800} p={ramp(t, 133.9, 134.7)} size={70} color="#ffd3c8" anchor="center">
+          <HandNote x={760} y={820} p={ramp(t, 133.9, 134.7)} size={70} color="#ffd3c8" anchor="center">
             at least one
           </HandNote>
-          <HandNote x={1100} y={930} p={ramp(t, 138.3, 139.2)} size={56} anchor="center">
+          <HandNote x={760} y={940} p={ramp(t, 138.3, 139.2)} size={56} anchor="center">
             ≠ every shoot-down claim
           </HandNote>
         </AbsoluteFill>
@@ -424,7 +423,7 @@ const R10: React.FC = () => {
   const t = useT();
   const causes = ramp(t, 151.5, 152.1);
   const cards = [
-    { at: 146.1, text: "Military information", x: 700, y: 420, r: -5 },
+    { at: 145.2, text: "Military information", x: 700, y: 420, r: -5 },
     { at: 147.7, text: "Propaganda", x: 1150, y: 500, r: 4 },
     { at: 148.7, text: "Conflicting accounts", x: 900, y: 640, r: -2 },
   ];
@@ -458,7 +457,7 @@ const R10: React.FC = () => {
         </AbsoluteFill>
         {causes > 0 && (
           <AbsoluteFill style={{ opacity: causes }}>
-            <PhotoStage src="src-photos/rafale-india-takeoff.jpg" t={t} t0={151.5} t1={164.2} pos="55% 45%" z0={1.1} z1={1.22} dim={0.5}>
+            <PhotoStage src="src-photos/rafale-vapor.jpg" t={t} t0={151.5} t1={164.2} pos="50% 50%" z0={1.1} z1={1.2} dim={0.45}>
               <HandNote x={260} y={220} p={ramp(t, 153.8, 154.6)} size={70} color="#ffd3c8">
                 why?
               </HandNote>
